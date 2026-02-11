@@ -6,12 +6,18 @@ import { getCurrentUser } from '@/lib/auth';
 import styles from './team.module.css';
 
 async function getTeamData(id: string) {
-    try {
-        return await getMyProject(id);
-    } catch (error) {
-        console.error('Error fetching team data:', error);
-        return null;
+    // 시트 반영 지연 대비 재시도 (최대 3회)
+    for (let i = 0; i < 3; i++) {
+        try {
+            const data = await getMyProject(id);
+            if (data) return data;
+        } catch (error) {
+            console.error(`Error fetching team data (attempt ${i + 1}):`, error);
+        }
+        // 데이터가 없거나 에러 시 1.5초 대기 후 재시도
+        if (i < 2) await new Promise((res) => setTimeout(res, 1500));
     }
+    return null;
 }
 
 export default async function TeamPage({ params }: { params: { id: string } }) {
