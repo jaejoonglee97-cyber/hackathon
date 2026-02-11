@@ -30,12 +30,24 @@ export default async function DashboardPage() {
     const project = teamId ? await getRowBy('projects', 'team_id', teamId) : null;
 
     // 4) Help/Insight 카드 개수
-    const helpCards = teamId
-        ? (await listRows('help_cards', { team_id: teamId })).filter((r) => r.status !== 'deleted')
-        : [];
-    const insightCards = teamId
-        ? (await listRows('insight_cards', { team_id: teamId })).filter((r) => r.category !== 'deleted')
-        : [];
+    // 4) Help/Insight 카드 개수 (에러 시 무시하고 빈 배열 처리)
+    let helpCards: any[] = [];
+    let insightCards: any[] = [];
+    try {
+        if (teamId) {
+            helpCards = (await listRows('help_cards', { team_id: teamId })).filter((r) => r.status !== 'deleted');
+        }
+    } catch (e) {
+        console.warn('Failed to fetch help cards:', e);
+    }
+
+    try {
+        if (teamId) {
+            insightCards = (await listRows('insight_cards', { team_id: teamId })).filter((r) => r.category !== 'deleted');
+        }
+    } catch (e) {
+        console.warn('Failed to fetch insight cards:', e);
+    }
 
     // 5) 마감일 정보 (D-day 표시)
     const deadlines = await getActiveDeadlines();
