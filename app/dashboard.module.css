@@ -1,0 +1,314 @@
+/* 대시보드 스타일 */
+.page {
+    min-height: 100vh;
+    background: var(--color-bg-secondary);
+    padding: var(--space-2xl) 0;
+}
+
+.header {
+    margin-bottom: var(--space-2xl);
+}
+
+.title {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-xs) 0;
+}
+
+.subtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+/* 프로젝트 카드 */
+.projectCard {
+    background: linear-gradient(135deg, hsl(220, 90%, 56%) 0%, hsl(280, 70%, 60%) 100%);
+    color: white;
+    border-radius: var(--radius-lg);
+    padding: var(--space-2xl);
+    margin-bottom: var(--space-2xl);
+    box-shadow: var(--shadow-lg);
+}
+
+.projectHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--space-xl);
+    gap: var(--space-lg);
+}
+
+.projectTitle {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    margin: 0 0 var(--space-xs) 0;
+}
+
+.projectOrg {
+    font-size: var(--font-size-base);
+    opacity: 0.9;
+    margin: 0;
+}
+
+.editButton {
+    padding: var(--space-sm) var(--space-lg);
+    background: white;
+    color: var(--color-primary);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.editButton:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.completionBar {
+    width: 100%;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    margin-bottom: var(--space-sm);
+}
+
+.completionBarFill {
+    height: 100%;
+    background: white;
+    border-radius: var(--radius-full);
+    transition: width 0.5s ease;
+}
+
+.completionText {
+    font-size: var(--font-size-sm);
+    opacity: 0.95;
+    margin: 0 0 var(--space-xl) 0;
+}
+
+.projectSections {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+}
+
+.sectionFilled,
+.sectionEmpty {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.sectionFilled {
+    background: rgba(255, 255, 255, 0.25);
+    border: 2px solid white;
+}
+
+.sectionEmpty {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px dashed rgba(255, 255, 255, 0.5);
+    opacity: 0.7;
+}
+
+.sectionIcon {
+    font-size: var(--font-size-lg);
+}
+
+.sectionLabel {
+    flex-grow: 1;
+}
+
+.checkmark {
+    font-size: var(--font-size-lg);
+    color: hsl(120, 60%, 80%);
+}
+
+.projectActions {
+    display: flex;
+    gap: var(--space-md);
+}
+
+.viewButton,
+.primaryButton {
+    flex: 1;
+    padding: var(--space-md) var(--space-lg);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.viewButton {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid white;
+}
+
+.viewButton:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.primaryButton {
+    background: white;
+    color: var(--color-primary);
+}
+
+.primaryButton:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* 통계 섹션 */
+.statsSection {
+    margin-bottom: var(--space-2xl);
+}
+
+.sectionTitle {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-lg) 0;
+}
+
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-lg);
+}
+
+.statCard {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s;
+    border: 2px solid transparent;
+}
+
+.statCard:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-primary);
+}
+
+.statIcon {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-sm);
+}
+
+.statValue {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: var(--space-xs);
+}
+
+.statLabel {
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+    font-weight: 600;
+}
+
+/* 빠른 액션 */
+.quickActions {
+    margin-bottom: var(--space-2xl);
+}
+
+.actionGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-lg);
+}
+
+.actionCard {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    text-decoration: none;
+    color: inherit;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s;
+    border: 2px solid transparent;
+}
+
+.actionCard:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-primary);
+}
+
+.actionIcon {
+    display: block;
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-md);
+}
+
+.actionTitle {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-sm) 0;
+}
+
+.actionDesc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.errorCard {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    padding: var(--space-2xl);
+    text-align: center;
+    box-shadow: var(--shadow-md);
+}
+
+.errorCard h1 {
+    color: var(--color-primary);
+    margin: 0 0 var(--space-md) 0;
+}
+
+.errorCard p {
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-lg) 0;
+}
+
+.errorCard a {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .projectHeader {
+        flex-direction: column;
+    }
+
+    .editButton {
+        width: 100%;
+        text-align: center;
+    }
+
+    .projectActions {
+        flex-direction: column;
+    }
+
+    .projectSections {
+        grid-template-columns: 1fr;
+    }
+}

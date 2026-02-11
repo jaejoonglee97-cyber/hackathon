@@ -1,0 +1,66 @@
+/* 작성 페이지 스타일 */
+.page {
+    min-height: 100vh;
+    background: var(--color-bg-secondary);
+}
+
+.header {
+    background: linear-gradient(135deg, var(--color-help) 0%, hsl(140, 60%, 45%) 100%);
+    color: white;
+    padding: var(--space-xl) 0;
+    box-shadow: var(--shadow-lg);
+}
+
+.backLink {
+    display: inline-block;
+    color: white;
+    opacity: 0.9;
+    margin-bottom: var(--space-md);
+    font-size: var(--font-size-sm);
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.backLink:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+.title {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    margin: 0 0 var(--space-xs) 0;
+}
+
+.subtitle {
+    font-size: var(--font-size-lg);
+    opacity: 0.95;
+    margin: 0;
+}
+
+.main {
+    padding: var(--space-2xl) 0;
+}
+
+.error {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    padding: var(--space-2xl);
+    text-align: center;
+    box-shadow: var(--shadow-md);
+}
+
+.error h1 {
+    color: hsl(0, 80%, 50%);
+    margin: 0 0 var(--space-md) 0;
+}
+
+.error p {
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-lg) 0;
+}
+
+.error a {
+    color: var(--color-primary);
+    font-weight: 600;
+}

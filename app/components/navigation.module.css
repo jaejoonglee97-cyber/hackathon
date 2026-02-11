@@ -1,0 +1,143 @@
+/* 네비게이션 스타일 */
+.nav {
+    background: white;
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-md) 0;
+    gap: var(--space-lg);
+}
+
+.logo {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.logo:hover {
+    opacity: 0.8;
+}
+
+.navLinks {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex-grow: 1;
+    margin-left: var(--space-2xl);
+}
+
+.navLink,
+.navLinkActive {
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.navLink {
+    color: var(--color-text-secondary);
+}
+
+.navLink:hover {
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+}
+
+.navLinkActive {
+    background: var(--color-primary);
+    color: white;
+}
+
+.userMenu {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.userName {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-text-secondary);
+}
+
+.signOutButton {
+    padding: var(--space-xs) var(--space-md);
+    background: transparent;
+    color: var(--color-text-tertiary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.signOutButton:hover {
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    border-color: var(--color-text-secondary);
+}
+
+.authButtons {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.signInLink {
+    padding: var(--space-xs) var(--space-md);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.signInLink:hover {
+    color: var(--color-primary);
+}
+
+.signUpButton {
+    padding: var(--space-xs) var(--space-md);
+    background: var(--color-primary);
+    color: white;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.signUpButton:hover {
+    background: hsl(220, 90%, 50%);
+}
+
+@media (max-width: 768px) {
+    .navLinks {
+        display: none;
+    }
+
+    .userName {
+        display: none;
+    }
+
+    .navContent {
+        padding: var(--space-sm) 0;
+    }
+
+    .logo {
+        font-size: var(--font-size-lg);
+    }
+}

@@ -1,0 +1,147 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+}
+
+.deadline {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    background: linear-gradient(135deg, hsl(45, 100%, 96%) 0%, hsl(30, 100%, 96%) 100%);
+    border: 2px solid hsl(45, 100%, 70%);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-md);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.deadlineIcon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.deadlineContent {
+    flex: 1;
+}
+
+.deadlineTitle {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-xs) 0;
+}
+
+.deadlineDate {
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+.deadlineBadge {
+    flex-shrink: 0;
+}
+
+.daysLeft {
+    display: inline-block;
+    padding: var(--space-sm) var(--space-lg);
+    background: hsl(0, 80%, 95%);
+    color: hsl(0, 80%, 40%);
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    border-radius: var(--radius-full);
+    border: 2px solid hsl(0, 80%, 70%);
+}
+
+.expired {
+    display: inline-block;
+    padding: var(--space-sm) var(--space-lg);
+    background: hsl(0, 0%, 90%);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    border-radius: var(--radius-full);
+}
+
+.announcements {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.announcement {
+    display: flex;
+    gap: var(--space-md);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+}
+
+.announcement:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.highPriority {
+    border-color: var(--color-warning);
+    background: linear-gradient(to right,
+            hsl(30, 100%, 99%) 0%,
+            var(--color-surface) 20%);
+}
+
+.priorityBadge {
+    font-size: var(--font-size-xl);
+    flex-shrink: 0;
+}
+
+.announcementContent {
+    flex: 1;
+}
+
+.announcementTitle {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-xs) 0;
+}
+
+.announcementText {
+    font-size: var(--font-size-base);
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    margin: 0 0 var(--space-sm) 0;
+    word-break: keep-all;
+}
+
+.announcementTime {
+    display: inline-block;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+
+/* 반응형 */
+@media (max-width: 640px) {
+    .deadline {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-md);
+    }
+
+    .deadlineBadge {
+        width: 100%;
+        text-align: center;
+    }
+
+    .daysLeft {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+    .announcement {
+        padding: var(--space-md);
+    }
+}
