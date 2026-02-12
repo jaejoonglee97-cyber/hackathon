@@ -130,16 +130,45 @@ export default async function TeamPage({ params }: { params: { id: string } }) {
 
             <main className={styles.main}>
                 <div className="container">
-                    {/* 1. 프로젝트 목적 (New: problem_statement) */}
+                    {/* 1. 프로젝트 정보 (New: Name, Track) */}
+                    <section className={styles.section} id="info">
+                        <h2 className={styles.sectionTitle}>
+                            <span className={styles.sectionIcon}>1️⃣</span>
+                            프로젝트 정보
+                        </h2>
+                        <div className={styles.sectionContent}>
+                            <div className={styles.field}>
+                                <h3 className={styles.fieldLabel}>프로젝트명</h3>
+                                <p className={styles.fieldValue} style={{ fontSize: '1.2em', fontWeight: 'bold' }}>
+                                    {team.name}
+                                </p>
+                            </div>
+                            <div className={styles.field}>
+                                <h3 className={styles.fieldLabel}>분야</h3>
+                                <p className={styles.fieldValue}>
+                                    {project?.track ? (
+                                        <span className={styles.trackBadge}>{project.track}</span>
+                                    ) : (
+                                        '아직 선택되지 않았습니다.'
+                                    )}
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* 2. 프로젝트 목적 (New: problem_statement) */}
                     <section className={styles.section} id="purpose">
                         <h2 className={styles.sectionTitle}>
                             <span className={styles.sectionIcon}>2️⃣</span>
                             프로젝트 목적
                         </h2>
                         <div className={styles.sectionContent}>
-                            <p className={styles.fieldValue}>
-                                {project?.problem_statement || '아직 작성되지 않았습니다.'}
-                            </p>
+                            <div className={styles.field}>
+                                <h3 className={styles.fieldLabel}>목적</h3>
+                                <p className={styles.fieldValue}>
+                                    {project?.problem_statement || '아직 작성되지 않았습니다.'}
+                                </p>
+                            </div>
                         </div>
                     </section>
 

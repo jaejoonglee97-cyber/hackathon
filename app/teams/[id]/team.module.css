@@ -336,3 +336,14 @@
         margin: var(--space-sm) 0 0 0;
     }
 }
+
+.trackBadge {
+    display: inline-block;
+    padding: var(--space-xs) var(--space-md);
+    background-color: #eff6ff;
+    color: #1e40af;
+    border-radius: var(--radius-full);
+    font-size: 0.9em;
+    font-weight: 600;
+    border: 1px solid #dbeafe;
+}
