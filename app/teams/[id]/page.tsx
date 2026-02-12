@@ -3,6 +3,7 @@ import { notFound, redirect } from 'next/navigation';
 import Link from 'next/link';
 import { getMyProject } from '@/lib/permissions';
 import { getCurrentUser } from '@/lib/auth';
+import { listRows, getRowBy } from '@/lib/sheets';
 import styles from './team.module.css';
 
 export const dynamic = 'force-dynamic';
@@ -37,6 +38,25 @@ export default async function TeamPage({ params }: { params: { id: string } }) {
 
     const { team, project, canEdit, editReason, lockType } = data;
 
+    // 멤버 정보 가져오기
+    let members: any[] = [];
+    try {
+        const teamMembers = await listRows('team_members', { team_id: team.id });
+        members = await Promise.all(
+            teamMembers.map(async (tm) => {
+                const profile = await getRowBy('users_profile', 'user_id', tm.user_id);
+                return {
+                    ...tm,
+                    name: profile?.name || '알 수 없음',
+                    org: profile?.org || '',
+                    role: tm.role
+                };
+            })
+        );
+    } catch (e) {
+        console.error('Failed to fetch members', e);
+    }
+
     return (
         <div className={styles.page}>
             <header className={styles.header}>
@@ -45,7 +65,17 @@ export default async function TeamPage({ params }: { params: { id: string } }) {
                         ← 대시보드로 돌아가기
                     </a>
                     <h1 className={styles.teamName}>{team.name}</h1>
-                    {team.org && <p className={styles.teamOrg}>{team.org}</p>}
+                    <div className={styles.teamMeta}>
+                        {team.org && <span className={styles.teamOrg}>{team.org}</span>}
+                        <div className={styles.memberList}>
+                            {members.map((m) => (
+                                <span key={m.user_id} className={styles.memberBadge}>
+                                    {m.role === 'owner' || m.role === 'leader' ? '👑' : '👤'} {m.name}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+
                     <div className={styles.headerActions}>
                         <div className={styles.stageBadge}>
                             {team.stage === 'intro' && '도입'}

@@ -34,7 +34,30 @@
 .teamOrg {
     font-size: var(--font-size-lg);
     opacity: 0.95;
-    margin: 0 0 var(--space-md) 0;
+    margin: 0;
+}
+
+.teamMeta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+}
+
+.memberList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+}
+
+.memberBadge {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-xs) var(--space-md);
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    backdrop-filter: blur(5px);
 }
 
 .stageBadge {
