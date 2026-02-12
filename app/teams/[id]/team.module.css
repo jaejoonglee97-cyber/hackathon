@@ -50,14 +50,28 @@
     gap: var(--space-xs);
 }
 
-.memberBadge {
+.participantInfo {
     display: inline-flex;
-    align-items: center;
-    padding: var(--space-xs) var(--space-md);
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: var(--radius-full);
-    font-size: var(--font-size-sm);
-    backdrop-filter: blur(5px);
+    align-items: baseline;
+    gap: var(--space-xs);
+    font-size: var(--font-size-lg);
+}
+
+.participantName {
+    font-weight: 700;
+    color: white;
+}
+
+.participantOrg {
+    font-weight: 400;
+    opacity: 0.8;
+    font-size: 0.9em;
+}
+
+.participantOrg::before {
+    content: "|";
+    margin-right: var(--space-xs);
+    opacity: 0.5;
 }
 
 .stageBadge {

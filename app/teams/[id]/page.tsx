@@ -66,11 +66,11 @@ export default async function TeamPage({ params }: { params: { id: string } }) {
                     </a>
                     <h1 className={styles.teamName}>{team.name}</h1>
                     <div className={styles.teamMeta}>
-                        {team.org && <span className={styles.teamOrg}>{team.org}</span>}
                         <div className={styles.memberList}>
                             {members.map((m) => (
-                                <span key={m.user_id} className={styles.memberBadge}>
-                                    {m.role === 'owner' || m.role === 'leader' ? '👑' : '👤'} {m.name}
+                                <span key={m.user_id} className={styles.participantInfo}>
+                                    <span className={styles.participantName}>{m.name}</span>
+                                    {m.org && <span className={styles.participantOrg}>{m.org}</span>}
                                 </span>
                             ))}
                         </div>
