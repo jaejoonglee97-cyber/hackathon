@@ -85,7 +85,13 @@ export default function Navigation({ initialUser }: NavigationProps) {
                             href="/guide"
                             className={pathname?.startsWith('/guide') ? styles.navLinkActive : styles.navLink}
                         >
-                            📚 이용가이드 & QnA
+                            📚 이용가이드
+                        </Link>
+                        <Link
+                            href="/guide#qna"
+                            className={styles.qnaLink}
+                        >
+                            💬 문의게시판
                         </Link>
                     </div>
 

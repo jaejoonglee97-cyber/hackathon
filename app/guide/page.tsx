@@ -101,7 +101,9 @@ export default function GuidePage() {
                         </div>
                     </section>
 
-                    <QnABoard />
+                    <div id="qna">
+                        <QnABoard />
+                    </div>
                 </div>
             </main>
         </div>
