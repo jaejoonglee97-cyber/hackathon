@@ -5,6 +5,7 @@ import { getMyProject } from '@/lib/permissions';
 import { getCurrentUser } from '@/lib/auth';
 import { listRows, getRowBy } from '@/lib/sheets';
 import styles from './team.module.css';
+import AdminActions from './AdminActions';
 
 export const dynamic = 'force-dynamic';
 
@@ -42,13 +43,28 @@ export default async function TeamPage({ params }: { params: { id: string } }) {
     let members: any[] = [];
     try {
         const teamMembers = await listRows('team_members', { team_id: team.id });
+        const isAdminUser = ['admin', 'judge'].includes(currentUser.role);
+
         members = await Promise.all(
             teamMembers.map(async (tm) => {
                 const profile = await getRowBy('users_profile', 'user_id', tm.user_id);
+                // Auth info for email if needed (a bit expensive to fetch for all, but okay for loop)
+                // Actually profile doesn't have email. auth has email.
+                let email = '';
+                if (isAdminUser) {
+                    // We need to find email. `users_auth` has email.
+                    // But we don't have a direct `getRowBy('users_auth', 'user_id', ...)` easy access?
+                    // We can use `getRowBy` on `users_auth`.
+                    const auth = await getRowBy('users_auth', 'user_id', tm.user_id);
+                    email = auth?.email || '';
+                }
+
                 return {
                     ...tm,
                     name: profile?.name || '알 수 없음',
                     org: profile?.org || '',
+                    phone: isAdminUser ? (profile?.phone || '') : '',
+                    email: email,
                     role: tm.role
                 };
             })
@@ -71,6 +87,8 @@ export default async function TeamPage({ params }: { params: { id: string } }) {
                                 <span key={m.user_id} className={styles.participantInfo}>
                                     <span className={styles.participantName}>{m.name}</span>
                                     {m.org && <span className={styles.participantOrg}>{m.org}</span>}
+                                    {/* Admin View: Email/Phone */}
+                                    {m.email && <span className={styles.participantContact} style={{ fontSize: '0.8em', color: '#666', marginLeft: '5px' }}>({m.email} / {m.phone})</span>}
                                 </span>
                             ))}
                         </div>
@@ -288,11 +306,17 @@ export default async function TeamPage({ params }: { params: { id: string } }) {
                                     타 기관 재사용 체크리스트
                                 </h3>
                                 <p className={styles.fieldValue}>
-                                    {project?.adoption_checklist || '아직 작성되지 않았습니다.'}
                                 </p>
                             </div>
                         </div>
                     </section>
+
+                    {/* 관리자 액션 (삭제) */}
+                    {['admin', 'judge'].includes(currentUser.role) && (
+                        <section className={styles.section}>
+                            <AdminActions teamId={params.id} isAdmin={true} />
+                        </section>
+                    )}
                 </div>
             </main>
         </div>

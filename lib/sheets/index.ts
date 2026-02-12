@@ -16,6 +16,7 @@ export {
     listRows,
     appendRow,
     updateRow,
+    deleteRow,
     getUserAuth,
     getUserProfile,
     getConfigValue,

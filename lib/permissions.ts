@@ -41,8 +41,17 @@ export async function isProjectOwner(teamId: string): Promise<boolean> {
 }
 
 /**
+ * 관리자 권한 확인 (admin, judge)
+ */
+export function isAdmin(user: any): boolean {
+    if (!user) return false;
+    return ['admin', 'judge'].includes(user.role);
+}
+
+/**
  * 프로젝트 편집 가능 여부 확인
  * 조건: 1) profile_complete=TRUE  2) hard lock 아닐 것
+ *      OR 관리자는 무조건 가능
  */
 export async function canEditProject(teamId: string): Promise<{
     canEdit: boolean;
@@ -53,6 +62,11 @@ export async function canEditProject(teamId: string): Promise<{
         const currentUser = await getCurrentUser();
         if (!currentUser) {
             return { canEdit: false, reason: '로그인이 필요합니다.' };
+        }
+
+        // 0) 관리자 프리패스
+        if (isAdmin(currentUser)) {
+            return { canEdit: true };
         }
 
         // 1) 프로필 완료 확인

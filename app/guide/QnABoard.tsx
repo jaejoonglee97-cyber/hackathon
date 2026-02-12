@@ -101,7 +101,37 @@ export default function QnABoard() {
         setExpandedId(expandedId === id ? null : id);
     };
 
+    const [answerInput, setAnswerInput] = useState('');
+    const [answering, setAnswering] = useState(false);
+
+    const handleAnswerSubmit = async (inquiryId: string) => {
+        if (!answerInput.trim()) return;
+        setAnswering(true);
+        try {
+            const res = await fetch('/api/inquiries', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: inquiryId, answer: answerInput }),
+            });
+
+            if (res.ok) {
+                alert('답변이 등록되었습니다.');
+                setAnswerInput('');
+                fetchInquiries();
+            } else {
+                alert('답변 등록 실패');
+            }
+        } catch (error) {
+            console.error(error);
+            alert('오류 발생');
+        } finally {
+            setAnswering(false);
+        }
+    };
+
     if (loading) return <div className={styles.loading}>로딩 중...</div>;
+
+    const isAdmin = currentUser && ['admin', 'judge'].includes(currentUser.role);
 
     return (
         <div className={styles.boardContainer}>
@@ -119,6 +149,7 @@ export default function QnABoard() {
                     }}
                 >
                     {isWriting ? '목록으로' : '글쓰기'}
+                    {/* Admin indicator for debug */ isAdmin && ' (관리자)'}
                 </button>
             </div>
 
@@ -171,11 +202,22 @@ export default function QnABoard() {
                         const isAnswered = item.status === 'answered';
                         const isMyPost = currentUser && currentUser.userId === item.user_id;
 
+                        // Admin can see secret posts
+                        const canView = !isSecretItem || isMyPost || isAdmin;
+
                         return (
                             <div key={item.id} className={styles.item}>
                                 <div
                                     className={styles.itemHeader}
-                                    onClick={() => toggleExpand(item.id, isSecretItem, item.user_id)}
+                                    onClick={() => {
+                                        if (canView) {
+                                            setExpandedId(expandedId === item.id ? null : item.id);
+                                            // Reset answer input when opening new item
+                                            if (expandedId !== item.id) setAnswerInput('');
+                                        } else {
+                                            alert('비공개 글입니다.');
+                                        }
+                                    }}
                                 >
                                     <div className={styles.itemMeta}>
                                         <span className={`${styles.statusBadge} ${isAnswered ? styles.statusDone : styles.statusOpen}`}>
@@ -183,7 +225,7 @@ export default function QnABoard() {
                                         </span>
                                         {isSecretItem && <span className={styles.secretIcon}>🔒</span>}
                                         <span className={styles.itemTitle}>
-                                            {isSecretItem && !isMyPost ? '비공개 글입니다.' : item.title}
+                                            {isSecretItem && !isMyPost && !isAdmin ? '비공개 글입니다.' : item.title}
                                         </span>
                                     </div>
                                     <span className={styles.itemDate}>
@@ -196,13 +238,36 @@ export default function QnABoard() {
                                         <div className={styles.questionBox}>
                                             <div className={styles.questionContent}>{item.content}</div>
                                         </div>
+
+                                        {/* Existing Answer */}
                                         {item.answer && (
                                             <div className={styles.answerBox}>
-                                                <div className={styles.answerHeader}>↳ 관리자 답변</div>
+                                                <div className={styles.answerHeader}>↳ 관리자 답변 ({item.answered_by})</div>
                                                 <div className={styles.answerContent}>{item.answer}</div>
                                             </div>
                                         )}
-                                        {!item.answer && isMyPost && (
+
+                                        {/* Admin Answer Form */}
+                                        {isAdmin && (
+                                            <div className={styles.adminActionBox} style={{ marginTop: '20px', borderTop: '1px dashed #ccc', paddingTop: '10px' }}>
+                                                <h4>관리자 답변 작성</h4>
+                                                <textarea
+                                                    value={answerInput}
+                                                    onChange={e => setAnswerInput(e.target.value)}
+                                                    placeholder="답변을 입력하세요..."
+                                                    style={{ width: '100%', height: '80px', marginTop: '5px' }}
+                                                />
+                                                <button
+                                                    onClick={() => handleAnswerSubmit(item.id)}
+                                                    disabled={answering}
+                                                    style={{ marginTop: '5px', padding: '5px 10px', backgroundColor: '#333', color: '#fff', border: 'none', borderRadius: '4px' }}
+                                                >
+                                                    {answering ? '등록 중...' : '답변 등록'}
+                                                </button>
+                                            </div>
+                                        )}
+
+                                        {!item.answer && isMyPost && !isAdmin && (
                                             <p className={styles.waitingMsg}>아직 답변이 등록되지 않았습니다.</p>
                                         )}
                                     </div>

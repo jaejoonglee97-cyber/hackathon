@@ -322,6 +322,90 @@ export async function updateRow(
     }
 }
 
+/**
+ * 행 삭제 (keyColumn 기준 일치하는 첫 번째 행)
+ */
+export async function deleteRow(
+    sheetName: SheetName,
+    keyColumn: string,
+    keyValue: string,
+    auditInfo?: { actorUserId: string; action: string; targetType?: string; targetId?: string; meta?: Record<string, unknown> },
+): Promise<void> {
+    const def = sheets[sheetName];
+
+    if (IS_DEV_MODE) {
+        console.log(`[DEV] deleteRow(${def.tab}) where ${keyColumn}=${keyValue}`);
+        const rows = SAMPLE_DATA[def.tab] ?? [];
+        const idx = rows.findIndex((r) => r[keyColumn] === keyValue);
+        if (idx >= 0) {
+            rows.splice(idx, 1);
+        }
+    } else {
+        const spreadsheetId = getSpreadsheetId(def.sheetId);
+
+        // 1. Find the row index first
+        const range = `${def.tab}!A1:ZZ`;
+        const response = await client!.spreadsheets.values.get({ spreadsheetId, range });
+        const raw = response.data.values ?? [];
+        if (raw.length === 0) throw new Error(`No data in ${def.tab}`);
+
+        const headers = raw[0] as string[];
+        const dataRows = raw.slice(1) as string[][];
+        const colMap = buildColumnMap(headers);
+
+        const keyIdx = colMap.get(keyColumn);
+        if (keyIdx === undefined) throw new Error(`Column '${keyColumn}' not found in ${def.tab}`);
+
+        const rowIdx = dataRows.findIndex((r) => r[keyIdx] === keyValue);
+        if (rowIdx === -1) throw new Error(`Row with ${keyColumn}=${keyValue} not found in ${def.tab}`);
+
+        // The row index in the sheet is (header + dataRows index)
+        // DataRows index starts at 0 for the first data row (which is physically row 2)
+        // So physical row index = rowIdx + 2
+        // But the API uses 0-based index. So row 1 (header) is index 0. row 2 (first data) is index 1.
+        // So the index to delete is `rowIdx + 1`.
+        const deleteIndex = rowIdx + 1;
+
+        // 2. Find sheetId (number) for the tab name
+        const gridMeta = await client!.spreadsheets.get({ spreadsheetId });
+        const sheet = gridMeta.data.sheets?.find(s => s.properties?.title === def.tab);
+        const sheetIdNumeric = sheet?.properties?.sheetId;
+
+        if (sheetIdNumeric === undefined) throw new Error(`Sheet tab '${def.tab}' not found`);
+
+        await client!.spreadsheets.batchUpdate({
+            spreadsheetId,
+            requestBody: {
+                requests: [
+                    {
+                        deleteDimension: {
+                            range: {
+                                sheetId: sheetIdNumeric,
+                                dimension: 'ROWS',
+                                startIndex: deleteIndex,
+                                endIndex: deleteIndex + 1,
+                            },
+                        },
+                    },
+                ],
+            },
+        });
+    }
+
+    // audit
+    if (auditInfo && sheetName !== 'audit_events') {
+        const meta = auditInfo.meta || {};
+        meta.deleted = true;
+        await writeAuditEvent(
+            auditInfo.actorUserId,
+            auditInfo.action,
+            auditInfo.targetType ?? def.tab,
+            auditInfo.targetId ?? keyValue,
+            meta,
+        );
+    }
+}
+
 // ─────────────────────────────────────────────
 // audit_events 기록 (내부)
 // ─────────────────────────────────────────────
