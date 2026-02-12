@@ -73,9 +73,20 @@ export default async function DashboardPage() {
                 <section className={styles.welcomeSection}>
                     <div className={styles.welcomeHeader}>
                         <div className={styles.welcomeText}>
-                            <h1 className={styles.greeting}>
-                                안녕하세요, <span className={styles.userName}>{profile?.name || currentUser.name}</span>님!
-                            </h1>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
+                                <h1 className={styles.greeting} style={{ margin: 0 }}>
+                                    안녕하세요, <span className={styles.userName}>{profile?.name || currentUser.name}</span>님!
+                                </h1>
+                                {myTeam ? (
+                                    <Link href={`/teams/${myTeam.id}`} className={styles.actionButtonSecondary} style={{ padding: '0.5rem 1rem', fontSize: '0.9em' }}>
+                                        🏠 내 프로젝트 바로가기
+                                    </Link>
+                                ) : (
+                                    <Link href="/teams/new" className={styles.actionButton} style={{ padding: '0.5rem 1rem', fontSize: '0.9em' }}>
+                                        🚀 프로젝트 등록하기
+                                    </Link>
+                                )}
+                            </div>
                             <p className={styles.subGreeting}>
                                 {myTeam
                                     ? `${myTeam.name} 프로젝트를 진행 중이시네요.`
@@ -85,18 +96,6 @@ export default async function DashboardPage() {
 
                         {/* D-Day Counter Widget */}
                         <CountdownWidget targetDate="2026-03-27T18:00:00+09:00" title="🔥 아이디어 접수 마감까지" />
-
-                        <div className={styles.quickActions}>
-                            {myTeam ? (
-                                <Link href={`/teams/${myTeam.id}`} className={styles.actionButtonSecondary}>
-                                    🏠 내 프로젝트
-                                </Link>
-                            ) : (
-                                <Link href="/teams/new" className={styles.actionButton}>
-                                    🚀 프로젝트 등록하기
-                                </Link>
-                            )}
-                        </div>
                     </div>
                 </section>
 
