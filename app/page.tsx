@@ -71,7 +71,7 @@ export default async function DashboardPage() {
                     <div className={styles.welcomeHeader}>
                         <div className={styles.welcomeText}>
                             <h1 className={styles.greeting}>
-                                안녕하세요, <span className={styles.userName}>{profile?.name}</span>님!
+                                안녕하세요, <span className={styles.userName}>{profile?.name || currentUser.name}</span>님!
                             </h1>
                             <p className={styles.subGreeting}>
                                 {myTeam

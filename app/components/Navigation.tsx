@@ -55,16 +55,10 @@ export default function Navigation() {
                                     대시보드
                                 </Link>
                                 <Link
-                                    href="/helps"
-                                    className={pathname?.startsWith('/help') ? styles.navLinkActive : styles.navLink}
+                                    href="/guide"
+                                    className={pathname?.startsWith('/guide') ? styles.navLinkActive : styles.navLink}
                                 >
-                                    🤝 Help
-                                </Link>
-                                <Link
-                                    href="/insights"
-                                    className={pathname?.startsWith('/insight') ? styles.navLinkActive : styles.navLink}
-                                >
-                                    🎓 Insight
+                                    📚 가이드 & QnA
                                 </Link>
                             </div>
 

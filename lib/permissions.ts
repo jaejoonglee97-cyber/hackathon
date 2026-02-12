@@ -1,6 +1,6 @@
 // 권한 체크 및 마감일 + 프로필 게이트 미들웨어
 import { getCurrentUser } from './auth';
-import { getRowBy, getActiveDeadlines, checkProfileComplete } from './sheets';
+import { getRowBy, getActiveDeadlines, checkProfileComplete, listRows } from './sheets';
 
 /**
  * 프로필 완료 여부 확인 — 미완료 시 차단
@@ -24,10 +24,15 @@ export async function isProjectOwner(teamId: string): Promise<boolean> {
         const currentUser = await getCurrentUser();
         if (!currentUser) return false;
 
-        const member = await getRowBy('team_members', 'team_id', teamId);
+        const members = await listRows('team_members', {
+            team_id: teamId,
+            user_id: currentUser.userId
+        });
+
+        const member = members[0];
         if (!member) return false;
 
-        return member.user_id === currentUser.userId && ['owner', 'leader'].includes(member.role);
+        return ['owner', 'leader'].includes(member.role);
     } catch (error) {
         console.error('Error checking project owner:', error);
         return false;

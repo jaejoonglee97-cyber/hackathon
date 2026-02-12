@@ -107,13 +107,16 @@ export const sheets = {
         'updated_at',
     ] as const),
 
-    help_cards: def('help_cards', 'data', [
+    // ── QnA (구 Help) ─────────────────────────
+    inquiries: def('inquiries', 'data', [
         'id',
-        'team_id',
-        'type',
+        'user_id',
         'title',
-        'description',
-        'status',
+        'content',
+        'is_secret',  // 'TRUE' | 'FALSE'
+        'status',     // 'open' | 'answered'
+        'answer',
+        'answered_by',
         'created_at',
         'updated_at',
     ] as const),
