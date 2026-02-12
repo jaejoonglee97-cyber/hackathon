@@ -74,30 +74,28 @@ export default function Navigation({ initialUser }: NavigationProps) {
                         🚀 Hackathon Hub
                     </Link>
 
-                    {!loading && user && (
-                        <>
-                            <div className={styles.navLinks}>
-                                <Link
-                                    href="/"
-                                    className={pathname === '/' ? styles.navLinkActive : styles.navLink}
-                                >
-                                    대시보드
-                                </Link>
-                                <Link
-                                    href="/guide"
-                                    className={pathname?.startsWith('/guide') ? styles.navLinkActive : styles.navLink}
-                                >
-                                    📚 가이드 & QnA
-                                </Link>
-                            </div>
+                    <div className={styles.navLinks}>
+                        <Link
+                            href="/"
+                            className={pathname === '/' ? styles.navLinkActive : styles.navLink}
+                        >
+                            대시보드
+                        </Link>
+                        <Link
+                            href="/guide"
+                            className={pathname?.startsWith('/guide') ? styles.navLinkActive : styles.navLink}
+                        >
+                            📚 이용가이드 & QnA
+                        </Link>
+                    </div>
 
-                            <div className={styles.userMenu}>
-                                <span className={styles.userName}>{user.name || user.email}</span>
-                                <button onClick={handleSignOut} className={styles.signOutButton}>
-                                    로그아웃
-                                </button>
-                            </div>
-                        </>
+                    {!loading && user && (
+                        <div className={styles.userMenu}>
+                            <span className={styles.userName}>{user.name || user.email}</span>
+                            <button onClick={handleSignOut} className={styles.signOutButton}>
+                                로그아웃
+                            </button>
+                        </div>
                     )}
 
                     {!loading && !user && (
