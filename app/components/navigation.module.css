@@ -141,3 +141,18 @@
         font-size: var(--font-size-lg);
     }
 }
+
+.saswLogo {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+    margin-left: var(--space-lg);
+    padding-left: var(--space-lg);
+    border-left: 1px solid var(--color-border);
+}
+
+@media (max-width: 640px) {
+    .saswLogo {
+        display: none;
+    }
+}

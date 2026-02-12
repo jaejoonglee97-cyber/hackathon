@@ -110,6 +110,15 @@ export default function Navigation({ initialUser }: NavigationProps) {
                             </Link>
                         </div>
                     )}
+
+                    {/* Seoul Association of Social Workers Logo */}
+                    <a href="https://sasw.or.kr" target="_blank" rel="noopener noreferrer">
+                        <img
+                            src="/logo.png"
+                            alt="서울특별시사회복지사협회"
+                            className={styles.saswLogo}
+                        />
+                    </a>
                 </div>
             </div>
         </nav>
