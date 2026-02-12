@@ -83,8 +83,7 @@ const SAMPLE_DATA: Record<string, Record<string, string>[]> = {
             updated_at: '2026-02-06T15:00:00Z',
         },
     ],
-    help_cards: [],
-    insight_cards: [],
+    // help_cards and insight_cards removed from SAMPLE_DATA
     feedbacks: [],
     config: [
         { key: 'consent_version', value: 'v1.0', description: '현재 동의서 버전' },
