@@ -8,6 +8,7 @@ import styles from './edit-form.module.css';
 interface ProjectEditFormProps {
     teamId: string;
     project: any;
+    initialStage?: string;
     lockType?: 'soft' | 'hard';
     editReason?: string;
 }
@@ -15,6 +16,7 @@ interface ProjectEditFormProps {
 export default function ProjectEditForm({
     teamId,
     project,
+    initialStage = 'intro',
     lockType,
     editReason,
 }: ProjectEditFormProps) {
@@ -22,6 +24,8 @@ export default function ProjectEditForm({
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
+
+    const [stage, setStage] = useState(initialStage);
 
     const [formData, setFormData] = useState({
         // Why
@@ -54,12 +58,16 @@ export default function ProjectEditForm({
     });
 
     const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
     ) => {
         setFormData((prev) => ({
             ...prev,
             [e.target.name]: e.target.value,
         }));
+    };
+
+    const handleStageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setStage(e.target.value);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -72,7 +80,7 @@ export default function ProjectEditForm({
             const response = await fetch(`/api/teams/${teamId}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({ ...formData, stage }), // Include stage in the body
             });
 
             const data = await response.json();
@@ -109,6 +117,34 @@ export default function ProjectEditForm({
                     ✅ 저장되었습니다! 잠시 후 상세 페이지로 이동합니다...
                 </div>
             )}
+
+            {/* 진행 단계 선택 */}
+            <section className={styles.section} style={{ border: '2px solid #2563eb', backgroundColor: '#eff6ff' }}>
+                <h2 className={styles.sectionTitle} style={{ color: '#1e40af' }}>
+                    <span className={styles.sectionIcon}>🚩</span>
+                    현재 진행 단계 (직접 변경 가능)
+                </h2>
+                <div className={styles.field}>
+                    <label htmlFor="stage" className={styles.label}>
+                        우리 팀은 지금 어느 단계인가요?
+                    </label>
+                    <select
+                        id="stage"
+                        name="stage"
+                        value={stage}
+                        onChange={handleStageChange}
+                        className={styles.input}
+                        style={{ fontWeight: 'bold', color: '#1e3a8a' }}
+                    >
+                        <option value="intro">1단계: 기획/도입 (문제 정의 및 아이디어)</option>
+                        <option value="validate">2단계: 구체화/검증 (프로토타입 및 가설 검증)</option>
+                        <option value="complete">3단계: 완성/제출 (최종 결과물 및 확산 계획)</option>
+                    </select>
+                    <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '5px' }}>
+                        * 단계에 따라 메인 화면에서의 표시 방식이 달라집니다.
+                    </p>
+                </div>
+            </section>
 
             {/* Why 섹션 */}
             <section className={styles.section}>

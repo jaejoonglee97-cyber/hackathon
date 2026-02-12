@@ -36,21 +36,35 @@ export async function PATCH(
             if (field in body) updates[field] = body[field] || '';
         });
 
-        if (Object.keys(updates).length === 0) {
-            return NextResponse.json({ error: '업데이트할 내용이 없습니다.' }, { status: 400 });
+        // TICKET: Allow stage update
+        if ('stage' in body) {
+            const newStage = body.stage;
+            if (['intro', 'validate', 'complete'].includes(newStage)) {
+                await updateRow('teams', 'id', params.id, { stage: newStage, updated_at: new Date().toISOString() }, {
+                    actorUserId: user.userId,
+                    action: 'update_team_stage',
+                    targetId: params.id,
+                    targetType: 'team',
+                    meta: { stage: newStage }
+                });
+            }
         }
 
-        await updateRow('projects', 'team_id', params.id, updates, {
-            actorUserId: user.userId,
-            action: 'update_project',
-            targetId: params.id,
-        });
+        if (Object.keys(updates).length > 0) {
+            await updateRow('projects', 'team_id', params.id, updates, {
+                actorUserId: user.userId,
+                action: 'update_project',
+                targetId: params.id,
+            });
+        }
 
+        // Return success even if only stage was updated
         return NextResponse.json({
             success: true,
             message: '프로젝트가 업데이트되었습니다.',
-            updatedFields: Object.keys(updates),
+            updatedFields: [...Object.keys(updates), ...(body.stage ? ['stage'] : [])],
         });
+
     } catch (error: any) {
         console.error('Project update error:', error);
         if (error.message === 'Unauthorized') {
