@@ -38,7 +38,7 @@ export default function QnABoard() {
 
     const fetchInquiries = async () => {
         try {
-            const res = await fetch('/api/inquiries');
+            const res = await fetch('/api/inquiries', { cache: 'no-store' });
             const data = await res.json();
             if (data.inquiries) {
                 // 최신순 정렬
