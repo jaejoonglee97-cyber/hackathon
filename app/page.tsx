@@ -11,6 +11,7 @@ import {
 import styles from './page.module.css';
 import TeamGrid from './components/TeamGrid';
 import type { Team } from './components/TeamCard';
+import CountdownWidget from './components/CountdownWidget';
 
 export default async function DashboardPage() {
     // 1) 로그인 확인
@@ -81,6 +82,9 @@ export default async function DashboardPage() {
                                     : '아직 참여 중인 프로젝트가 없습니다.'}
                             </p>
                         </div>
+
+                        {/* D-Day Counter Widget */}
+                        <CountdownWidget targetDate="2026-03-27T18:00:00+09:00" title="🔥 아이디어 접수 마감까지" />
 
                         <div className={styles.quickActions}>
                             {myTeam ? (
