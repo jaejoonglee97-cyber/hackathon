@@ -12,11 +12,15 @@ export const metadata: Metadata = {
     themeColor: '#3b82f6',
 };
 
-export default function RootLayout({
+import { getCurrentUser } from '@/lib/auth';
+
+export default async function RootLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
+    const user = await getCurrentUser();
+
     return (
         <html lang="ko">
             <head>
@@ -24,7 +28,7 @@ export default function RootLayout({
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
             </head>
             <body>
-                <Navigation />
+                <Navigation initialUser={user} />
                 <main style={{ minHeight: 'calc(100vh - 160px)' }}>
                     {children}
                 </main>

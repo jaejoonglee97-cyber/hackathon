@@ -6,22 +6,51 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styles from './navigation.module.css';
 
-export default function Navigation() {
+interface NavigationProps {
+    initialUser?: any;
+}
+
+export default function Navigation({ initialUser }: NavigationProps) {
     const pathname = usePathname();
-    const [user, setUser] = useState<any>(null);
-    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState<any>(initialUser || null);
+    // If initialUser is explicitly null (guest from server) or object (user from server), not loading.
+    // Only if undefined (not passed), we are loading.
+    const [loading, setLoading] = useState(initialUser === undefined);
+
+    // Sync state with prop (e.g. after router.refresh())
+    useEffect(() => {
+        if (initialUser !== undefined) {
+            setUser(initialUser);
+            setLoading(false);
+        }
+    }, [initialUser]);
 
     useEffect(() => {
+        // If we have initialUser, skip client-side fetch to avoid redundant calls and state clashes
+        if (initialUser !== undefined) return;
+
+        // If we already have a user from props, we might not need to fetch, 
+        // but fetching ensures client-side session is valid and up-to-date.
+        // However, to avoid "flash", we use initialUser.
+
+        // If no initialUser, we must fetch. 
+        // If initialUser is present, we can optionally fetch to validate or just trust server.
+        // Let's trust server for now or fetch silently.
+
         fetch('/api/auth/me')
             .then((res) => res.json())
             .then((data) => {
                 if (data.user) {
                     setUser(data.user);
+                } else {
+                    setUser(null);
                 }
             })
-            .catch(() => { })
+            .catch(() => {
+                setUser(null);
+            })
             .finally(() => setLoading(false));
-    }, []);
+    }, [initialUser]);
 
     const handleSignOut = async () => {
         try {
