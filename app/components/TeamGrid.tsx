@@ -40,6 +40,9 @@ export default function TeamGrid({ teams }: TeamGridProps) {
             if (filters.sortBy === 'recent') {
                 return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
             }
+            if (filters.sortBy === 'created') {
+                return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+            }
             if (filters.sortBy === 'name') {
                 return a.name.localeCompare(b.name, 'ko');
             }

@@ -8,7 +8,7 @@ export type FilterState = {
     stage: string;
     field: string;
     hasHelp: boolean;
-    sortBy: 'recent' | 'name';
+    sortBy: 'recent' | 'name' | 'created';
 };
 
 type DashboardFiltersProps = {
@@ -31,6 +31,7 @@ const FIELD_OPTIONS = [
 
 const SORT_OPTIONS = [
     { value: 'recent', label: '최근 업데이트 순' },
+    { value: 'created', label: '등록일 순' },
     { value: 'name', label: '가나다 순' },
 ];
 

@@ -12,6 +12,7 @@ export type Team = {
     helpCount: number;
     insightCount: number;
     badges: string[]; // 기여 배지
+    createdAt: string; // 등록일 (for sorting)
     updatedAt: string;
 };
 
