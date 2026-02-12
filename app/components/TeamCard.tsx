@@ -40,16 +40,7 @@ export default function TeamCard({ team }: TeamCardProps) {
             <p className={styles.recentUpdate}>{team.recentUpdate}</p>
 
             <div className={styles.metrics}>
-                <div className={styles.metric}>
-                    <span className={styles.metricIcon} aria-hidden="true">🆘</span>
-                    <span className={styles.metricLabel}>Help</span>
-                    <span className={styles.metricValue}>{team.helpCount}</span>
-                </div>
-                <div className={styles.metric}>
-                    <span className={styles.metricIcon} aria-hidden="true">💡</span>
-                    <span className={styles.metricLabel}>Insight</span>
-                    <span className={styles.metricValue}>{team.insightCount}</span>
-                </div>
+                {/* Help/Insight metrics removed */}
             </div>
 
             {team.badges.length > 0 && (

@@ -26,18 +26,9 @@ export default async function DashboardPage() {
     }
 
     // 3) 병렬 데이터 로딩 (안전하게 처리)
-    const [allTeams, allProjects, allHelps, allInsights, deadlines] = await Promise.all([
+    const [allTeams, allProjects, deadlines] = await Promise.all([
         listRows('teams'),
         listRows('projects'),
-        // Optional Data: 에러 시 빈 배열 반환
-        listRows('help_cards').catch(err => {
-            console.warn('Failed to fetch help_cards:', err);
-            return [];
-        }),
-        listRows('insight_cards').catch(err => {
-            console.warn('Failed to fetch insight_cards:', err);
-            return [];
-        }),
         getActiveDeadlines().catch(err => {
             console.warn('Failed to fetch deadlines:', err);
             return [];
@@ -52,21 +43,10 @@ export default async function DashboardPage() {
     // 5) 팀 카드 데이터 가공
     const teamsData: Team[] = allTeams.map((team) => {
         const project = allProjects.find((p) => p.team_id === team.id);
-
-        const helpCount = allHelps.filter(
-            (h) => h.team_id === team.id && h.status !== 'deleted' && h.status !== 'resolved'
-        ).length;
-
-        const insightCount = allInsights.filter(
-            (i) => i.team_id === team.id && i.category !== 'deleted'
-        ).length;
-
         const recentUpdate = project?.updated_at || team.created_at;
 
-        // 뱃지 (예시 로직)
+        // 뱃지 (예시 로직 - 현재는 기여도 측정 불가로 빈 배열)
         const badges: string[] = [];
-        if (helpCount >= 3) badges.push('🌱 소통왕');
-        if (insightCount >= 3) badges.push('💡 인사이트');
 
         return {
             id: team.id,
@@ -75,8 +55,8 @@ export default async function DashboardPage() {
             stage: (team.stage as Team['stage']) || 'intro',
             recentUpdate: new Date(recentUpdate).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' }),
             updatedAt: recentUpdate,
-            helpCount,
-            insightCount,
+            helpCount: 0,
+            insightCount: 0,
             badges,
         };
     });
@@ -110,11 +90,8 @@ export default async function DashboardPage() {
                                     🚀 프로젝트 등록하기
                                 </Link>
                             )}
-                            <Link href="/help/new" className={styles.actionButtonSecondary}>
-                                🆘 Help 요청
-                            </Link>
-                            <Link href="/insight/new" className={styles.actionButtonSecondary}>
-                                ✨ Insight 등록
+                            <Link href="/guide" className={styles.actionButtonSecondary}>
+                                📚 이용 가이드 & QnA
                             </Link>
                         </div>
                     </div>
