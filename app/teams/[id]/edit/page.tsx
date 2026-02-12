@@ -51,6 +51,8 @@ export default async function TeamEditPage({ params }: { params: { id: string } 
                     <ProjectEditForm
                         teamId={params.id}
                         project={project}
+                        teamName={team.name}
+                        nameEditCount={parseInt(team.name_edit_count || '0', 10)}
                         initialStage={team.stage || 'intro'}
                         lockType={lockType}
                         editReason={editReason}

@@ -36,20 +36,51 @@ export async function PATCH(
             if (field in body) updates[field] = body[field] || '';
         });
 
-        // TICKET: Allow stage update
+        // TICKET: Update team info (stage and name)
+        const teamUpdates: Record<string, any> = {};
+        const metaInfo: Record<string, any> = {};
+        const { getRowBy } = await import('@/lib/sheets'); // Import here or top level
+
+        // 1. Stage Update
         if ('stage' in body) {
             const newStage = body.stage;
             if (['intro', 'validate', 'complete'].includes(newStage)) {
-                await updateRow('teams', 'id', params.id, { stage: newStage, updated_at: new Date().toISOString() }, {
-                    actorUserId: user.userId,
-                    action: 'update_team_stage',
-                    targetId: params.id,
-                    targetType: 'team',
-                    meta: { stage: newStage }
-                });
+                teamUpdates['stage'] = newStage;
+                metaInfo['stage'] = newStage;
             }
         }
 
+        // 2. Name Update (Max 3 times)
+        if ('name' in body) {
+            const newName = body.name?.trim();
+            // Fetch current team data
+            const currentTeam = await getRowBy('teams', 'id', params.id);
+
+            if (currentTeam && newName && currentTeam.name !== newName) {
+                const currentCount = parseInt(currentTeam.name_edit_count || '0', 10);
+                if (currentCount >= 3) {
+                    return NextResponse.json({ error: '프로젝트 이름 변경 횟수를 초과했습니다. (최대 3회)' }, { status: 400 });
+                }
+                teamUpdates['name'] = newName;
+                teamUpdates['name_edit_count'] = currentCount + 1;
+                metaInfo['name_old'] = currentTeam.name;
+                metaInfo['name_new'] = newName;
+            }
+        }
+
+        // Apply Team Updates
+        if (Object.keys(teamUpdates).length > 0) {
+            teamUpdates['updated_at'] = new Date().toISOString();
+            await updateRow('teams', 'id', params.id, teamUpdates, {
+                actorUserId: user.userId,
+                action: 'update_team_info',
+                targetId: params.id,
+                targetType: 'team',
+                meta: metaInfo
+            });
+        }
+
+        // Apply Project Updates
         if (Object.keys(updates).length > 0) {
             await updateRow('projects', 'team_id', params.id, updates, {
                 actorUserId: user.userId,
@@ -58,11 +89,14 @@ export async function PATCH(
             });
         }
 
-        // Return success even if only stage was updated
+        // Return success
         return NextResponse.json({
             success: true,
             message: '프로젝트가 업데이트되었습니다.',
-            updatedFields: [...Object.keys(updates), ...(body.stage ? ['stage'] : [])],
+            updatedFields: [
+                ...Object.keys(updates),
+                ...Object.keys(teamUpdates)
+            ],
         });
 
     } catch (error: any) {

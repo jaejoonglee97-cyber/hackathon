@@ -8,6 +8,8 @@ import styles from './edit-form.module.css';
 interface ProjectEditFormProps {
     teamId: string;
     project: any;
+    teamName?: string;
+    nameEditCount?: number;
     initialStage?: string;
     lockType?: 'soft' | 'hard';
     editReason?: string;
@@ -16,6 +18,8 @@ interface ProjectEditFormProps {
 export default function ProjectEditForm({
     teamId,
     project,
+    teamName = '',
+    nameEditCount = 0,
     initialStage = 'intro',
     lockType,
     editReason,
@@ -26,6 +30,14 @@ export default function ProjectEditForm({
     const [success, setSuccess] = useState(false);
 
     const [stage, setStage] = useState(initialStage);
+
+    // Project Name State
+    const [name, setName] = useState(teamName);
+    const MAX_NAME_EDITS = 3;
+    const remainingEdits = Math.max(0, MAX_NAME_EDITS - nameEditCount);
+    // Only allow editing if remainingEdits > 0 or if the name hasn't changed from initial (so they can fix it before first save if we count save as edit? No, we count successful server update as edit). 
+    // Actually, logic is: user can change text input. Server checks count. 
+    // Here we just show the UI limit.
 
     const [formData, setFormData] = useState({
         // Why
@@ -76,11 +88,19 @@ export default function ProjectEditForm({
         setSuccess(false);
         setLoading(true);
 
+        // Check if name changed
+        const nameChanged = name.trim() !== teamName;
+        if (nameChanged && remainingEdits <= 0) {
+            setError('프로젝트 이름 변경 횟수를 초과했습니다. (최대 3회)');
+            setLoading(false);
+            return;
+        }
+
         try {
             const response = await fetch(`/api/teams/${teamId}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...formData, stage }), // Include stage in the body
+                body: JSON.stringify({ ...formData, stage, name: name.trim() }),
             });
 
             const data = await response.json();
@@ -117,6 +137,35 @@ export default function ProjectEditForm({
                     ✅ 저장되었습니다! 잠시 후 상세 페이지로 이동합니다...
                 </div>
             )}
+
+            {/* 프로젝트 이름 수정 */}
+            <section className={styles.section} style={{ border: '2px solid #5b21b6', backgroundColor: '#f5f3ff' }}>
+                <h2 className={styles.sectionTitle} style={{ color: '#4c1d95' }}>
+                    <span className={styles.sectionIcon}>🏷️</span>
+                    프로젝트 이름
+                </h2>
+                <div className={styles.field}>
+                    <label htmlFor="teamName" className={styles.label}>
+                        프로젝트(팀) 이름
+                        <span style={{ marginLeft: '10px', fontSize: '0.9em', color: remainingEdits > 0 ? '#10b981' : '#ef4444' }}>
+                            (남은 변경 횟수: {remainingEdits}회 / 총 3회)
+                        </span>
+                    </label>
+                    <input
+                        type="text"
+                        id="teamName"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className={styles.input}
+                        placeholder="멋진 프로젝트 이름을 지어주세요"
+                        disabled={remainingEdits <= 0 && name.trim() === teamName}
+                        style={{ fontWeight: 'bold' }}
+                    />
+                    <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '5px' }}>
+                        * 프로젝트 이름은 신중하게 결정해주세요. 최대 3회까지만 변경 가능합니다.
+                    </p>
+                </div>
+            </section>
 
             {/* 진행 단계 선택 */}
             <section className={styles.section} style={{ border: '2px solid #2563eb', backgroundColor: '#eff6ff' }}>

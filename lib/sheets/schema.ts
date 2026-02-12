@@ -73,6 +73,7 @@ export const sheets = {
         'org',
         'member_ids',
         'stage',
+        'name_edit_count', // 프로젝트 이름 변경 횟수 (최대 3회)
         'created_at',
         'updated_at',
     ] as const),
