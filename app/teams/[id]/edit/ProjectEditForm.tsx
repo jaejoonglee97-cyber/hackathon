@@ -114,12 +114,27 @@ export default function ProjectEditForm({
             <section className={styles.section}>
                 <h2 className={styles.sectionTitle}>
                     <span className={styles.sectionIcon}>🎯</span>
-                    Why - 왜 만드는가?
+                    어떤 문제를 해결하나요?
                 </h2>
 
                 <div className={styles.field}>
+                    <label htmlFor="problem_statement" className={styles.label}>
+                        문제 정의 (가장 중요) <span className={styles.required}>*</span>
+                    </label>
+                    <textarea
+                        id="problem_statement"
+                        name="problem_statement"
+                        value={formData.problem_statement}
+                        onChange={handleChange}
+                        className={styles.textarea}
+                        rows={3}
+                        placeholder="예: 독거노인 안부 확인에 매일 2시간이 소요되어 다른 업무 시간 부족"
+                    />
+                </div>
+
+                <div className={styles.field}>
                     <label htmlFor="target_audience" className={styles.label}>
-                        대상 (누구) <span className={styles.required}>*</span>
+                        누가 겪는 문제인가요? <span className={styles.required}>*</span>
                     </label>
                     <input
                         type="text"
@@ -134,7 +149,7 @@ export default function ProjectEditForm({
 
                 <div className={styles.field}>
                     <label htmlFor="situation" className={styles.label}>
-                        상황 (언제) <span className={styles.required}>*</span>
+                        언제 발생하나요?
                     </label>
                     <input
                         type="text"
@@ -146,117 +161,18 @@ export default function ProjectEditForm({
                         placeholder="예: 매일 아침 9시~11시"
                     />
                 </div>
-
-                <div className={styles.field}>
-                    <label htmlFor="problem_statement" className={styles.label}>
-                        문제 (무엇) <span className={styles.required}>*</span>
-                    </label>
-                    <textarea
-                        id="problem_statement"
-                        name="problem_statement"
-                        value={formData.problem_statement}
-                        onChange={handleChange}
-                        className={styles.textarea}
-                        rows={3}
-                        placeholder="예: 독거노인 안부 확인에 매일 2시간이 소요되어 다른 업무 시간 부족"
-                    />
-                </div>
-
-                <div className={styles.evidenceBox}>
-                    <h3 className={styles.evidenceTitle}>
-                        증거 (인터뷰/관찰/업무로그)
-                        <span className={styles.privacyWarning}>
-                            ⚠️ 개인정보(실명/연락처/사례식별정보) 금지
-                        </span>
-                    </h3>
-
-                    <div className={styles.field}>
-                        <label htmlFor="evidence1" className={styles.label}>증거 1</label>
-                        <textarea
-                            id="evidence1"
-                            name="evidence1"
-                            value={formData.evidence1}
-                            onChange={handleChange}
-                            className={styles.textarea}
-                            rows={2}
-                            placeholder='예: 인터뷰 - "전화 연결이 안 되면 계속 재시도해야 해서 시간이 많이 걸립니다"'
-                        />
-                    </div>
-
-                    <div className={styles.field}>
-                        <label htmlFor="evidence2" className={styles.label}>증거 2</label>
-                        <textarea
-                            id="evidence2"
-                            name="evidence2"
-                            value={formData.evidence2}
-                            onChange={handleChange}
-                            className={styles.textarea}
-                            rows={2}
-                            placeholder="예: 업무로그 - 하루 평균 50건 전화, 응답률 60%"
-                        />
-                    </div>
-
-                    <div className={styles.field}>
-                        <label htmlFor="evidence3" className={styles.label}>증거 3</label>
-                        <textarea
-                            id="evidence3"
-                            name="evidence3"
-                            value={formData.evidence3}
-                            onChange={handleChange}
-                            className={styles.textarea}
-                            rows={2}
-                            placeholder="예: 관찰 - 전화 후 수기 기록 작성에 30분 소요"
-                        />
-                    </div>
-                </div>
-            </section>
-
-            {/* 가설 섹션 */}
-            <section className={styles.section}>
-                <h2 className={styles.sectionTitle}>
-                    <span className={styles.sectionIcon}>💭</span>
-                    가설
-                </h2>
-
-                <div className={styles.field}>
-                    <label htmlFor="hypothesis1" className={styles.label}>
-                        가설 1 <span className={styles.required}>*</span>
-                    </label>
-                    <textarea
-                        id="hypothesis1"
-                        name="hypothesis1"
-                        value={formData.hypothesis1}
-                        onChange={handleChange}
-                        className={styles.textarea}
-                        rows={2}
-                        placeholder="예: 자동 문자 알림을 보내면 응답률이 50% 향상될 것이다"
-                    />
-                </div>
-
-                <div className={styles.field}>
-                    <label htmlFor="hypothesis2" className={styles.label}>가설 2</label>
-                    <textarea
-                        id="hypothesis2"
-                        name="hypothesis2"
-                        value={formData.hypothesis2}
-                        onChange={handleChange}
-                        className={styles.textarea}
-                        rows={2}
-                        placeholder="예: 음성 인식 기록 기능을 추가하면 기록 시간을 80% 단축할 수 있다"
-                    />
-                </div>
             </section>
 
             {/* 해결 섹션 */}
             <section className={styles.section}>
                 <h2 className={styles.sectionTitle}>
                     <span className={styles.sectionIcon}>⚙️</span>
-                    해결 방법
+                    어떻게 해결하나요?
                 </h2>
 
                 <div className={styles.field}>
                     <label htmlFor="solution" className={styles.label}>
-                        솔루션 설명 <span className={styles.required}>*</span>
+                        해결 아이디어 <span className={styles.required}>*</span>
                     </label>
                     <textarea
                         id="solution"
@@ -270,7 +186,7 @@ export default function ProjectEditForm({
                 </div>
 
                 <div className={styles.field}>
-                    <label htmlFor="features" className={styles.label}>핵심 기능</label>
+                    <label htmlFor="features" className={styles.label}>핵심 기능 3가지</label>
                     <textarea
                         id="features"
                         name="features"
@@ -287,12 +203,12 @@ export default function ProjectEditForm({
             <section className={styles.section}>
                 <h2 className={styles.sectionTitle}>
                     <span className={styles.sectionIcon}>🔗</span>
-                    프로토타입/데모
+                    결과물 (링크)
                 </h2>
 
                 <div className={styles.field}>
                     <label htmlFor="prototype_link" className={styles.label}>
-                        프로토타입 링크
+                        데모/사이트 링크
                     </label>
                     <input
                         type="url"
@@ -301,13 +217,13 @@ export default function ProjectEditForm({
                         value={formData.prototype_link}
                         onChange={handleChange}
                         className={styles.input}
-                        placeholder="https://demo.example.com"
+                        placeholder="https://..."
                     />
                 </div>
 
                 <div className={styles.field}>
                     <label htmlFor="github_link" className={styles.label}>
-                        GitHub 레포지토리
+                        소스코드 (GitHub 등)
                     </label>
                     <input
                         type="url"
@@ -316,86 +232,175 @@ export default function ProjectEditForm({
                         value={formData.github_link}
                         onChange={handleChange}
                         className={styles.input}
-                        placeholder="https://github.com/username/repo"
+                        placeholder="https://..."
                     />
                 </div>
             </section>
 
-            {/* 검증 섹션 */}
-            <section className={styles.section}>
-                <h2 className={styles.sectionTitle}>
-                    <span className={styles.sectionIcon}>🔬</span>
-                    검증 로그
-                </h2>
+            {/* 심화 항목 토글 */}
+            <div className={styles.advancedToggle}>
+                <details>
+                    <summary style={{ cursor: 'pointer', padding: '1rem', background: '#f3f4f6', borderRadius: '0.5rem', fontWeight: 600 }}>
+                        🔽 더 자세히 적고 싶다면? (선택 사항: 증거/가설/검증/확산)
+                    </summary>
+                    <div style={{ marginTop: '1rem', paddingLeft: '1rem', borderLeft: '3px solid #e5e7eb' }}>
 
-                <div className={styles.field}>
-                    <label htmlFor="experiment_log" className={styles.label}>
-                        실험 내용 및 결과
-                    </label>
-                    <textarea
-                        id="experiment_log"
-                        name="experiment_log"
-                        value={formData.experiment_log}
-                        onChange={handleChange}
-                        className={styles.textarea}
-                        rows={4}
-                        placeholder="예: 10명 대상 2주 테스트 결과: 응답률 60% → 85% 증가, 업무 시간 40% 단축"
-                    />
-                </div>
+                        <div className={styles.evidenceBox}>
+                            <h3 className={styles.evidenceTitle}>
+                                증거 (인터뷰/관찰/업무로그)
+                                <span className={styles.privacyWarning}>
+                                    ⚠️ 개인정보 금지
+                                </span>
+                            </h3>
 
-                <div className={styles.insightBox}>
-                    <label htmlFor="wrong_assumption" className={styles.label}>
-                        🎓 틀렸던 가정 1개 (Insight 강제)
-                    </label>
-                    <textarea
-                        id="wrong_assumption"
-                        name="wrong_assumption"
-                        value={formData.wrong_assumption}
-                        onChange={handleChange}
-                        className={styles.textarea}
-                        rows={3}
-                        placeholder="예: 노인분들이 문자를 못 읽을 것이라 생각했지만, 실제로는 80%가 문자를 읽고 확인함"
-                    />
-                </div>
+                            <div className={styles.field}>
+                                <label htmlFor="evidence1" className={styles.label}>증거 1</label>
+                                <textarea
+                                    id="evidence1"
+                                    name="evidence1"
+                                    value={formData.evidence1}
+                                    onChange={handleChange}
+                                    className={styles.textarea}
+                                    rows={2}
+                                    placeholder='예: 인터뷰 - "전화 연결이 안 되면 계속 재시도해야 해서 시간이 많이 걸립니다"'
+                                />
+                            </div>
 
-                <div className={styles.field}>
-                    <label htmlFor="next_test" className={styles.label}>
-                        다음에 검증할 것
-                    </label>
-                    <textarea
-                        id="next_test"
-                        name="next_test"
-                        value={formData.next_test}
-                        onChange={handleChange}
-                        className={styles.textarea}
-                        rows={2}
-                        placeholder="예: 음성 통화 자동화 기능 선호도 조사 필요"
-                    />
-                </div>
-            </section>
+                            <div className={styles.field}>
+                                <label htmlFor="evidence2" className={styles.label}>증거 2</label>
+                                <textarea
+                                    id="evidence2"
+                                    name="evidence2"
+                                    value={formData.evidence2}
+                                    onChange={handleChange}
+                                    className={styles.textarea}
+                                    rows={2}
+                                />
+                            </div>
 
-            {/* 확산 섹션 */}
-            <section className={styles.section}>
-                <h2 className={styles.sectionTitle}>
-                    <span className={styles.sectionIcon}>🌱</span>
-                    확산/운영 계획
-                </h2>
+                            <div className={styles.field}>
+                                <label htmlFor="evidence3" className={styles.label}>증거 3</label>
+                                <textarea
+                                    id="evidence3"
+                                    name="evidence3"
+                                    value={formData.evidence3}
+                                    onChange={handleChange}
+                                    className={styles.textarea}
+                                    rows={2}
+                                />
+                            </div>
+                        </div>
 
-                <div className={styles.field}>
-                    <label htmlFor="adoption_checklist" className={styles.label}>
-                        타 기관 재사용 체크리스트
-                    </label>
-                    <textarea
-                        id="adoption_checklist"
-                        name="adoption_checklist"
-                        value={formData.adoption_checklist}
-                        onChange={handleChange}
-                        className={styles.textarea}
-                        rows={4}
-                        placeholder="예: 1) 전화번호 DB 2) SMS 발송 권한 3) 음성 인식 API 4) 운영 매뉴얼"
-                    />
-                </div>
-            </section>
+                        {/* 가설 섹션 */}
+                        <section className={styles.section}>
+                            <h2 className={styles.sectionTitle}>
+                                <span className={styles.sectionIcon}>💭</span>
+                                가설 (선택)
+                            </h2>
+
+                            <div className={styles.field}>
+                                <label htmlFor="hypothesis1" className={styles.label}>
+                                    가설 1
+                                </label>
+                                <textarea
+                                    id="hypothesis1"
+                                    name="hypothesis1"
+                                    value={formData.hypothesis1}
+                                    onChange={handleChange}
+                                    className={styles.textarea}
+                                    rows={2}
+                                    placeholder="예: 자동 문자 알림을 보내면 응답률이 50% 향상될 것이다"
+                                />
+                            </div>
+
+                            <div className={styles.field}>
+                                <label htmlFor="hypothesis2" className={styles.label}>가설 2</label>
+                                <textarea
+                                    id="hypothesis2"
+                                    name="hypothesis2"
+                                    value={formData.hypothesis2}
+                                    onChange={handleChange}
+                                    className={styles.textarea}
+                                    rows={2}
+                                />
+                            </div>
+                        </section>
+
+                        {/* 검증 섹션 */}
+                        <section className={styles.section}>
+                            <h2 className={styles.sectionTitle}>
+                                <span className={styles.sectionIcon}>🔬</span>
+                                검증 로그 (선택)
+                            </h2>
+
+                            <div className={styles.field}>
+                                <label htmlFor="experiment_log" className={styles.label}>
+                                    실험 내용 및 결과
+                                </label>
+                                <textarea
+                                    id="experiment_log"
+                                    name="experiment_log"
+                                    value={formData.experiment_log}
+                                    onChange={handleChange}
+                                    className={styles.textarea}
+                                    rows={3}
+                                    placeholder="예: 10명 대상 2주 테스트 결과: 응답률 60% → 85% 증가"
+                                />
+                            </div>
+
+                            <div className={styles.insightBox}>
+                                <label htmlFor="wrong_assumption" className={styles.label}>
+                                    🎓 틀렸던 가정 (Insight)
+                                </label>
+                                <textarea
+                                    id="wrong_assumption"
+                                    name="wrong_assumption"
+                                    value={formData.wrong_assumption}
+                                    onChange={handleChange}
+                                    className={styles.textarea}
+                                    rows={2}
+                                />
+                            </div>
+
+                            <div className={styles.field}>
+                                <label htmlFor="next_test" className={styles.label}>
+                                    다음에 검증할 것
+                                </label>
+                                <textarea
+                                    id="next_test"
+                                    name="next_test"
+                                    value={formData.next_test}
+                                    onChange={handleChange}
+                                    className={styles.textarea}
+                                    rows={2}
+                                />
+                            </div>
+                        </section>
+
+                        {/* 확산 섹션 */}
+                        <section className={styles.section}>
+                            <h2 className={styles.sectionTitle}>
+                                <span className={styles.sectionIcon}>🌱</span>
+                                확산 계획 (선택)
+                            </h2>
+
+                            <div className={styles.field}>
+                                <label htmlFor="adoption_checklist" className={styles.label}>
+                                    타 기관 재사용 체크리스트
+                                </label>
+                                <textarea
+                                    id="adoption_checklist"
+                                    name="adoption_checklist"
+                                    value={formData.adoption_checklist}
+                                    onChange={handleChange}
+                                    className={styles.textarea}
+                                    rows={3}
+                                />
+                            </div>
+                        </section>
+                    </div>
+                </details>
+            </div>
 
             {/* 버튼 */}
             <div className={styles.actions}>
