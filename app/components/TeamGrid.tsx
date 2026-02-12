@@ -62,7 +62,7 @@ export default function TeamGrid({ teams }: TeamGridProps) {
     return (
         <section className={styles.container}>
             <div className={styles.header}>
-                <h2 className={styles.title}>모든 팀 ({filteredTeams.length})</h2>
+                <h2 className={styles.title}>모든 프로젝트 ({filteredTeams.length})</h2>
                 <DashboardFilters onFilterChange={setFilters} />
             </div>
 
@@ -74,7 +74,7 @@ export default function TeamGrid({ teams }: TeamGridProps) {
                 </div>
             ) : (
                 <div className={styles.empty}>
-                    <p>조건에 맞는 팀이 없습니다.</p>
+                    <p>조건에 맞는 프로젝트가 없습니다.</p>
                 </div>
             )}
         </section>

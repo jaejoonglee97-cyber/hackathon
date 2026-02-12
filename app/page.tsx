@@ -95,15 +95,15 @@ export default async function DashboardPage() {
                             </h1>
                             <p className={styles.subGreeting}>
                                 {myTeam
-                                    ? `${myTeam.name}에서 세상을 바꾸고 계시네요.`
-                                    : '아직 소속 팀이 없습니다.'}
+                                    ? `${myTeam.name} 프로젝트를 진행 중이시네요.`
+                                    : '아직 참여 중인 프로젝트가 없습니다.'}
                             </p>
                         </div>
 
                         <div className={styles.quickActions}>
                             {myTeam ? (
                                 <Link href={`/teams/${myTeam.id}`} className={styles.actionButtonSecondary}>
-                                    🏠 우리 팀
+                                    🏠 내 프로젝트
                                 </Link>
                             ) : (
                                 <Link href="/teams/new" className={styles.actionButton}>

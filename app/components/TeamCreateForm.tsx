@@ -25,7 +25,7 @@ export default function TeamCreateForm({ org }: { org?: string }) {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.error || '팀 생성에 실패했습니다.');
+                throw new Error(data.error || '프로젝트 생성에 실패했습니다.');
             }
 
             // data.teamId is returned
@@ -43,7 +43,7 @@ export default function TeamCreateForm({ org }: { org?: string }) {
 
             <div className={styles.field}>
                 <label htmlFor="name" className={styles.label}>
-                    팀 이름 <span className={styles.required}>*</span>
+                    프로젝트 이름 <span className={styles.required}>*</span>
                 </label>
                 <input
                     type="text"
@@ -51,7 +51,7 @@ export default function TeamCreateForm({ org }: { org?: string }) {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className={styles.input}
-                    placeholder="멋진 팀 이름을 입력하세요"
+                    placeholder="해결하고자 하는 문제를 잘 드러내는 이름을 지어주세요"
                     required
                     maxLength={50}
                     autoFocus
