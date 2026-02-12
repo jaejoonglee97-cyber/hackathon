@@ -1,5 +1,6 @@
 // 대시보드 (서버 컴포넌트) — 프로필 미완료 시 /onboarding/profile로 리다이렉트
 import { redirect } from 'next/navigation';
+import Link from 'next/link';
 import { getCurrentUser } from '@/lib/auth';
 import {
     checkProfileComplete,
@@ -8,6 +9,8 @@ import {
     getActiveDeadlines,
 } from '@/lib/sheets';
 import styles from './page.module.css';
+import TeamGrid from './components/TeamGrid';
+import type { Team } from './components/TeamCard';
 
 export default async function DashboardPage() {
     // 1) 로그인 확인
@@ -16,71 +19,98 @@ export default async function DashboardPage() {
         redirect('/auth/signin');
     }
 
-    // 2) 프로필 완료 확인 — 미완료 시 onboarding으로 강제 이동 (서버 리다이렉트)
+    // 2) 프로필 완료 확인
     const { complete, profile } = await checkProfileComplete(currentUser.userId);
     if (!complete) {
         redirect('/onboarding/profile');
     }
 
-    // 3) 팀/프로젝트 정보 조회
+    // 3) 병렬 데이터 로딩
+    const [allTeams, allProjects, allHelps, allInsights, deadlines] = await Promise.all([
+        listRows('teams'),
+        listRows('projects'),
+        listRows('help_cards'),
+        listRows('insight_cards'),
+        getActiveDeadlines(),
+    ]);
+
+    // 4) 내 팀 정보 (개인화 영역용)
     const teamMember = await getRowBy('team_members', 'user_id', currentUser.userId);
-    const teamId = teamMember?.team_id;
+    const myTeamId = teamMember?.team_id;
+    const myTeam = allTeams.find((t) => t.id === myTeamId);
 
-    const team = teamId ? await getRowBy('teams', 'id', teamId) : null;
-    const project = teamId ? await getRowBy('projects', 'team_id', teamId) : null;
+    // 5) 팀 카드 데이터 가공
+    const teamsData: Team[] = allTeams.map((team) => {
+        const project = allProjects.find((p) => p.team_id === team.id);
 
-    // 4) Help/Insight 카드 개수
-    // 4) Help/Insight 카드 개수 (에러 시 무시하고 빈 배열 처리)
-    let helpCards: any[] = [];
-    let insightCards: any[] = [];
-    try {
-        if (teamId) {
-            helpCards = (await listRows('help_cards', { team_id: teamId })).filter((r) => r.status !== 'deleted');
-        }
-    } catch (e) {
-        console.warn('Failed to fetch help cards:', e);
-    }
+        const helpCount = allHelps.filter(
+            (h) => h.team_id === team.id && h.status !== 'deleted' && h.status !== 'resolved'
+        ).length;
 
-    try {
-        if (teamId) {
-            insightCards = (await listRows('insight_cards', { team_id: teamId })).filter((r) => r.category !== 'deleted');
-        }
-    } catch (e) {
-        console.warn('Failed to fetch insight cards:', e);
-    }
+        const insightCount = allInsights.filter(
+            (i) => i.team_id === team.id && i.category !== 'deleted'
+        ).length;
 
-    // 5) 마감일 정보 (D-day 표시)
-    const deadlines = await getActiveDeadlines();
+        const recentUpdate = project?.updated_at || team.created_at;
+
+        // 뱃지 (예시 로직)
+        const badges: string[] = [];
+        if (helpCount >= 3) badges.push('🌱 소통왕');
+        if (insightCount >= 3) badges.push('💡 인사이트');
+
+        return {
+            id: team.id,
+            name: team.name,
+            org: team.org,
+            stage: (team.stage as Team['stage']) || 'intro',
+            recentUpdate: new Date(recentUpdate).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' }),
+            updatedAt: recentUpdate,
+            helpCount,
+            insightCount,
+            badges,
+        };
+    });
+
     const now = new Date();
-
-    // 프로젝트 완성도 계산
-    const projectFields = project
-        ? [
-            'problem_statement',
-            'target_audience',
-            'situation',
-            'evidence1',
-            'hypothesis1',
-            'solution',
-        ]
-        : [];
-    const filledCount = projectFields.filter((f) => project?.[f]?.trim()).length;
-    const completionRate = projectFields.length > 0
-        ? Math.round((filledCount / projectFields.length) * 100)
-        : 0;
 
     return (
         <div className={styles.page}>
             <div className={styles.container}>
-                {/* 환영 헤더 */}
+                {/* 1. 상단: 환영 & 다짐 & 퀵액션 */}
                 <section className={styles.welcomeSection}>
-                    <h1 className={styles.greeting}>
-                        안녕하세요, <span className={styles.userName}>{profile?.name}</span>님!
-                    </h1>
-                    <p className={styles.orgBadge}>{profile?.org}</p>
+                    <div className={styles.welcomeHeader}>
+                        <div className={styles.welcomeText}>
+                            <h1 className={styles.greeting}>
+                                안녕하세요, <span className={styles.userName}>{profile?.name}</span>님!
+                            </h1>
+                            <p className={styles.subGreeting}>
+                                {myTeam
+                                    ? `${myTeam.name}에서 세상을 바꾸고 계시네요.`
+                                    : '아직 소속 팀이 없습니다.'}
+                            </p>
+                        </div>
+
+                        <div className={styles.quickActions}>
+                            {myTeam ? (
+                                <Link href={`/teams/${myTeam.id}`} className={styles.actionButtonSecondary}>
+                                    🏠 우리 팀
+                                </Link>
+                            ) : (
+                                <Link href="/teams/new" className={styles.actionButton}>
+                                    🚀 프로젝트 등록하기
+                                </Link>
+                            )}
+                            <Link href="/help/new" className={styles.actionButtonSecondary}>
+                                🆘 Help 요청
+                            </Link>
+                            <Link href="/insight/new" className={styles.actionButtonSecondary}>
+                                ✨ Insight 등록
+                            </Link>
+                        </div>
+                    </div>
                 </section>
 
-                {/* D-day 알림 배너 */}
+                {/* 2. 공지/마감일 배너 */}
                 {deadlines.length > 0 && (
                     <section className={styles.deadlineBanner}>
                         {deadlines.map((dl) => {
@@ -90,78 +120,18 @@ export default async function DashboardPage() {
                             const isPast = dDay < 0;
                             return (
                                 <div key={dl.phase} className={`${styles.deadlineItem} ${isPast ? styles.deadlinePast : ''}`}>
-                                    <span className={styles.deadlinePhase}>{dl.message}</span>
+                                    <span className={styles.deadlinePhase}>📢 {dl.message}</span>
                                     <span className={styles.deadlineDday}>
-                                        {isPast
-                                            ? `D+${Math.abs(dDay)} (마감됨)`
-                                            : dDay === 0
-                                                ? 'D-Day!'
-                                                : `D-${dDay}`}
+                                        {isPast ? `마감됨` : dDay === 0 ? '오늘 마감!' : `D-${dDay}`}
                                     </span>
-                                    {dl.lock_mode === 'soft' && isPast && (
-                                        <span className={styles.lockBadge}>편집 가능 · 제출 잠금</span>
-                                    )}
-                                    {dl.lock_mode === 'hard' && isPast && (
-                                        <span className={styles.lockBadgeHard}>편집 · 제출 잠금</span>
-                                    )}
                                 </div>
                             );
                         })}
                     </section>
                 )}
 
-                {/* 내 프로젝트 카드 */}
-                {team && project && (
-                    <section className={styles.projectCard}>
-                        <div className={styles.projectHeader}>
-                            <h2 className={styles.projectTitle}>{team.name}</h2>
-                            <span className={styles.stageBadge}>{team.stage}</span>
-                        </div>
-                        <div className={styles.progressBar}>
-                            <div
-                                className={styles.progressFill}
-                                style={{ width: `${completionRate}%` }}
-                            />
-                        </div>
-                        <p className={styles.progressText}>프로젝트 완성도 {completionRate}%</p>
-                        <div className={styles.projectActions}>
-                            <a href={`/teams/${teamId}`} className={styles.primaryButton}>
-                                프로젝트 편집
-                            </a>
-                        </div>
-                    </section>
-                )}
-
-                {/* Help / Insight 요약 */}
-                <section className={styles.cardGrid}>
-                    <div className={styles.statCard}>
-                        <div className={styles.statIcon}>🤝</div>
-                        <div className={styles.statNumber}>{helpCards.length}</div>
-                        <div className={styles.statLabel}>Help 카드</div>
-                        <a href="/helps" className={styles.statLink}>모두 보기 →</a>
-                    </div>
-                    <div className={styles.statCard}>
-                        <div className={styles.statIcon}>💡</div>
-                        <div className={styles.statNumber}>{insightCards.length}</div>
-                        <div className={styles.statLabel}>Insight 카드</div>
-                        <a href="/insights" className={styles.statLink}>모두 보기 →</a>
-                    </div>
-                </section>
-
-                {/* 빠른 시작 */}
-                <section className={styles.quickStart}>
-                    <h3 className={styles.quickStartTitle}>빠른 시작</h3>
-                    <div className={styles.quickStartGrid}>
-                        <a href="/help/new" className={styles.quickStartItem}>
-                            <span className={styles.qsIcon}>🆘</span>
-                            <span>Help 요청</span>
-                        </a>
-                        <a href="/insight/new" className={styles.quickStartItem}>
-                            <span className={styles.qsIcon}>✨</span>
-                            <span>Insight 등록</span>
-                        </a>
-                    </div>
-                </section>
+                {/* 3. 메인 콘텐츠: 팀 카드 그리드 */}
+                <TeamGrid teams={teamsData} />
             </div>
         </div>
     );

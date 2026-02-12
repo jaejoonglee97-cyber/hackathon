@@ -1,0 +1,81 @@
+import { NextResponse } from 'next/server';
+import { getCurrentUser } from '@/lib/auth';
+import { appendRow, getRowBy, updateRow } from '@/lib/sheets';
+import { v4 as uuidv4 } from 'uuid';
+
+export async function POST(request: Request) {
+    try {
+        const user = await getCurrentUser();
+        if (!user) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        const body = await request.json();
+        const { name } = body;
+
+        if (!name || !name.trim()) {
+            return NextResponse.json({ error: 'Team name is required' }, { status: 400 });
+        }
+
+        // 1. Check if user already has a team
+        const existingMember = await getRowBy('team_members', 'user_id', user.userId);
+        if (existingMember) {
+            return NextResponse.json({ error: 'User already has a team' }, { status: 400 });
+        }
+
+        const teamId = uuidv4();
+        const now = new Date().toISOString();
+
+        // 2. Create Team
+        // Schema: id, name, org, member_ids, stage, created_at, updated_at
+        // We get org from user profile if possible, or just leave it empty/from body?
+        // Let's fetch profile to get org.
+        const profile = await getRowBy('users_profile', 'user_id', user.userId);
+        const org = profile?.org || '';
+
+        await appendRow('teams', {
+            id: teamId,
+            name: name.trim(),
+            org: org,
+            member_ids: user.userId, // Initial member
+            stage: 'intro',
+            created_at: now,
+            updated_at: now,
+        });
+
+        // 3. Create Team Member linkage
+        // Schema: id, team_id, user_id, role, joined_at, updated_at
+        const memberId = uuidv4();
+        await appendRow('team_members', {
+            id: memberId,
+            team_id: teamId,
+            user_id: user.userId,
+            role: 'leader', // Creator is leader
+            joined_at: now,
+            updated_at: now,
+        });
+
+        // 4. Create empty Project
+        // Schema: team_id, ... (others are optional/empty for now)
+        await appendRow('projects', {
+            team_id: teamId,
+            updated_at: now,
+            // Initialize required fields with empty strings if needed, 
+            // but schema.ts says they are string types. 
+            // appendRow handles partials if the underlying sheet allows.
+            // Let's put at least updated_at and team_id.
+            problem_statement: '',
+            target_audience: '',
+            situation: '',
+            solution: '',
+        });
+
+        return NextResponse.json({ teamId });
+    } catch (error: any) {
+        console.error('Failed to create team:', error);
+        return NextResponse.json(
+            { error: error?.message || 'Internal Server Error' },
+            { status: 500 }
+        );
+    }
+}

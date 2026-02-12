@@ -6,7 +6,8 @@
 }
 
 .container {
-    max-width: 1000px;
+    max-width: 1200px;
+    /* Wider for grid */
     margin: 0 auto;
     padding: 0 1.5rem;
 }
@@ -17,8 +18,16 @@
     animation: fadeIn 0.5s ease-out;
 }
 
+.welcomeHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
 .greeting {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 800;
     color: var(--text-primary);
     margin: 0 0 0.5rem 0;
@@ -28,18 +37,57 @@
 .greeting .userName {
     background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-.orgBadge {
-    display: inline-block;
-    font-size: 1rem;
+.subGreeting {
+    font-size: 1.1rem;
     color: var(--text-secondary);
-    background-color: var(--bg-tertiary);
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-weight: 500;
     margin: 0;
+}
+
+.quickActions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.actionButton,
+.actionButtonSecondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1.25rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    box-shadow: var(--shadow-sm);
+}
+
+.actionButton {
+    background-color: var(--brand-primary);
+    color: white;
+}
+
+.actionButton:hover {
+    background-color: var(--brand-secondary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.actionButtonSecondary {
+    background-color: white;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.actionButtonSecondary:hover {
+    border-color: var(--brand-primary);
+    color: var(--brand-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
 /* 2. 마감일 배너 */
@@ -81,25 +129,6 @@
     margin-left: auto;
 }
 
-.lockBadge,
-.lockBadgeHard {
-    font-size: 0.8rem;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    margin-left: 1rem;
-    font-weight: 600;
-}
-
-.lockBadge {
-    background-color: #fff3cd;
-    color: #856404;
-}
-
-.lockBadgeHard {
-    background-color: #f8d7da;
-    color: #721c24;
-}
-
 .deadlinePast {
     opacity: 0.8;
     background-color: #f8f9fa;
@@ -110,220 +139,20 @@
     color: var(--text-secondary);
 }
 
-/* 3. 내 프로젝트 카드 */
-.projectCard {
-    background: white;
-    border-radius: 1rem;
-    padding: 2rem;
-    box-shadow: var(--shadow-lg);
-    margin-bottom: 2rem;
-    border: 1px solid var(--border-color);
-    position: relative;
-    overflow: hidden;
-}
-
-.projectCard::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: linear-gradient(90deg, var(--brand-primary), var(--brand-secondary));
-}
-
-.projectHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-}
-
-.projectTitle {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin: 0;
-}
-
-.stageBadge {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--brand-primary);
-    background-color: var(--brand-primary-light);
-    padding: 0.25rem 0.75rem;
-    border-radius: 6px;
-    text-transform: uppercase;
-}
-
-.progressBar {
-    height: 10px;
-    background-color: var(--bg-tertiary);
-    border-radius: 5px;
-    overflow: hidden;
-    margin-bottom: 0.75rem;
-}
-
-.progressFill {
-    height: 100%;
-    background-color: var(--brand-primary);
-    border-radius: 5px;
-    transition: width 0.5s ease-in-out;
-}
-
-.progressText {
-    text-align: right;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    margin: 0 0 1.5rem;
-}
-
-.projectActions {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.primaryButton {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.75rem 2rem;
-    background-color: var(--brand-primary);
-    color: white;
-    font-weight: 600;
-    border-radius: 0.5rem;
-    text-decoration: none;
-    transition: all 0.2s;
-    box-shadow: var(--shadow-md);
-}
-
-.primaryButton:hover {
-    background-color: var(--brand-secondary);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-}
-
-/* 4. 통계 카드 그리드 */
-.cardGrid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-}
-
-.statCard {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 1rem;
-    box-shadow: var(--shadow-md);
-    border: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    transition: transform 0.2s;
-}
-
-.statCard:hover {
-    transform: translateY(-4px);
-    border-color: var(--brand-primary);
-}
-
-.statIcon {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.statNumber {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--text-primary);
-    line-height: 1;
-    margin-bottom: 0.25rem;
-}
-
-.statLabel {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    margin-bottom: 1rem;
-}
-
-.statLink {
-    font-size: 0.9rem;
-    color: var(--brand-primary);
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.statLink:hover {
-    text-decoration: underline;
-}
-
-/* 5. 빠른 시작 */
-.quickStartTitle {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin: 0 0 1rem;
-}
-
-.quickStartGrid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-}
-
-.quickStartItem {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    background: white;
-    padding: 1rem 1.5rem;
-    border-radius: 0.75rem;
-    border: 1px solid var(--border-color);
-    text-decoration: none;
-    color: var(--text-primary);
-    font-weight: 600;
-    transition: all 0.2s;
-    box-shadow: var(--shadow-sm);
-}
-
-.quickStartItem:hover {
-    border-color: var(--brand-primary);
-    background-color: var(--bg-secondary);
-    transform: translateX(4px);
-}
-
-.qsIcon {
-    font-size: 1.5rem;
-}
-
 /* 반응형 */
-@media (max-width: 640px) {
-    .greeting {
-        font-size: 1.75rem;
-    }
-
-    .cardGrid {
-        grid-template-columns: 1fr;
-    }
-
-    .quickStartGrid {
-        grid-template-columns: 1fr;
-    }
-
-    .projectHeader {
+@media (max-width: 768px) {
+    .welcomeHeader {
         flex-direction: column;
         align-items: flex-start;
-        gap: 0.5rem;
     }
 
-    .projectActions {
+    .quickActions {
         width: 100%;
     }
 
-    .primaryButton {
-        width: 100%;
+    .actionButton,
+    .actionButtonSecondary {
+        flex: 1;
     }
 }
 
