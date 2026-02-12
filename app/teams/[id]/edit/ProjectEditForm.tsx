@@ -151,7 +151,7 @@ export default function ProjectEditForm({
                     <label htmlFor="teamName" className={styles.label}>
                         프로젝트(팀) 이름
                         <span style={{ marginLeft: '10px', fontSize: '0.9em', color: remainingEdits > 0 ? '#10b981' : '#ef4444' }}>
-                            (남은 변경 횟수: {remainingEdits}회 / 총 3회)
+                            (남은 변경 횟수: {remainingEdits}회 / 총 3회 <span style={{ color: '#6b7280', fontWeight: 'normal' }}>— 이름만 제한, 내용은 무제한 수정 가능</span>)
                         </span>
                     </label>
                     <input
@@ -422,6 +422,13 @@ export default function ProjectEditForm({
                 <input name="wrong_assumption" value={formData.wrong_assumption} readOnly />
                 <input name="next_test" value={formData.next_test} readOnly />
             </div>
+
+            {/* 하단 저장 알림 (사용자 요청 반영) */}
+            {success && (
+                <div className={styles.successBanner} style={{ marginTop: '2rem', textAlign: 'center', animation: 'fadeIn 0.5s' }}>
+                    ✅ 저장되었습니다! 잠시 후 상세 페이지로 이동합니다...
+                </div>
+            )}
 
             {/* 버튼 */}
             <div className={styles.actions}>
