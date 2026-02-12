@@ -433,12 +433,23 @@ export default function ProjectEditForm({
                 >
                     취소
                 </button>
+                {loading && (
+                    <span style={{
+                        color: '#2563eb',
+                        fontWeight: 'bold',
+                        display: 'flex',
+                        alignItems: 'center',
+                        animation: 'pulse 1.5s infinite'
+                    }}>
+                        ⏳ 저장 중입니다... (잠시만 기다려주세요)
+                    </span>
+                )}
                 <button
                     type="submit"
                     className={styles.submitButton}
                     disabled={loading}
                 >
-                    {loading ? '저장 중...' : '💾 저장하기'}
+                    💾 저장하기
                 </button>
             </div>
         </form>
