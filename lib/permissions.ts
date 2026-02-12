@@ -24,12 +24,12 @@ export async function isProjectOwner(teamId: string): Promise<boolean> {
         const currentUser = await getCurrentUser();
         if (!currentUser) return false;
 
-        const members = await listRows('team_members', {
-            team_id: teamId,
-            user_id: currentUser.userId
-        });
+        // Fetch all members for the team to be safe
+        const members = await listRows('team_members', { team_id: teamId });
 
-        const member = members[0];
+        // Find the current user in the member list
+        const member = members.find(m => m.user_id.trim() === currentUser.userId.trim());
+
         if (!member) return false;
 
         return ['owner', 'leader'].includes(member.role);

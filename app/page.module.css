@@ -29,16 +29,16 @@
 .greeting {
     font-size: 2rem;
     font-weight: 800;
-    color: var(--text-primary);
+    color: #111827;
+    /* Explicit dark color */
     margin: 0 0 0.5rem 0;
     line-height: 1.2;
 }
 
 .greeting .userName {
-    background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--brand-primary);
+    /* Use brand color instead of gradient for safety */
+    /* Removed gradient text clip which was causing visibility issues */
 }
 
 .subGreeting {

@@ -106,3 +106,196 @@
     line-height: 1.6;
     border-top: 1px solid #e5e7eb;
 }
+
+/* QnA 게시판 스타일 */
+.boardContainer {
+    margin-top: 4rem;
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.boardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.writeButton {
+    padding: 0.5rem 1rem;
+    background: var(--color-primary, #2563eb);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.writeButton:hover {
+    background: var(--color-primary-dark, #1d4ed8);
+}
+
+.writeForm {
+    background: #f9fafb;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid #e5e7eb;
+}
+
+.formGroup {
+    margin-bottom: 1rem;
+}
+
+.formGroup label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+.input,
+.textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+}
+
+.formFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.secretCheck {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.submitButton {
+    padding: 0.5rem 1.5rem;
+    background: #10b981;
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.submitButton:hover {
+    background: #059669;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.emptyList {
+    text-align: center;
+    padding: 3rem;
+    color: #9ca3af;
+}
+
+.item {
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.itemHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: white;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.itemHeader:hover {
+    background: #f3f4f6;
+}
+
+.itemMeta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.statusBadge {
+    padding: 0.25rem 0.6rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.statusOpen {
+    background: #e5e7eb;
+    color: #4b5563;
+}
+
+.statusDone {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.itemTitle {
+    font-weight: 500;
+    color: #111827;
+}
+
+.itemDate {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.itemBody {
+    padding: 1.5rem;
+    background: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+}
+
+.questionContent {
+    white-space: pre-wrap;
+    color: #374151;
+    margin-bottom: 1.5rem;
+}
+
+.answerBox {
+    background: #eff6ff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border-left: 4px solid #3b82f6;
+}
+
+.answerHeader {
+    font-weight: 700;
+    color: #1e40af;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.answerContent {
+    color: #1e3a8a;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.waitingMsg {
+    color: #9ca3af;
+    font-style: italic;
+    font-size: 0.9rem;
+}

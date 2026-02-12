@@ -1,4 +1,5 @@
 import styles from './guide.module.css';
+import QnABoard from './QnABoard';
 
 export default function GuidePage() {
     return (
@@ -39,7 +40,7 @@ export default function GuidePage() {
                     </section>
 
                     <section className={styles.section}>
-                        <h2 className={styles.sectionTitle}>❓ 자주 묻는 질문 (QnA)</h2>
+                        <h2 className={styles.sectionTitle}>❓ 자주 묻는 질문 (FAQ)</h2>
                         <div className={styles.faqList}>
                             <details className={styles.faqItem}>
                                 <summary className={styles.faqQuestion}>Q. 프로젝트 내용을 수정하고 싶어요.</summary>
@@ -64,6 +65,8 @@ export default function GuidePage() {
                             </details>
                         </div>
                     </section>
+
+                    <QnABoard />
                 </div>
             </main>
         </div>
