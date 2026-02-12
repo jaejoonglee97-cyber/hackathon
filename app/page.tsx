@@ -52,9 +52,11 @@ export default async function DashboardPage() {
             id: team.id,
             name: team.name,
             org: team.org,
+            track: project?.track || '', // 분야
             stage: (team.stage as Team['stage']) || 'intro',
-            recentUpdate: new Date(recentUpdate).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' }),
-            updatedAt: recentUpdate,
+            recentUpdate: new Date(team.created_at).toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' }), // 등록일로 사용
+            createdAt: team.created_at, // 실제 등록일
+            updatedAt: recentUpdate, // 최종 업데이트
             helpCount: 0,
             insightCount: 0,
             badges,

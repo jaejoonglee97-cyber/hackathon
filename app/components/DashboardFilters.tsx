@@ -8,7 +8,7 @@ export type FilterState = {
     stage: string;
     field: string;
     hasHelp: boolean;
-    sortBy: 'recent' | 'help' | 'response';
+    sortBy: 'recent' | 'name';
 };
 
 type DashboardFiltersProps = {
@@ -24,16 +24,14 @@ const STAGE_OPTIONS = [
 
 const FIELD_OPTIONS = [
     { value: 'all', label: '전체 분야' },
-    { value: 'case', label: '사례관리' },
-    { value: 'admin', label: '행정' },
-    { value: 'pr', label: '홍보' },
-    { value: 'resource', label: '자원연계' },
+    { value: '현장 업무경감 자동화', label: '현장 업무경감 자동화' },
+    { value: '이용자 지원 및 접근성 개선', label: '이용자 지원 및 접근성 개선' },
+    { value: '협업·지식관리·성과지표', label: '협업·지식관리·성과지표' },
 ];
 
 const SORT_OPTIONS = [
-    { value: 'recent', label: '최근 업데이트' },
-    { value: 'help', label: 'Help 많은 순' },
-    { value: 'response', label: '응답 빠른 순' },
+    { value: 'recent', label: '최근 업데이트 순' },
+    { value: 'name', label: '가나다 순' },
 ];
 
 export default function DashboardFilters({ onFilterChange }: DashboardFiltersProps) {
@@ -104,18 +102,6 @@ export default function DashboardFilters({ onFilterChange }: DashboardFiltersPro
                         </option>
                     ))}
                 </select>
-            </div>
-
-            <div className={styles.checkboxGroup}>
-                <label className={styles.checkboxLabel}>
-                    <input
-                        type="checkbox"
-                        className={styles.checkbox}
-                        checked={filters.hasHelp}
-                        onChange={(e) => handleChange('hasHelp', e.target.checked)}
-                    />
-                    <span>Help 있는 팀만</span>
-                </label>
             </div>
         </div>
     );

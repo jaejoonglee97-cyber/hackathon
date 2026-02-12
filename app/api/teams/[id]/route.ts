@@ -22,6 +22,7 @@ export async function PATCH(
         const body = await request.json();
 
         const allowedFields = [
+            'track',
             'problem_statement', 'target_audience', 'situation',
             'evidence1', 'evidence2', 'evidence3',
             'hypothesis1', 'hypothesis2',

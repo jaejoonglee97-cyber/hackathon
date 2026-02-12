@@ -25,33 +25,23 @@ export default function TeamGrid({ teams }: TeamGridProps) {
             result = result.filter((t) => t.stage === filters.stage);
         }
 
-        // 2. Field Filter
-        // currently Team type doesn't have 'field' (org is agency name). 
-        // If 'field' isn't available, we skip or use org? 
-        // PRD mentions 'category/field'. Let's assume for MVP we skip or check if org matches?
-        // Actually PRD FR-01 says "Filter: Stage, Field(Case/Admin/PR/Resource...)".
-        // Schema 'teams' table doesn't have 'field' column explicitly listed in the 'def' I saw earlier? 
-        // Let's check schema again. 'teams' has [id, name, org, member_ids, stage, created_at, updated_at].
-        // So 'field' is missing from schema. I will ignore 'field' filter for now or treat 'org' as field? 
-        // No, Organization is the Agency Name.
-        // I will skipping field filter logic for now as data is missing.
-
-        // 3. Has Help Filter
-        if (filters.hasHelp) {
-            result = result.filter((t) => t.helpCount > 0);
+        // 2. Field (Track) Filter
+        if (filters.field !== 'all') {
+            result = result.filter((t) => t.track === filters.field);
         }
+
+        // 3. Has Help Filter (Removed based on request, but keeping placeholder if needed or just remove)
+        // if (filters.hasHelp) {
+        //     result = result.filter((t) => t.helpCount > 0);
+        // }
 
         // 4. Sort
         result.sort((a, b) => {
             if (filters.sortBy === 'recent') {
-                return new Date(b.recentUpdate || b.updatedAt).getTime() - new Date(a.recentUpdate || a.updatedAt).getTime();
+                return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
             }
-            if (filters.sortBy === 'help') {
-                return b.helpCount - a.helpCount;
-            }
-            if (filters.sortBy === 'response') {
-                // response time is not in Team type yet.
-                return 0;
+            if (filters.sortBy === 'name') {
+                return a.name.localeCompare(b.name, 'ko');
             }
             return 0;
         });

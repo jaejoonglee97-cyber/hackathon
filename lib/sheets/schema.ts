@@ -89,6 +89,7 @@ export const sheets = {
 
     projects: def('projects', 'data', [
         'team_id',
+        'track', // 분야 (현장 업무경감... 등)
         'problem_statement',
         'target_audience',
         'situation',

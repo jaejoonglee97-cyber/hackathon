@@ -6,6 +6,7 @@ export type Team = {
     id: string;
     name: string;
     org?: string;
+    track?: string; // 분야
     stage: 'intro' | 'validate' | 'complete';
     recentUpdate: string;
     helpCount: number;
@@ -37,10 +38,18 @@ export default function TeamCard({ team }: TeamCardProps) {
                 </span>
             </div>
 
-            <p className={styles.recentUpdate}>{team.recentUpdate}</p>
+            {/* 등록일 */}
+            <p className={styles.recentUpdate} style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: '#6b7280' }}>
+                등록일: {team.recentUpdate}
+            </p>
 
             <div className={styles.metrics}>
                 {/* Help/Insight metrics removed */}
+                {team.track && (
+                    <span style={{ fontSize: '0.8rem', backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '4px', color: '#4b5563' }}>
+                        {team.track}
+                    </span>
+                )}
             </div>
 
             {team.badges.length > 0 && (
@@ -54,7 +63,7 @@ export default function TeamCard({ team }: TeamCardProps) {
             )}
 
             <time className={styles.timestamp} dateTime={team.updatedAt}>
-                {new Date(team.updatedAt).toLocaleDateString('ko-KR', {
+                최종 업데이트: {new Date(team.updatedAt).toLocaleDateString('ko-KR', {
                     month: 'short',
                     day: 'numeric',
                     hour: '2-digit',

@@ -40,6 +40,9 @@ export default function ProjectEditForm({
     // Here we just show the UI limit.
 
     const [formData, setFormData] = useState({
+        // Other
+        track: project?.track || '', // 분야 (추가)
+
         // Why
         problem_statement: project?.problem_statement || '',
         target_audience: project?.target_audience || '',
@@ -192,6 +195,32 @@ export default function ProjectEditForm({
                     <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '5px' }}>
                         * 단계에 따라 메인 화면에서의 표시 방식이 달라집니다.
                     </p>
+                </div>
+            </section>
+
+            {/* 분야 선택 */}
+            <section className={styles.section}>
+                <h2 className={styles.sectionTitle}>
+                    <span className={styles.sectionIcon}>📂</span>
+                    분야 선택
+                </h2>
+                <div className={styles.field}>
+                    <label htmlFor="track" className={styles.label}>
+                        어떤 분야의 프로젝트인가요? <span className={styles.required}>*</span>
+                    </label>
+                    <select
+                        id="track"
+                        name="track"
+                        value={formData.track}
+                        onChange={handleChange}
+                        className={styles.input}
+                        required
+                    >
+                        <option value="">선택해주세요</option>
+                        <option value="현장 업무경감 자동화">1) 현장 업무경감 자동화</option>
+                        <option value="이용자 지원 및 접근성 개선">2) 이용자 지원 및 접근성 개선</option>
+                        <option value="협업·지식관리·성과지표">3) 협업·지식관리·성과지표</option>
+                    </select>
                 </div>
             </section>
 
