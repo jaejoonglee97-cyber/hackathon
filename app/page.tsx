@@ -25,13 +25,23 @@ export default async function DashboardPage() {
         redirect('/onboarding/profile');
     }
 
-    // 3) 병렬 데이터 로딩
+    // 3) 병렬 데이터 로딩 (안전하게 처리)
     const [allTeams, allProjects, allHelps, allInsights, deadlines] = await Promise.all([
         listRows('teams'),
         listRows('projects'),
-        listRows('help_cards'),
-        listRows('insight_cards'),
-        getActiveDeadlines(),
+        // Optional Data: 에러 시 빈 배열 반환
+        listRows('help_cards').catch(err => {
+            console.warn('Failed to fetch help_cards:', err);
+            return [];
+        }),
+        listRows('insight_cards').catch(err => {
+            console.warn('Failed to fetch insight_cards:', err);
+            return [];
+        }),
+        getActiveDeadlines().catch(err => {
+            console.warn('Failed to fetch deadlines:', err);
+            return [];
+        }),
     ]);
 
     // 4) 내 팀 정보 (개인화 영역용)
