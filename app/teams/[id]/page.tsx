@@ -130,182 +130,129 @@ export default async function TeamPage({ params }: { params: { id: string } }) {
 
             <main className={styles.main}>
                 <div className="container">
-                    {/* FR-10: Why (문제/고객) */}
-                    <section className={styles.section} id="why">
+                    {/* 1. 프로젝트 목적 (New: problem_statement) */}
+                    <section className={styles.section} id="purpose">
                         <h2 className={styles.sectionTitle}>
-                            <span className={styles.sectionIcon}>🎯</span>
-                            Why - 왜 만드는가?
+                            <span className={styles.sectionIcon}>2️⃣</span>
+                            프로젝트 목적
+                        </h2>
+                        <div className={styles.sectionContent}>
+                            <p className={styles.fieldValue}>
+                                {project?.problem_statement || '아직 작성되지 않았습니다.'}
+                            </p>
+                        </div>
+                    </section>
+
+                    {/* 2. 문제의식 (New: situation, evidence1, evidence2) */}
+                    <section className={styles.section} id="problem">
+                        <h2 className={styles.sectionTitle}>
+                            <span className={styles.sectionIcon}>3️⃣</span>
+                            문제의식 (프로젝트 필요성)
                         </h2>
                         <div className={styles.sectionContent}>
                             <div className={styles.field}>
-                                <h3 className={styles.fieldLabel}>대상 (누구)</h3>
-                                <p className={styles.fieldValue}>
-                                    {project?.target_audience || '아직 작성되지 않았습니다.'}
-                                </p>
-                            </div>
-
-                            <div className={styles.field}>
-                                <h3 className={styles.fieldLabel}>상황 (언제)</h3>
+                                <h3 className={styles.fieldLabel}>1) 계획 배경</h3>
                                 <p className={styles.fieldValue}>
                                     {project?.situation || '아직 작성되지 않았습니다.'}
                                 </p>
                             </div>
-
                             <div className={styles.field}>
-                                <h3 className={styles.fieldLabel}>문제 (무엇)</h3>
+                                <h3 className={styles.fieldLabel}>2) 기존 프로젝트와의 차별성</h3>
                                 <p className={styles.fieldValue}>
-                                    {project?.problem_statement || '아직 작성되지 않았습니다.'}
+                                    {project?.evidence1 || '아직 작성되지 않았습니다.'}
                                 </p>
                             </div>
-
-                            <div className={styles.evidenceSection}>
-                                <h3 className={styles.fieldLabel}>
-                                    증거 (인터뷰/관찰/업무로그)
-                                    <span className={styles.privacyWarning}>
-                                        ⚠️ 개인정보(실명/연락처/사례식별정보) 금지
-                                    </span>
-                                </h3>
-                                <ul className={styles.evidenceList}>
-                                    {project?.evidence1 && <li>{project.evidence1}</li>}
-                                    {project?.evidence2 && <li>{project.evidence2}</li>}
-                                    {project?.evidence3 && <li>{project.evidence3}</li>}
-                                    {!project?.evidence1 && !project?.evidence2 && !project?.evidence3 && (
-                                        <li className={styles.emptyText}>아직 작성되지 않았습니다.</li>
-                                    )}
-                                </ul>
+                            <div className={styles.field}>
+                                <h3 className={styles.fieldLabel}>3) 프로젝트의 강점</h3>
+                                <p className={styles.fieldValue}>
+                                    {project?.evidence2 || '아직 작성되지 않았습니다.'}
+                                </p>
                             </div>
                         </div>
                     </section>
 
-                    {/* FR-11: 가설 */}
-                    <section className={styles.section} id="hypothesis">
+                    {/* 3. 프로젝트 내용 (New: solution, features) */}
+                    <section className={styles.section} id="content">
                         <h2 className={styles.sectionTitle}>
-                            <span className={styles.sectionIcon}>💭</span>
-                            가설
-                        </h2>
-                        <div className={styles.sectionContent}>
-                            <ul className={styles.hypothesisList}>
-                                {project?.hypothesis1 && (
-                                    <li className={styles.hypothesisItem}>{project.hypothesis1}</li>
-                                )}
-                                {project?.hypothesis2 && (
-                                    <li className={styles.hypothesisItem}>{project.hypothesis2}</li>
-                                )}
-                                {!project?.hypothesis1 && !project?.hypothesis2 && (
-                                    <li className={styles.emptyText}>아직 작성되지 않았습니다.</li>
-                                )}
-                            </ul>
-                        </div>
-                    </section>
-
-                    {/* FR-12: 해결 (솔루션/업무흐름) */}
-                    <section className={styles.section} id="solution">
-                        <h2 className={styles.sectionTitle}>
-                            <span className={styles.sectionIcon}>⚙️</span>
-                            해결 방법
+                            <span className={styles.sectionIcon}>4️⃣</span>
+                            프로젝트 내용
                         </h2>
                         <div className={styles.sectionContent}>
                             <div className={styles.field}>
-                                <h3 className={styles.fieldLabel}>솔루션 설명</h3>
+                                <h3 className={styles.fieldLabel}>핵심 내용 및 기능</h3>
                                 <p className={styles.fieldValue}>
                                     {project?.solution || '아직 작성되지 않았습니다.'}
                                 </p>
                             </div>
+                            {project?.features && (
+                                <div className={styles.field}>
+                                    <h3 className={styles.fieldLabel}>추가 상세 기능</h3>
+                                    <p className={styles.fieldValue}>
+                                        {project.features}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                    </section>
 
-                            <div className={styles.field}>
-                                <h3 className={styles.fieldLabel}>핵심 기능</h3>
-                                <p className={styles.fieldValue}>
-                                    {project?.features || '아직 작성되지 않았습니다.'}
-                                </p>
+                    {/* 결과물 링크 */}
+                    {(project?.prototype_link || project?.github_link) && (
+                        <section className={styles.section} id="links">
+                            <h2 className={styles.sectionTitle}>
+                                <span className={styles.sectionIcon}>🔗</span>
+                                결과물 링크
+                            </h2>
+                            <div className={styles.sectionContent}>
+                                {project?.prototype_link && (
+                                    <div className={styles.linkCard}>
+                                        <h3>데모/사이트 링크</h3>
+                                        <a href={project.prototype_link} target="_blank" rel="noopener noreferrer" className={styles.externalLink}>
+                                            {project.prototype_link}
+                                        </a>
+                                    </div>
+                                )}
+                                {project?.github_link && (
+                                    <div className={styles.linkCard}>
+                                        <h3>소스코드 (GitHub 등)</h3>
+                                        <a href={project.github_link} target="_blank" rel="noopener noreferrer" className={styles.externalLink}>
+                                            {project.github_link}
+                                        </a>
+                                    </div>
+                                )}
                             </div>
-                        </div>
-                    </section>
+                        </section>
+                    )}
 
-                    {/* FR-13: 프로토타입/데모 */}
-                    <section className={styles.section} id="prototype">
+                    {/* 4. 기대효과 (New: hypothesis1) */}
+                    <section className={styles.section} id="effects">
                         <h2 className={styles.sectionTitle}>
-                            <span className={styles.sectionIcon}>🔗</span>
-                            프로토타입/데모
+                            <span className={styles.sectionIcon}>5️⃣</span>
+                            프로젝트로 인한 기대효과
                         </h2>
                         <div className={styles.sectionContent}>
-                            {project?.prototype_link && (
-                                <div className={styles.linkCard}>
-                                    <h3>프로토타입 링크</h3>
-                                    <a
-                                        href={project.prototype_link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={styles.externalLink}
-                                    >
-                                        {project.prototype_link}
-                                    </a>
-                                </div>
-                            )}
-
-                            {project?.github_link && (
-                                <div className={styles.linkCard}>
-                                    <h3>GitHub 레포지토리</h3>
-                                    <a
-                                        href={project.github_link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={styles.externalLink}
-                                    >
-                                        {project.github_link}
-                                    </a>
-                                </div>
-                            )}
-
-                            {!project?.prototype_link && !project?.github_link && (
-                                <p className={styles.emptyText}>아직 작성되지 않았습니다.</p>
-                            )}
+                            <p className={styles.fieldValue}>
+                                {project?.hypothesis1 || '아직 작성되지 않았습니다.'}
+                            </p>
                         </div>
                     </section>
 
-                    {/* FR-14: 검증 로그 */}
-                    <section className={styles.section} id="experiment">
+                    {/* 5. 활용 계획 (New: experiment_log, adoption_checklist) */}
+                    <section className={styles.section} id="plan">
                         <h2 className={styles.sectionTitle}>
-                            <span className={styles.sectionIcon}>🔬</span>
-                            검증 로그
+                            <span className={styles.sectionIcon}>6️⃣</span>
+                            프로젝트의 활용 계획
                         </h2>
                         <div className={styles.sectionContent}>
                             <div className={styles.field}>
-                                <h3 className={styles.fieldLabel}>실험 내용 및 결과</h3>
+                                <h3 className={styles.fieldLabel}>1) 사용 계획</h3>
                                 <p className={styles.fieldValue}>
                                     {project?.experiment_log || '아직 작성되지 않았습니다.'}
                                 </p>
                             </div>
-
-                            <div className={styles.insightBox}>
-                                <h3 className={styles.fieldLabel}>
-                                    🎓 틀렸던 가정 1개 (Insight 강제)
-                                </h3>
-                                <p className={styles.fieldValue}>
-                                    {project?.wrong_assumption || '아직 작성되지 않았습니다.'}
-                                </p>
-                            </div>
-
                             <div className={styles.field}>
-                                <h3 className={styles.fieldLabel}>다음에 검증할 것</h3>
+                                <h3 className={styles.fieldLabel}>2) 확산 전략</h3>
                                 <p className={styles.fieldValue}>
-                                    {project?.next_test || '아직 작성되지 않았습니다.'}
-                                </p>
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* FR-15: 확산/운영 계획 */}
-                    <section className={styles.section} id="adoption">
-                        <h2 className={styles.sectionTitle}>
-                            <span className={styles.sectionIcon}>🌱</span>
-                            확산/운영 계획
-                        </h2>
-                        <div className={styles.sectionContent}>
-                            <div className={styles.field}>
-                                <h3 className={styles.fieldLabel}>
-                                    타 기관 재사용 체크리스트
-                                </h3>
-                                <p className={styles.fieldValue}>
+                                    {project?.adoption_checklist || '아직 작성되지 않았습니다.'}
                                 </p>
                             </div>
                         </div>
