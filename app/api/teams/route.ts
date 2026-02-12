@@ -30,6 +30,7 @@ export async function POST(request: Request) {
         // Schema: id, name, org, member_ids, stage, created_at, updated_at
         // We get org from user profile if possible, or just leave it empty/from body?
         // Let's fetch profile to get org.
+        // 2. Create Team
         const profile = await getRowBy('users_profile', 'user_id', user.userId);
         const org = profile?.org || '';
 
@@ -37,37 +38,36 @@ export async function POST(request: Request) {
             id: teamId,
             name: name.trim(),
             org: org,
-            member_ids: user.userId, // Initial member
+            member_ids: JSON.stringify([user.userId]),
             stage: 'intro',
             created_at: now,
             updated_at: now,
         });
 
         // 3. Create Team Member linkage
-        // Schema: id, team_id, user_id, role, joined_at, updated_at
         const memberId = uuidv4();
         await appendRow('team_members', {
             id: memberId,
             team_id: teamId,
             user_id: user.userId,
-            role: 'leader', // Creator is leader
+            role: 'owner', // Creator is owner
             joined_at: now,
             updated_at: now,
         });
 
         // 4. Create empty Project
-        // Schema: team_id, ... (others are optional/empty for now)
         await appendRow('projects', {
             team_id: teamId,
-            updated_at: now,
-            // Initialize required fields with empty strings if needed, 
-            // but schema.ts says they are string types. 
-            // appendRow handles partials if the underlying sheet allows.
-            // Let's put at least updated_at and team_id.
             problem_statement: '',
             target_audience: '',
             situation: '',
-            solution: '',
+            evidence1: '', evidence2: '', evidence3: '',
+            hypothesis1: '', hypothesis2: '',
+            solution: '', features: '',
+            prototype_link: '', github_link: '',
+            experiment_log: '', wrong_assumption: '', next_test: '',
+            adoption_checklist: '',
+            updated_at: now,
         });
 
         return NextResponse.json({ teamId });

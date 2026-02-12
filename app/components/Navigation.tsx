@@ -89,7 +89,7 @@ export default function Navigation({ initialUser }: NavigationProps) {
                         </Link>
                         <Link
                             href="/qna"
-                            className={styles.qnaLink}
+                            className={pathname?.startsWith('/qna') ? styles.navLinkActive : styles.navLink}
                         >
                             💬 문의게시판
                         </Link>

@@ -99,60 +99,13 @@ export async function POST(request: NextRequest) {
             });
         }
 
-        // 3) 개인 프로젝트(팀) 생성
-        const teamId = `team_${user.userId}`;
-        await appendRow(
-            'teams',
-            {
-                id: teamId,
-                name: `${name}의 프로젝트`,
-                org,
-                member_ids: JSON.stringify([user.userId]),
-                stage: 'intro',
-                created_at: kstNow,
-                updated_at: kstNow,
-            },
-            { actorUserId: user.userId, action: 'create_team', meta: { reason: 'profile_complete' } },
-        );
-
-        // 4) team_members (owner 1명)
-        await appendRow(
-            'team_members',
-            {
-                id: `member_${Date.now()}`,
-                team_id: teamId,
-                user_id: user.userId,
-                role: 'owner',
-                joined_at: kstNow,
-                updated_at: kstNow,
-            },
-            { actorUserId: user.userId, action: 'add_team_member' },
-        );
-
-        // 5) 빈 프로젝트 템플릿
-        await appendRow(
-            'projects',
-            {
-                team_id: teamId,
-                problem_statement: '',
-                target_audience: '',
-                situation: '',
-                evidence1: '', evidence2: '', evidence3: '',
-                hypothesis1: '', hypothesis2: '',
-                solution: '', features: '',
-                prototype_link: '', github_link: '',
-                experiment_log: '', wrong_assumption: '', next_test: '',
-                adoption_checklist: '',
-                updated_at: kstNow,
-            },
-            { actorUserId: user.userId, action: 'create_project', meta: { reason: 'profile_complete' } },
-        );
+        // 3) 팀/프로젝트 자동 생성 중단 (2025-02-12 요청)
+        // 사용자가 대시보드에서 직접 [프로젝트 등록하기] 버튼으로 생성함.
 
         return NextResponse.json(
             {
                 success: true,
-                message: '프로필 완료! 나만의 프로젝트가 생성되었습니다.',
-                teamId,
+                message: '프로필이 저장되었습니다. 대시보드에서 새 프로젝트를 등록해주세요.',
             },
             { status: 201 },
         );
