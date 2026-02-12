@@ -96,9 +96,6 @@ export default async function DashboardPage() {
                                     🚀 프로젝트 등록하기
                                 </Link>
                             )}
-                            <Link href="/guide" className={styles.actionButtonSecondary}>
-                                📚 이용 가이드 & QnA
-                            </Link>
                         </div>
                     </div>
                 </section>
