@@ -80,7 +80,7 @@ export async function GET() {
                         spreadsheetId,
                         range: `${tab}!A1`,
                         valueInputOption: 'RAW',
-                        requestBody: { values: [def.columns] }
+                        requestBody: { values: [[...def.columns]] }
                     });
                     logs.push(`[${type}] Added header for ${tab}`);
                 }
