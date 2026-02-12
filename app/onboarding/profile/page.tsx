@@ -56,16 +56,9 @@ export default function OnboardingProfilePage() {
                 throw new Error(data.error || '프로필 저장에 실패했습니다.');
             }
 
-            // 프로젝트 페이지로 자동 이동 — teamId 유효성 가드
-            const teamId = data.teamId;
-            if (typeof teamId === 'string' && teamId.length > 0) {
-                router.push(`/teams/${teamId}`);
-                router.refresh();
-            } else {
-                // teamId가 없으면 이동하지 않고 안내
-                console.warn('[onboarding] 프로필 저장 성공했으나 teamId 누락:', data);
-                setError('프로필은 저장되었으나 프로젝트 정보를 불러올 수 없습니다. 새로고침 후 다시 시도해주세요.');
-            }
+            // 대시보드로 이동 (프로젝트는 대시보드에서 생성)
+            router.push('/');
+            router.refresh();
         } catch (err: any) {
             setError(err.message);
         } finally {
@@ -82,7 +75,7 @@ export default function OnboardingProfilePage() {
                     <p className={styles.subtitle}>
                         해커톤 참여를 위해 기본 정보를 입력해주세요.
                         <br />
-                        완료 후 나만의 프로젝트가 자동 생성됩니다.
+                        완료 후 대시보드에서 프로젝트를 등록할 수 있습니다.
                     </p>
 
                     {/* 개인정보 보호 안내 (FR-40) */}
@@ -198,7 +191,7 @@ export default function OnboardingProfilePage() {
                             className={styles.submitButton}
                             disabled={loading}
                         >
-                            {loading ? '저장 중...' : '프로필 완료 & 프로젝트 시작'}
+                            {loading ? '저장 중...' : '프로필 저장 및 시작하기'}
                         </button>
                     </form>
                 </div>
