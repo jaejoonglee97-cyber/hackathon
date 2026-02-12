@@ -88,7 +88,7 @@ export default function Navigation({ initialUser }: NavigationProps) {
                             📚 이용가이드
                         </Link>
                         <Link
-                            href="/guide#qna"
+                            href="/qna"
                             className={styles.qnaLink}
                         >
                             💬 문의게시판

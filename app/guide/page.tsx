@@ -1,5 +1,5 @@
 import styles from './guide.module.css';
-import QnABoard from './QnABoard';
+
 
 export default function GuidePage() {
     return (
@@ -101,9 +101,6 @@ export default function GuidePage() {
                         </div>
                     </section>
 
-                    <div id="qna">
-                        <QnABoard />
-                    </div>
                 </div>
             </main>
         </div>
