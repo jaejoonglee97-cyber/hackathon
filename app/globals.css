@@ -1,26 +1,32 @@
 /* Design System & Global Styles */
 :root {
-  /* Color Tokens - 협력/학습 중심 컬러 팔레트 */
-  --color-primary: hsl(220, 90%, 56%);
-  --color-primary-dark: hsl(220, 90%, 45%);
-  --color-primary-light: hsl(220, 90%, 95%);
-  
-  --color-help: hsl(45, 100%, 51%); /* Help 카드 - 노란색 */
+  /* Color Tokens - 협력/학습 중심 컬러 팔레트 (Teal/Blue Theme) */
+  --color-primary: hsl(175, 80%, 40%);
+  --color-primary-dark: hsl(175, 90%, 30%);
+  --color-primary-light: hsl(175, 80%, 95%);
+  --gradient-primary: linear-gradient(135deg, hsl(160, 80%, 40%) 0%, hsl(200, 80%, 50%) 100%);
+
+  --color-help: hsl(45, 100%, 51%);
+  /* Help 카드 - 노란색 */
   --color-help-light: hsl(45, 100%, 95%);
-  --color-insight: hsl(280, 70%, 60%); /* Insight 카드 - 보라색 */
-  --color-insight-light: hsl(280, 70%, 95%);
-  
-  --color-success: hsl(140, 60%, 50%);
-  --color-success-light: hsl(140, 60%, 95%);
-  --color-warning: hsl(30, 100%, 50%);
-  --color-warning-light: hsl(30, 100%, 95%);
-  --color-danger: hsl(0, 80%, 60%);
-  
+  --color-insight: hsl(260, 60%, 60%);
+  /* Insight 카드 - 보라색 (조금 더 차분하게 조정) */
+  --color-insight-light: hsl(260, 60%, 95%);
+
+  --color-success: hsl(150, 60%, 45%);
+  --color-success-light: hsl(150, 60%, 95%);
+  --color-warning: hsl(35, 100%, 50%);
+  --color-warning-light: hsl(35, 100%, 95%);
+  --color-danger: hsl(0, 70%, 60%);
+
   /* Stage Colors */
   --color-stage-intro: hsl(200, 70%, 50%);
-  --color-stage-validate: hsl(280, 60%, 55%);
-  --color-stage-complete: hsl(140, 60%, 45%);
-  
+  /* Blue */
+  --color-stage-validate: hsl(280, 50%, 55%);
+  /* Purple */
+  --color-stage-complete: hsl(160, 70%, 40%);
+  /* Teal (Success) */
+
   /* Neutral Colors */
   --color-bg: hsl(0, 0%, 100%);
   --color-bg-secondary: hsl(220, 20%, 97%);
@@ -29,7 +35,7 @@
   --color-text-primary: hsl(220, 20%, 15%);
   --color-text-secondary: hsl(220, 10%, 45%);
   --color-text-tertiary: hsl(220, 10%, 65%);
-  
+
   /* Spacing */
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
@@ -37,7 +43,7 @@
   --space-lg: 1.5rem;
   --space-xl: 2rem;
   --space-2xl: 3rem;
-  
+
   /* Typography */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
   --font-size-xs: 0.75rem;
@@ -47,24 +53,26 @@
   --font-size-xl: 1.25rem;
   --font-size-2xl: 1.5rem;
   --font-size-3xl: 2rem;
-  
+
   /* Border Radius */
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
   --radius-full: 9999px;
-  
+
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-  
+
   /* Focus */
   --focus-ring: 0 0 0 3px var(--color-primary-light);
 }
 
 /* CSS Reset */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -84,16 +92,32 @@ body {
 }
 
 /* Typography */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 700;
   line-height: 1.3;
   margin-bottom: var(--space-md);
 }
 
-h1 { font-size: var(--font-size-3xl); }
-h2 { font-size: var(--font-size-2xl); }
-h3 { font-size: var(--font-size-xl); }
-h4 { font-size: var(--font-size-lg); }
+h1 {
+  font-size: var(--font-size-3xl);
+}
+
+h2 {
+  font-size: var(--font-size-2xl);
+}
+
+h3 {
+  font-size: var(--font-size-xl);
+}
+
+h4 {
+  font-size: var(--font-size-lg);
+}
 
 p {
   margin-bottom: var(--space-md);
@@ -163,6 +187,7 @@ button:focus-visible {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

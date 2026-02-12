@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     keywords: ['해커톤', '사회복지', '투명성', '협력', '검증', '학습'],
     authors: [{ name: '열매똑똑' }],
     viewport: 'width=device-width, initial-scale=1',
-    themeColor: '#3b82f6',
+    themeColor: '#0d9488',
 };
 
 import { getCurrentUser } from '@/lib/auth';
