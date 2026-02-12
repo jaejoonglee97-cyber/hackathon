@@ -140,6 +140,7 @@ export default function QnAPage() {
         <div className={styles.page}>
             <header className={styles.header}>
                 <div className="container">
+                    <a href="/" className={styles.backLink}>← 대시보드로 돌아가기</a>
                     <h1 className={styles.title}>💬 문의 게시판</h1>
                     <p className={styles.subtitle}>
                         궁금한 점이 있으신가요? 자유롭게 문의해주세요.<br />
@@ -152,7 +153,7 @@ export default function QnAPage() {
                 <div className="container">
                     <div className={styles.boardContainer} style={{ marginTop: 0 }}>
                         <div className={styles.boardHeader}>
-                            <h2 className={styles.sectionTitle} style={{ border: 'none', padding: 0, margin: 0 }}>
+                            <h2 className={styles.sectionTitle}>
                                 문의 목록 <span style={{ fontSize: '0.9rem', color: '#6b7280', fontWeight: 'normal' }}>({inquiries.length})</span>
                             </h2>
                             <button
