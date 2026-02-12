@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Navigation from './components/Navigation';
+import Footer from './components/Footer';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -24,7 +25,10 @@ export default function RootLayout({
             </head>
             <body>
                 <Navigation />
-                {children}
+                <main style={{ minHeight: 'calc(100vh - 160px)' }}>
+                    {children}
+                </main>
+                <Footer />
             </body>
         </html>
     );
