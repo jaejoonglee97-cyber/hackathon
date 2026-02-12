@@ -205,6 +205,13 @@ export default function QnABoard() {
                         // Admin can see secret posts
                         const canView = !isSecretItem || isMyPost || isAdmin;
 
+                        // Safe date formatting
+                        const formatDate = (dateStr: string) => {
+                            if (!dateStr) return '';
+                            const d = new Date(dateStr);
+                            return isNaN(d.getTime()) ? '' : d.toLocaleDateString();
+                        };
+
                         return (
                             <div key={item.id} className={styles.item}>
                                 <div
@@ -225,11 +232,13 @@ export default function QnABoard() {
                                         </span>
                                         {isSecretItem && <span className={styles.secretIcon}>🔒</span>}
                                         <span className={styles.itemTitle}>
-                                            {isSecretItem && !isMyPost && !isAdmin ? '비공개 글입니다.' : item.title}
+                                            {isSecretItem && !isMyPost && !isAdmin
+                                                ? '비공개 글입니다.'
+                                                : (item.title || '(제목 없음)')}
                                         </span>
                                     </div>
                                     <span className={styles.itemDate}>
-                                        {new Date(item.created_at).toLocaleDateString()}
+                                        {formatDate(item.created_at)}
                                     </span>
                                 </div>
 

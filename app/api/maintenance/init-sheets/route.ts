@@ -48,41 +48,40 @@ export async function GET() {
             const meta = await client.spreadsheets.get({ spreadsheetId });
             const existingTabs = meta.data.sheets?.map(s => s.properties?.title) || [];
 
+            // 1. Create missing tabs
             const missingTabs = requiredTabs.filter(tab => !existingTabs.includes(tab));
 
-            if (missingTabs.length === 0) {
+            if (missingTabs.length > 0) {
+                logs.push(`[${type}] Missing tabs: ${missingTabs.join(', ')}. Creating...`);
+                // Create missing tabs
+                const requests = missingTabs.map(tab => ({
+                    addSheet: {
+                        properties: { title: tab }
+                    }
+                }));
+
+                await client.spreadsheets.batchUpdate({
+                    spreadsheetId,
+                    requestBody: { requests }
+                });
+            } else {
                 logs.push(`[${type}] All tabs exist.`);
-                continue;
             }
 
-            logs.push(`[${type}] Missing tabs: ${missingTabs.join(', ')}. Creating...`);
+            // 2. Update headers for ALL required tabs (Force Sync)
+            // This ensures even existing tabs have correct headers
+            for (const tab of requiredTabs) {
+                const def = Object.values(sheets).find(d => d.tab === tab && (d.sheetId === type || (type === 'auth' && d.sheetId === 'auth') || (type === 'data' && d.sheetId === 'data')));
 
-            // Create missing tabs
-            const requests = missingTabs.map(tab => ({
-                addSheet: {
-                    properties: { title: tab }
-                }
-            }));
-
-            await client.spreadsheets.batchUpdate({
-                spreadsheetId,
-                requestBody: { requests }
-            });
-
-            logs.push(`[${type}] Created tabs. Now adding headers...`);
-
-            // Add headers for new tabs
-            for (const tab of missingTabs) {
-                // find def
-                const def = Object.values(sheets).find(d => d.tab === tab && d.sheetId === type);
                 if (def) {
+                    // Check if tab really exists now (it should)
                     await client.spreadsheets.values.update({
                         spreadsheetId,
                         range: `${tab}!A1`,
                         valueInputOption: 'RAW',
                         requestBody: { values: [[...def.columns]] }
                     });
-                    logs.push(`[${type}] Added header for ${tab}`);
+                    logs.push(`[${type}] Updated header for ${tab}`);
                 }
             }
 
