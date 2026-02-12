@@ -27,7 +27,7 @@ export async function isProjectOwner(teamId: string): Promise<boolean> {
         const member = await getRowBy('team_members', 'team_id', teamId);
         if (!member) return false;
 
-        return member.user_id === currentUser.userId && member.role === 'owner';
+        return member.user_id === currentUser.userId && ['owner', 'leader'].includes(member.role);
     } catch (error) {
         console.error('Error checking project owner:', error);
         return false;
