@@ -32,7 +32,8 @@ export async function isProjectOwner(teamId: string): Promise<boolean> {
 
         if (!member) return false;
 
-        return ['owner', 'leader'].includes(member.role);
+        // TICKET-FIX: Allow any team member to edit, regardless of role
+        return true;
     } catch (error) {
         console.error('Error checking project owner:', error);
         return false;
