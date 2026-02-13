@@ -13,6 +13,7 @@ export default function TeamGrid({ teams }: TeamGridProps) {
     const [filters, setFilters] = useState<FilterState>({
         stage: 'all',
         field: 'all', // field info is not yet in Team type, assume it might be added or handle gracefully
+        participantType: 'all',
         hasHelp: false,
         sortBy: 'recent',
     });
@@ -28,6 +29,11 @@ export default function TeamGrid({ teams }: TeamGridProps) {
         // 2. Field (Track) Filter
         if (filters.field !== 'all') {
             result = result.filter((t) => t.track === filters.field);
+        }
+
+        // 3. Participant Type Filter
+        if (filters.participantType !== 'all') {
+            result = result.filter((t) => t.participantType === filters.participantType);
         }
 
         // 3. Has Help Filter (Removed based on request, but keeping placeholder if needed or just remove)

@@ -22,12 +22,12 @@ export async function POST(request: NextRequest) {
     try {
         const user = await requireAuth();
         const body = await request.json();
-        const { name, phone, org, birthdate, privacyConsent, termsConsent } = body;
+        const { name, phone, org, participantType, birthdate, privacyConsent, termsConsent } = body;
 
         // 필수 입력 검증
-        if (!name || !phone || !org || !birthdate) {
+        if (!name || !phone || !org || !participantType || !birthdate) {
             return NextResponse.json(
-                { error: '이름, 휴대폰, 소속, 생년월일을 모두 입력해주세요.' },
+                { error: '이름, 휴대폰, 소속, 참여 유형, 생년월일을 모두 입력해주세요.' },
                 { status: 400 },
             );
         }
@@ -77,6 +77,7 @@ export async function POST(request: NextRequest) {
                 phone,
                 org,
                 birthdate,
+                participant_type: participantType,
                 consent_version: consentVersion,
                 consented_at: kstNow,
                 profile_complete: 'TRUE',

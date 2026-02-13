@@ -7,6 +7,7 @@ import styles from './DashboardFilters.module.css';
 export type FilterState = {
     stage: string;
     field: string;
+    participantType: string;
     hasHelp: boolean;
     sortBy: 'recent' | 'name' | 'created';
 };
@@ -29,6 +30,12 @@ const FIELD_OPTIONS = [
     { value: '협업·지식관리·성과지표', label: '협업·지식관리·성과지표' },
 ];
 
+const PARTICIPANT_OPTIONS = [
+    { value: 'all', label: '전체 참여 유형' },
+    { value: 'participating_org', label: '1·2차년도 참여기관' },
+    { value: 'seoul_social_worker', label: '서울시 사회복지사' },
+];
+
 const SORT_OPTIONS = [
     { value: 'recent', label: '최근 업데이트 순' },
     { value: 'created', label: '등록일 순' },
@@ -39,6 +46,7 @@ export default function DashboardFilters({ onFilterChange }: DashboardFiltersPro
     const [filters, setFilters] = useState<FilterState>({
         stage: 'all',
         field: 'all',
+        participantType: 'all',
         hasHelp: false,
         sortBy: 'recent',
     });
@@ -88,6 +96,24 @@ export default function DashboardFilters({ onFilterChange }: DashboardFiltersPro
             </div>
 
             <div className={styles.filterGroup}>
+                <label htmlFor="participant-filter" className={styles.label}>
+                    참여 유형
+                </label>
+                <select
+                    id="participant-filter"
+                    className={styles.select}
+                    value={filters.participantType}
+                    onChange={(e) => handleChange('participantType', e.target.value)}
+                >
+                    {PARTICIPANT_OPTIONS.map((option) => (
+                        <option key={option.value} value={option.value}>
+                            {option.label}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
+            <div className={styles.filterGroup}>
                 <label htmlFor="sort-by" className={styles.label}>
                     정렬
                 </label>
@@ -104,6 +130,6 @@ export default function DashboardFilters({ onFilterChange }: DashboardFiltersPro
                     ))}
                 </select>
             </div>
-        </div>
+        </div >
     );
 }

@@ -7,6 +7,7 @@ export type Team = {
     name: string;
     org?: string;
     track?: string; // 분야
+    participantType?: string; // 참여 유형 (1·2차년도 참여기관 / 서울시 사회복지사)
     stage: 'intro' | 'validate' | 'complete';
     recentUpdate: string;
     helpCount: number;
@@ -14,6 +15,11 @@ export type Team = {
     badges: string[]; // 기여 배지
     createdAt: string; // 등록일 (for sorting)
     updatedAt: string;
+};
+
+const PARTICIPANT_TYPE_LABELS: Record<string, string> = {
+    participating_org: '참여기관',
+    seoul_social_worker: '서울시 사회복지사',
 };
 
 const STAGE_LABELS: Record<Team['stage'], string> = {
@@ -32,7 +38,21 @@ export default function TeamCard({ team }: TeamCardProps) {
             <div className={styles.header}>
                 <div className={styles.titleSection}>
                     <h3 className={styles.teamName}>{team.name}</h3>
-                    {team.org && <p className={styles.org}>{team.org}</p>}
+                    <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                        {team.participantType && PARTICIPANT_TYPE_LABELS[team.participantType] && (
+                            <span style={{
+                                fontSize: '0.75rem',
+                                backgroundColor: '#e0e7ff',
+                                color: '#4338ca',
+                                padding: '0.1rem 0.4rem',
+                                borderRadius: '4px',
+                                fontWeight: 600
+                            }}>
+                                {PARTICIPANT_TYPE_LABELS[team.participantType]}
+                            </span>
+                        )}
+                        {team.org && <p className={styles.org}>{team.org}</p>}
+                    </div>
                 </div>
                 <span className={`${styles.stageBadge} ${styles[`stage-${team.stage}`]}`}>
                     {STAGE_LABELS[team.stage]}

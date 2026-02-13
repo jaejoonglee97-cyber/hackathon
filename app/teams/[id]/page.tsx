@@ -63,6 +63,7 @@ export default async function TeamPage({ params }: { params: { id: string } }) {
                     ...tm,
                     name: profile?.name || '알 수 없음',
                     org: profile?.org || '',
+                    participantType: profile?.participant_type,
                     phone: isAdminUser ? (profile?.phone || '') : '',
                     email: email,
                     role: tm.role
@@ -86,7 +87,21 @@ export default async function TeamPage({ params }: { params: { id: string } }) {
                             {members.map((m) => (
                                 <span key={m.user_id} className={styles.participantInfo}>
                                     <span className={styles.participantName}>{m.name}</span>
-                                    {m.org && <span className={styles.participantOrg}>{m.org}</span>}
+                                    {m.participantType && (
+                                        <span style={{
+                                            fontSize: '0.7em',
+                                            backgroundColor: '#eff6ff',
+                                            color: '#1d4ed8',
+                                            padding: '2px 6px',
+                                            borderRadius: '4px',
+                                            marginLeft: '6px',
+                                            verticalAlign: 'middle'
+                                        }}>
+                                            {m.participantType === 'participating_org' ? '참여기관' :
+                                                m.participantType === 'seoul_social_worker' ? '서울시 사회복지사' : m.participantType}
+                                        </span>
+                                    )}
+                                    {m.org && <span className={styles.participantOrg} style={{ marginLeft: '6px' }}>{m.org}</span>}
                                     {/* Admin View: Email/Phone */}
                                     {m.email && <span className={styles.participantContact} style={{ fontSize: '0.8em', color: '#666', marginLeft: '5px' }}>({m.email} / {m.phone})</span>}
                                 </span>

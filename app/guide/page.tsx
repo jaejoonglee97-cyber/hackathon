@@ -22,6 +22,12 @@ export default function GuidePage() {
                             <p className={styles.cardText}>
                                 사회복지 현장 문제를 사회복지사 관점에서 해결하는 아이디어 및 개선안을 발굴하고,<br />
                                 스마트워크 활용 기반 우수 모델을 선정하여 확산시키고자 하는 사업입니다.
+                                <br /><br />
+                                👥 <strong>참가 대상</strong>
+                                <ul style={{ listStyle: 'disc', paddingLeft: '1.2rem', marginTop: '0.3rem', fontSize: '0.95rem' }}>
+                                    <li><strong>1·2차년도 참여기관:</strong> 기존 스마트워크 사업 참여 경험이 있는 기관</li>
+                                    <li><strong>서울시 사회복지사:</strong> 서울 소재 사회복지시설·기관 종사자 누구나</li>
+                                </ul>
                             </p>
                             <br />
                             <h4 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem', color: '#374151' }}>📅 주요 일정</h4>

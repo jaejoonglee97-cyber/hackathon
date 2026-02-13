@@ -11,6 +11,7 @@ export default function OnboardingProfilePage() {
         name: '',
         phone: '',
         org: '',
+        participantType: '',
         birthdate: '',
         privacyConsent: false,
         termsConsent: false,
@@ -33,6 +34,11 @@ export default function OnboardingProfilePage() {
         // 생년월일 형식 검증 (YYYY-MM-DD)
         if (formData.birthdate && !/^\d{4}-\d{2}-\d{2}$/.test(formData.birthdate)) {
             setError('생년월일 형식이 올바르지 않습니다. (예: 1990-01-15)');
+            return;
+        }
+
+        if (!formData.participantType) {
+            setError('참여 유형을 선택해주세요.');
             return;
         }
 
@@ -134,6 +140,38 @@ export default function OnboardingProfilePage() {
                                 required
                                 placeholder="예: 서울시복지재단"
                             />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label className={styles.label}>
+                                참여 유형 <span className={styles.required}>*</span>
+                            </label>
+                            <div className={styles.radioGroup}>
+                                <label className={styles.radioLabel}>
+                                    <input
+                                        type="radio"
+                                        name="participantType"
+                                        value="participating_org"
+                                        checked={formData.participantType === 'participating_org'}
+                                        onChange={handleChange}
+                                        className={styles.radioInput}
+                                        required
+                                    />
+                                    1·2차년도 참여기관
+                                </label>
+                                <label className={styles.radioLabel}>
+                                    <input
+                                        type="radio"
+                                        name="participantType"
+                                        value="seoul_social_worker"
+                                        checked={formData.participantType === 'seoul_social_worker'}
+                                        onChange={handleChange}
+                                        className={styles.radioInput}
+                                        required
+                                    />
+                                    서울시 사회복지사
+                                </label>
+                            </div>
                         </div>
 
                         <div className={styles.formGroup}>

@@ -27,13 +27,15 @@ export default async function DashboardPage() {
     }
 
     // 3) 병렬 데이터 로딩 (안전하게 처리)
-    const [allTeams, allProjects, deadlines] = await Promise.all([
+    const [allTeams, allProjects, deadlines, allTeamMembers, allProfiles] = await Promise.all([
         listRows('teams'),
         listRows('projects'),
         getActiveDeadlines().catch(err => {
             console.warn('Failed to fetch deadlines:', err);
             return [];
         }),
+        listRows('team_members'),
+        listRows('users_profile'),
     ]);
 
     // 4) 내 팀 정보 (개인화 영역용)
@@ -46,6 +48,13 @@ export default async function DashboardPage() {
         const project = allProjects.find((p) => p.team_id === team.id);
         const recentUpdate = project?.updated_at || team.created_at;
 
+        // 리더의 참여 유형 찾기
+        const members = allTeamMembers.filter(m => m.team_id === team.id);
+        // role이 'leader'인 멤버 찾기, 없으면 첫 번째 멤버
+        const leader = members.find(m => m.role === 'leader') || members[0];
+        const leaderProfile = allProfiles.find(p => p.user_id === leader?.user_id);
+        const participantType = leaderProfile?.participant_type;
+
         // 뱃지 (예시 로직 - 현재는 기여도 측정 불가로 빈 배열)
         const badges: string[] = [];
 
@@ -54,6 +63,7 @@ export default async function DashboardPage() {
             name: team.name,
             org: team.org,
             track: project?.track || '', // 분야
+            participantType,
             stage: (team.stage as Team['stage']) || 'intro',
             recentUpdate: new Date(team.created_at).toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' }), // 등록일로 사용
             createdAt: team.created_at, // 실제 등록일
