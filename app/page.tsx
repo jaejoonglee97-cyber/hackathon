@@ -13,6 +13,8 @@ import TeamGrid from './components/TeamGrid';
 import type { Team } from './components/TeamCard';
 import CountdownWidget from './components/CountdownWidget';
 
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardPage() {
     // 1) 로그인 확인
     const currentUser = await getCurrentUser();

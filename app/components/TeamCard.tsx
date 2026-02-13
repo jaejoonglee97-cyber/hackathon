@@ -37,22 +37,23 @@ export default function TeamCard({ team }: TeamCardProps) {
         <Link href={`/teams/${team.id}`} className={styles.card}>
             <div className={styles.header}>
                 <div className={styles.titleSection}>
-                    <h3 className={styles.teamName}>{team.name}</h3>
-                    <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                    <div style={{ marginBottom: '6px' }}>
                         {team.participantType && PARTICIPANT_TYPE_LABELS[team.participantType] && (
                             <span style={{
                                 fontSize: '0.75rem',
                                 backgroundColor: '#e0e7ff',
                                 color: '#4338ca',
-                                padding: '0.1rem 0.4rem',
+                                padding: '0.2rem 0.5rem',
                                 borderRadius: '4px',
-                                fontWeight: 600
+                                fontWeight: 600,
+                                display: 'inline-block'
                             }}>
                                 {PARTICIPANT_TYPE_LABELS[team.participantType]}
                             </span>
                         )}
-                        {team.org && <p className={styles.org}>{team.org}</p>}
                     </div>
+                    <h3 className={styles.teamName}>{team.name}</h3>
+                    {team.org && <p className={styles.org}>{team.org}</p>}
                 </div>
                 <span className={`${styles.stageBadge} ${styles[`stage-${team.stage}`]}`}>
                     {STAGE_LABELS[team.stage]}
