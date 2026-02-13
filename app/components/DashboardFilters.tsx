@@ -32,8 +32,8 @@ const FIELD_OPTIONS = [
 
 const PARTICIPANT_OPTIONS = [
     { value: 'all', label: '전체 참여 유형' },
-    { value: 'participating_org', label: '1·2차년도 참여기관' },
-    { value: 'seoul_social_worker', label: '서울시 사회복지사' },
+    { value: 'participating_org', label: '열매똑똑 참여기관 부문' },
+    { value: 'seoul_social_worker', label: '서울시 사회복지사 부문' },
 ];
 
 const SORT_OPTIONS = [

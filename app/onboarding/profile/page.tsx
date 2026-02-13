@@ -181,7 +181,7 @@ export default function OnboardingProfilePage() {
                                         className={styles.radioInput}
                                         required
                                     />
-                                    1·2차년도 참여기관
+                                    열매똑똑 참여기관 부문 (1·2차년도)
                                 </label>
                                 <label className={styles.radioLabel}>
                                     <input
@@ -193,7 +193,7 @@ export default function OnboardingProfilePage() {
                                         className={styles.radioInput}
                                         required
                                     />
-                                    서울시 사회복지사
+                                    서울시 사회복지사 부문
                                 </label>
                             </div>
                         </div>

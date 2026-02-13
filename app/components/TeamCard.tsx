@@ -18,8 +18,8 @@ export type Team = {
 };
 
 const PARTICIPANT_TYPE_LABELS: Record<string, string> = {
-    participating_org: '참여기관',
-    seoul_social_worker: '서울시 사회복지사',
+    participating_org: '열매똑똑 참여기관 부문',
+    seoul_social_worker: '서울시 사회복지사 부문',
 };
 
 const STAGE_LABELS: Record<Team['stage'], string> = {
@@ -28,11 +28,19 @@ const STAGE_LABELS: Record<Team['stage'], string> = {
     complete: '완성',
 };
 
+// Colors for participant types
+const PARTICIPANT_TYPE_STYLES: Record<string, { bg: string; color: string }> = {
+    participating_org: { bg: '#fff7ed', color: '#c2410c' }, // Orange/Warm
+    seoul_social_worker: { bg: '#eff6ff', color: '#1d4ed8' }, // Blue/Cool
+};
+
 type TeamCardProps = {
     team: Team;
 };
 
 export default function TeamCard({ team }: TeamCardProps) {
+    const participantStyle = team.participantType ? PARTICIPANT_TYPE_STYLES[team.participantType] : undefined;
+
     return (
         <Link href={`/teams/${team.id}`} className={styles.card}>
             <div className={styles.header}>
@@ -41,8 +49,8 @@ export default function TeamCard({ team }: TeamCardProps) {
                         {team.participantType && PARTICIPANT_TYPE_LABELS[team.participantType] && (
                             <span style={{
                                 fontSize: '0.75rem',
-                                backgroundColor: '#e0e7ff',
-                                color: '#4338ca',
+                                backgroundColor: participantStyle?.bg || '#f3f4f6',
+                                color: participantStyle?.color || '#4b5563',
                                 padding: '0.2rem 0.5rem',
                                 borderRadius: '4px',
                                 fontWeight: 600,

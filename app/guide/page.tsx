@@ -25,8 +25,8 @@ export default function GuidePage() {
                                 <br /><br />
                                 👥 <strong>참가 대상</strong>
                                 <ul style={{ listStyle: 'disc', paddingLeft: '1.2rem', marginTop: '0.3rem', fontSize: '0.95rem' }}>
-                                    <li><strong>1·2차년도 참여기관:</strong> 기존 스마트워크 사업 참여 경험이 있는 기관</li>
-                                    <li><strong>서울시 사회복지사:</strong> 서울 소재 사회복지시설·기관 종사자 누구나</li>
+                                    <li><strong>열매똑똑 참여기관 부문:</strong> 기존 1·2차년도 스마트워크 사업 참여 경험이 있는 기관</li>
+                                    <li><strong>서울시 사회복지사 부문:</strong> 서울 소재 사회복지시설·기관 종사자 누구나</li>
                                 </ul>
                             </p>
                             <br />
