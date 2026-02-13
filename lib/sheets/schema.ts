@@ -63,9 +63,9 @@ export const sheets = {
         'consent_version',
         'consented_at',
         'privacy_mask_level',
-        'participant_type',
         'profile_complete',      // 'TRUE' | 'FALSE' | '' (빈칸 = FALSE)
         'profile_completed_at',  // ISO 8601 +09:00
+        'participant_type',
     ] as const),
 
     teams: def('teams', 'data', [

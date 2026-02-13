@@ -48,21 +48,13 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // 이미 프로필 완료된 사용자인지 확인
+        // 이미 프로필 완료된 사용자인지 확인 (API가 업데이트도 허용하도록 수정)
         const profile = await getUserProfile(user.userId);
-        if (isProfileComplete(profile)) {
-            // 이미 완료됨 → 팀 ID 찾아서 반환
-            const existingTeam = await getRowBy('team_members', 'user_id', user.userId);
-            const teamId = existingTeam?.team_id || null;
-            if (!teamId) {
-                console.warn('[onboarding] 프로필 완료 사용자이나 team_members 레코드 없음:', user.userId);
-            }
-            return NextResponse.json({
-                success: true,
-                message: '이미 프로필이 완료되었습니다.',
-                teamId,
-            });
-        }
+
+        // if (isProfileComplete(profile)) { ... } // 기존 로직 주석 처리 또는 제거
+
+        const existingTeam = await getRowBy('team_members', 'user_id', user.userId);
+        const teamId = existingTeam?.team_id || null;
 
         const consentVersion = (await getConfigValue('consent_version')) || process.env.CONSENT_VERSION || 'v1.0';
         const kstNow = nowKST();
@@ -91,12 +83,12 @@ export async function POST(request: NextRequest) {
         );
 
         // 2) 팀/프로젝트 중복 생성 방지
-        const existingMember = await getRowBy('team_members', 'user_id', user.userId);
-        if (existingMember) {
+        // 이미 생성된 팀 멤버 정보가 있다면 해당 팀 ID 반환
+        if (teamId) {
             return NextResponse.json({
                 success: true,
-                message: '프로필이 완료되었습니다.',
-                teamId: existingMember.team_id,
+                message: '프로필이 업데이트되었습니다.',
+                teamId: teamId,
             });
         }
 

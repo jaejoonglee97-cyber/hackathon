@@ -1,7 +1,7 @@
 /* 온보딩: 프로필 완료 페이지 */
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './profile.module.css';
 
@@ -26,6 +26,30 @@ export default function OnboardingProfilePage() {
             [name]: type === 'checkbox' ? checked : value,
         }));
     };
+
+    // 기존 프로필 불러오기 (수정 모드 지원)
+    useEffect(() => {
+        fetch('/api/auth/me').then(res => {
+            if (res.ok) return res.json();
+            throw new Error('Unauthorized');
+        }).then(user => {
+            if (user?.profile) {
+                setFormData(prev => ({
+                    ...prev,
+                    name: user.profile.name || '',
+                    phone: user.profile.phone || '',
+                    org: user.profile.org || '',
+                    participantType: user.profile.participant_type || '', // 기존 값 로드
+                    birthdate: user.profile.birthdate || '',
+                    // 동의 여부는 갱신 필요할 수 있으므로 false로 두거나 true로 설정 (여기선 사용자 편의 위해 체크된 상태로 둘 수 있음)
+                    privacyConsent: true,
+                    termsConsent: true,
+                }));
+            }
+        }).catch(() => {
+            // 로그인 안했거나 프로필 없음 -> 무시
+        });
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
