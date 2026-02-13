@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    background-color: var(--color-bg-secondary);
     padding: 1rem;
 }
 
@@ -13,22 +13,21 @@
 }
 
 .card {
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 20px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
     padding: 2.5rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-lg);
 }
 
 .stepBadge {
     display: inline-block;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    color: #fff;
+    background-color: var(--color-primary-light);
+    color: var(--color-primary-dark);
     font-size: 0.75rem;
     font-weight: 600;
     padding: 0.3rem 0.8rem;
-    border-radius: 20px;
+    border-radius: var(--radius-full);
     margin-bottom: 1rem;
     letter-spacing: 0.02em;
 }
@@ -36,24 +35,25 @@
 .title {
     font-size: 1.6rem;
     font-weight: 700;
-    color: #f1f5f9;
+    color: var(--color-text-primary);
     margin: 0 0 0.5rem;
 }
 
 .subtitle {
-    font-size: 0.9rem;
-    color: #94a3b8;
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
     margin: 0 0 1.5rem;
     line-height: 1.5;
 }
 
 .privacyNotice {
-    background: rgba(251, 191, 36, 0.1);
-    border: 1px solid rgba(251, 191, 36, 0.3);
-    border-radius: 10px;
+    background-color: var(--color-warning-light);
+    border: 1px solid var(--color-warning);
+    border-radius: var(--radius-md);
     padding: 0.85rem 1rem;
-    font-size: 0.82rem;
-    color: #fbbf24;
+    font-size: 0.85rem;
+    color: #92400e;
+    /* Darker warning text for readability */
     line-height: 1.5;
     margin-bottom: 1.5rem;
 }
@@ -61,128 +61,137 @@
 .form {
     display: flex;
     flex-direction: column;
-    gap: 1.1rem;
+    gap: 1.25rem;
 }
 
 .error {
-    background: rgba(239, 68, 68, 0.15);
-    border: 1px solid rgba(239, 68, 68, 0.4);
-    color: #fca5a5;
+    background-color: #fee2e2;
+    border: 1px solid #fca5a5;
+    color: #991b1b;
     padding: 0.75rem 1rem;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     font-size: 0.85rem;
 }
 
 .formGroup {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: 0.4rem;
 }
 
 .label {
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #cbd5e1;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
 }
 
 .required {
-    color: #f87171;
+    color: var(--color-danger);
+    margin-left: 2px;
 }
 
 .input {
-    padding: 0.7rem 0.9rem;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.06);
-    color: #f1f5f9;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: white;
+    color: var(--color-text-primary);
     font-size: 0.95rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition: all 0.2s;
 }
 
 .input:focus {
     outline: none;
-    border-color: #6366f1;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-light);
 }
 
 .input::placeholder {
-    color: #64748b;
+    color: var(--color-text-tertiary);
 }
 
 .consentSection {
-    background: rgba(255, 255, 255, 0.04);
-    border-radius: 10px;
+    background-color: var(--color-bg-secondary);
+    border-radius: var(--radius-md);
     padding: 1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.75rem;
+    border: 1px solid var(--color-border);
 }
 
 .checkboxLabel {
     display: flex;
     align-items: flex-start;
-    gap: 0.5rem;
-    font-size: 0.88rem;
-    color: #e2e8f0;
+    gap: 0.6rem;
+    font-size: 0.9rem;
+    color: var(--color-text-primary);
     cursor: pointer;
+    font-weight: 500;
 }
 
 .checkbox {
     margin-top: 3px;
-    accent-color: #6366f1;
+    accent-color: var(--color-primary);
+    width: 1rem;
+    height: 1rem;
 }
 
 .consentDetail {
-    font-size: 0.78rem;
-    color: #94a3b8;
-    margin: 0 0 0.5rem 1.4rem;
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    margin: 0 0 0.5rem 1.6rem;
     line-height: 1.5;
 }
 
 .submitButton {
-    padding: 0.85rem;
+    padding: 0.9rem;
     border: none;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    color: #fff;
+    border-radius: var(--radius-md);
+    background-color: var(--color-primary);
+    color: white;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.2s;
+    transition: all 0.2s;
     margin-top: 0.5rem;
+    box-shadow: var(--shadow-sm);
 }
 
 .submitButton:hover:not(:disabled) {
+    background-color: var(--color-primary-dark);
     transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+    box-shadow: var(--shadow-md);
 }
 
 .submitButton:disabled {
-    opacity: 0.6;
+    opacity: 0.7;
     cursor: not-allowed;
+    background-color: var(--color-text-tertiary);
 }
 
 .radioGroup {
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
-    background: rgba(255, 255, 255, 0.04);
-    padding: 0.8rem;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--color-bg-secondary);
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
 }
 
 .radioLabel {
     display: flex;
     align-items: center;
     gap: 0.6rem;
-    color: #e2e8f0;
-    font-size: 0.92rem;
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
     cursor: pointer;
+    font-weight: 500;
 }
 
 .radioInput {
-    accent-color: #6366f1;
+    accent-color: var(--color-primary);
     width: 1.1em;
     height: 1.1em;
 }
