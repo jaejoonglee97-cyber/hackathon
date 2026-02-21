@@ -5,6 +5,34 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './edit-form.module.css';
 
+/* ── 성과 측정: 문제 유형 선택지 ── */
+const PROBLEM_TYPES = [
+    '반복 입력/취합(실적 모으기 등)',
+    '문서 작성/정리(회의록/보고서/기록지 등)',
+    '일정/업무 누락 방지(알림/할일 관리 등)',
+    '자료 찾기 어려움(파일 산재/검색 어려움)',
+    '의사소통/인수인계(공유 방식 혼란 등)',
+    '이용자 응대/접수(신청/예약/문의 대응 등)',
+    '개인정보 처리/권한 관리(접근권한/공유/보관 등)',
+    '기타(직접 작성)',
+] as const;
+
+const IMPROVEMENT_LEVELS = [
+    '거의 없음',
+    '조금',
+    '보통',
+    '많이',
+    '매우 많이',
+] as const;
+
+/* ── AI 사용 범위 체크박스 옵션 ── */
+const AI_SCOPE_OPTIONS = [
+    { value: '문서(기획/작성)', label: '문서(기획/작성)' },
+    { value: '코드(작성/수정)', label: '코드(작성/수정)' },
+    { value: '디자인(이미지/시안)', label: '디자인(이미지/시안)' },
+    { value: '기타', label: '기타' },
+] as const;
+
 interface ProjectEditFormProps {
     teamId: string;
     project: any;
@@ -35,13 +63,10 @@ export default function ProjectEditForm({
     const [name, setName] = useState(teamName);
     const MAX_NAME_EDITS = 3;
     const remainingEdits = Math.max(0, MAX_NAME_EDITS - nameEditCount);
-    // Only allow editing if remainingEdits > 0 or if the name hasn't changed from initial (so they can fix it before first save if we count save as edit? No, we count successful server update as edit). 
-    // Actually, logic is: user can change text input. Server checks count. 
-    // Here we just show the UI limit.
 
     const [formData, setFormData] = useState({
         // Other
-        track: project?.track || '', // 분야 (추가)
+        track: project?.track || '',
 
         // Why
         problem_statement: project?.problem_statement || '',
@@ -70,6 +95,34 @@ export default function ProjectEditForm({
 
         // 확산
         adoption_checklist: project?.adoption_checklist || '',
+
+        // ── AI 활용내역 ──
+        ai_tools: project?.ai_tools || '',
+        ai_scope: project?.ai_scope || '',           // 쉼표 구분 복수값
+        ai_verification: project?.ai_verification || '',
+
+        // ── 성과 측정 ──
+        perf_problem_type: project?.perf_problem_type || '',
+        perf_improvement: project?.perf_improvement || '',
+        perf_etc_desc: project?.perf_etc_desc || '',
+
+        // ── 안전성 체크리스트 ──
+        safety_no_pii: project?.safety_no_pii || '',
+        safety_anonymous: project?.safety_anonymous || '',
+        safety_restricted_link: project?.safety_restricted_link || '',
+    });
+
+    /* ── AI 범위: 기타 직접 입력 상태 ── */
+    const [aiScopeEtcText, setAiScopeEtcText] = useState(() => {
+        // 기존 저장값에서 기타 항목 파싱
+        const scopes: string[] = (project?.ai_scope || '').split(',').map((s: string) => s.trim());
+        const etcItem = scopes.find((s: string) =>
+            s.startsWith('기타(') || (s === '기타')
+        );
+        if (etcItem && etcItem.startsWith('기타(')) {
+            return etcItem.replace('기타(', '').replace(')', '');
+        }
+        return '';
     });
 
     const handleChange = (
@@ -85,6 +138,78 @@ export default function ProjectEditForm({
         setStage(e.target.value);
     };
 
+    /* ── AI 범위 체크박스 핸들러 ── */
+    const getAiScopeArray = (): string[] => {
+        if (!formData.ai_scope) return [];
+        return formData.ai_scope.split(',').map((s: string) => s.trim()).filter(Boolean);
+    };
+
+    const handleAiScopeChange = (value: string, checked: boolean) => {
+        const current = getAiScopeArray();
+        // 기타 관련 항목들 제거 (기타, 기타(...))
+        let items = current.filter((v: string) => !v.startsWith('기타'));
+        // 비기타 항목 토글
+        if (value !== '기타') {
+            if (checked) {
+                if (!items.includes(value)) items.push(value);
+            } else {
+                items = items.filter((v: string) => v !== value);
+            }
+        }
+
+        // 기타 항목 처리
+        const isEtcChecked = value === '기타' ? checked : current.includes('기타') || current.some((v: string) => v.startsWith('기타('));
+        if (isEtcChecked) {
+            if (aiScopeEtcText.trim()) {
+                items.push(`기타(${aiScopeEtcText.trim()})`);
+            } else {
+                items.push('기타');
+            }
+        }
+
+        setFormData(prev => ({
+            ...prev,
+            ai_scope: items.join(','),
+        }));
+    };
+
+    const isAiScopeChecked = (value: string): boolean => {
+        const current = getAiScopeArray();
+        if (value === '기타') {
+            return current.some((v: string) => v === '기타' || v.startsWith('기타('));
+        }
+        return current.includes(value);
+    };
+
+    const handleAiScopeEtcTextChange = (text: string) => {
+        setAiScopeEtcText(text);
+        // 기타 체크된 상태에서 텍스트 변경 시 ai_scope 갱신
+        const current = getAiScopeArray();
+        const items = current.filter((v: string) => !v.startsWith('기타'));
+        if (text.trim()) {
+            items.push(`기타(${text.trim()})`);
+        } else {
+            items.push('기타');
+        }
+        setFormData(prev => ({
+            ...prev,
+            ai_scope: items.join(','),
+        }));
+    };
+
+    /* ── 안전성 체크박스 핸들러 ── */
+    const handleSafetyChange = (field: string, checked: boolean) => {
+        setFormData(prev => ({
+            ...prev,
+            [field]: checked ? 'TRUE' : '',
+        }));
+    };
+
+    const allSafetyChecked =
+        formData.safety_no_pii === 'TRUE' &&
+        formData.safety_anonymous === 'TRUE' &&
+        formData.safety_restricted_link === 'TRUE';
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
@@ -95,6 +220,13 @@ export default function ProjectEditForm({
         const nameChanged = name.trim() !== teamName;
         if (nameChanged && remainingEdits <= 0) {
             setError('프로젝트 이름 변경 횟수를 초과했습니다. (최대 3회)');
+            setLoading(false);
+            return;
+        }
+
+        // ── 안전성 체크리스트 제출 조건 ──
+        if (!allSafetyChecked) {
+            setError('안전성(개인정보) 체크리스트를 모두 체크해야 제출할 수 있습니다.');
             setLoading(false);
             return;
         }
@@ -286,7 +418,9 @@ export default function ProjectEditForm({
                 </div>
             </section>
 
-            {/* 4. 프로젝트 내용 */}
+            {/* ═══════════════════════════════════════════════════════════ */}
+            {/* 4. 프로젝트 내용 + AI 활용내역 */}
+            {/* ═══════════════════════════════════════════════════════════ */}
             <section className={styles.section}>
                 <h2 className={styles.sectionTitle}>
                     <span className={styles.sectionIcon}>4️⃣</span>
@@ -307,7 +441,6 @@ export default function ProjectEditForm({
                         placeholder="구체적인 해결 방안, 주요 기능, 구현 방식 등을 자유롭게 기술해주세요."
                     />
                 </div>
-                {/* features를 보조 필드로 사용하거나 위 solution에 통합 유도 */}
                 <div className={styles.field}>
                     <label htmlFor="features" className={styles.label}>
                         (선택) 추가 상세 기능 설명
@@ -321,6 +454,82 @@ export default function ProjectEditForm({
                         rows={3}
                         placeholder="필요한 경우 주요 기능을 목록으로 정리해주세요."
                     />
+                </div>
+
+                {/* ── AI 활용내역 (프로젝트 내용 섹션 하단) ── */}
+                <div className={styles.subsectionBlock}>
+                    <h3 className={styles.subsectionTitle}>
+                        🤖 AI 활용내역 <span className={styles.required}>*</span>
+                    </h3>
+                    <p className={styles.helperText}>
+                        💡 감점용이 아니라, 나중에 다른 기관이 따라 만들 수 있게 &lsquo;만든 방법&rsquo;을 기록하는 항목입니다.
+                    </p>
+
+                    {/* 사용한 AI 도구 */}
+                    <div className={styles.field}>
+                        <label htmlFor="ai_tools" className={styles.label}>
+                            사용한 AI 도구 <span className={styles.required}>*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="ai_tools"
+                            name="ai_tools"
+                            value={formData.ai_tools}
+                            onChange={handleChange}
+                            className={styles.input}
+                            placeholder="예: ChatGPT, Claude, Gemini, Copilot 등"
+                            required
+                        />
+                    </div>
+
+                    {/* AI 사용 범위 (체크박스 복수선택) */}
+                    <div className={styles.field}>
+                        <label className={styles.label}>
+                            AI 사용 범위 <span className={styles.required}>*</span>
+                            <span className={styles.labelSub}>(복수 선택 가능)</span>
+                        </label>
+                        <div className={styles.checkboxGroup}>
+                            {AI_SCOPE_OPTIONS.map(opt => (
+                                <label key={opt.value} className={styles.checkboxLabel}>
+                                    <input
+                                        type="checkbox"
+                                        checked={isAiScopeChecked(opt.value)}
+                                        onChange={(e) => handleAiScopeChange(opt.value, e.target.checked)}
+                                        className={styles.checkbox}
+                                    />
+                                    <span>{opt.label}</span>
+                                </label>
+                            ))}
+                        </div>
+                        {/* 기타 선택 시 입력칸 */}
+                        {isAiScopeChecked('기타') && (
+                            <input
+                                type="text"
+                                value={aiScopeEtcText}
+                                onChange={(e) => handleAiScopeEtcTextChange(e.target.value)}
+                                className={styles.input}
+                                placeholder="기타 사용 범위를 입력해주세요"
+                                style={{ marginTop: '0.5rem' }}
+                            />
+                        )}
+                    </div>
+
+                    {/* 결과 확인 방법 */}
+                    <div className={styles.field}>
+                        <label htmlFor="ai_verification" className={styles.label}>
+                            결과 확인 방법 <span className={styles.required}>*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="ai_verification"
+                            name="ai_verification"
+                            value={formData.ai_verification}
+                            onChange={handleChange}
+                            className={styles.input}
+                            placeholder="예: 사람이 최종 확인 / 간단 테스트로 확인 / 샘플 데이터로 검증 등"
+                            required
+                        />
+                    </div>
                 </div>
             </section>
 
@@ -353,13 +562,91 @@ export default function ProjectEditForm({
                 </div>
             </section>
 
-            {/* 5. 기대효과 */}
+            {/* ═══════════════════════════════════════════════════════════ */}
+            {/* 5. 기대효과 — 성과 측정 블록을 상단에 먼저 배치 */}
+            {/* ═══════════════════════════════════════════════════════════ */}
             <section className={styles.section}>
                 <h2 className={styles.sectionTitle}>
                     <span className={styles.sectionIcon}>5️⃣</span>
                     프로젝트로 인한 기대효과
                 </h2>
 
+                {/* ── 성과 측정 (기대효과 텍스트 위쪽에 배치) ── */}
+                <div className={styles.subsectionBlock}>
+                    <h3 className={styles.subsectionTitle}>
+                        📊 성과 측정 <span className={styles.required}>*</span>
+                    </h3>
+
+                    {/* 문제 유형 (라디오) */}
+                    <div className={styles.field}>
+                        <label className={styles.label}>
+                            문제 유형 <span className={styles.required}>*</span>
+                            <span className={styles.labelSub}>(1개 선택)</span>
+                        </label>
+                        <div className={styles.radioGroup}>
+                            {PROBLEM_TYPES.map(pt => (
+                                <label key={pt} className={styles.radioLabel}>
+                                    <input
+                                        type="radio"
+                                        name="perf_problem_type"
+                                        value={pt}
+                                        checked={formData.perf_problem_type === pt}
+                                        onChange={handleChange}
+                                        className={styles.radio}
+                                        required
+                                    />
+                                    <span>{pt}</span>
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* 개선 정도 (라디오) */}
+                    <div className={styles.field}>
+                        <label className={styles.label}>
+                            개선 정도 <span className={styles.required}>*</span>
+                            <span className={styles.labelSub}>(1개 선택)</span>
+                        </label>
+                        <div className={styles.radioGroup} style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                            {IMPROVEMENT_LEVELS.map(lvl => (
+                                <label key={lvl} className={styles.radioLabel}>
+                                    <input
+                                        type="radio"
+                                        name="perf_improvement"
+                                        value={lvl}
+                                        checked={formData.perf_improvement === lvl}
+                                        onChange={handleChange}
+                                        className={styles.radio}
+                                        required
+                                    />
+                                    <span>{lvl}</span>
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* 조건부: 기타 선택 시 설명 입력 */}
+                    {formData.perf_problem_type === '기타(직접 작성)' && (
+                        <div className={styles.field}>
+                            <label htmlFor="perf_etc_desc" className={styles.label}>
+                                기타 설명 <span className={styles.required}>*</span>
+                                <span className={styles.labelSub}>(어떤 문제가 있었고, 무엇이 어떻게 좋아졌는지 2~3줄)</span>
+                            </label>
+                            <textarea
+                                id="perf_etc_desc"
+                                name="perf_etc_desc"
+                                value={formData.perf_etc_desc}
+                                onChange={handleChange}
+                                className={styles.textarea}
+                                rows={3}
+                                placeholder="어떤 문제가 있었고, 무엇이 어떻게 좋아졌는지 2~3줄로 적어주세요."
+                                required
+                            />
+                        </div>
+                    )}
+                </div>
+
+                {/* 기대효과 서술 (성과 측정 블록 아래) */}
                 <div className={styles.field}>
                     <label htmlFor="hypothesis1" className={styles.label}>
                         기대효과를 작성해주세요 <span className={styles.required}>*</span>
@@ -376,7 +663,9 @@ export default function ProjectEditForm({
                 </div>
             </section>
 
-            {/* 6. 활용 계획 */}
+            {/* ═══════════════════════════════════════════════════════════ */}
+            {/* 6. 활용 계획 + 안전성 체크리스트 */}
+            {/* ═══════════════════════════════════════════════════════════ */}
             <section className={styles.section}>
                 <h2 className={styles.sectionTitle}>
                     <span className={styles.sectionIcon}>6️⃣</span>
@@ -411,6 +700,52 @@ export default function ProjectEditForm({
                         rows={3}
                         placeholder="다른 기관이나 사회복지 현장에 이 모델을 어떻게 알리고 확산시킬 계획인가요?"
                     />
+                </div>
+
+                {/* ── 안전성(개인정보) 체크리스트 ── */}
+                <div className={styles.safetyBlock}>
+                    <h3 className={styles.subsectionTitle}>
+                        🔒 안전성(개인정보) 체크리스트 <span className={styles.required}>*</span>
+                    </h3>
+                    <p className={styles.helperText}>
+                        제출 전 아래 3개 항목을 <strong>모두 체크</strong>해야 저장할 수 있습니다.
+                    </p>
+
+                    <div className={styles.safetyCheckboxGroup}>
+                        <label className={styles.safetyCheckboxLabel}>
+                            <input
+                                type="checkbox"
+                                checked={formData.safety_no_pii === 'TRUE'}
+                                onChange={(e) => handleSafetyChange('safety_no_pii', e.target.checked)}
+                                className={styles.checkbox}
+                            />
+                            <span>AI에 개인정보(이름/연락처/주민번호/사례기록 등)를 입력하지 않았습니다.</span>
+                        </label>
+                        <label className={styles.safetyCheckboxLabel}>
+                            <input
+                                type="checkbox"
+                                checked={formData.safety_anonymous === 'TRUE'}
+                                onChange={(e) => handleSafetyChange('safety_anonymous', e.target.checked)}
+                                className={styles.checkbox}
+                            />
+                            <span>시연/제출물에는 익명 처리 또는 가짜 데이터만 사용했습니다.</span>
+                        </label>
+                        <label className={styles.safetyCheckboxLabel}>
+                            <input
+                                type="checkbox"
+                                checked={formData.safety_restricted_link === 'TRUE'}
+                                onChange={(e) => handleSafetyChange('safety_restricted_link', e.target.checked)}
+                                className={styles.checkbox}
+                            />
+                            <span>결과물 링크는 권한 제한 공유로 설정했습니다(누구나 공개 링크 금지).</span>
+                        </label>
+                    </div>
+
+                    {!allSafetyChecked && (
+                        <p className={styles.safetyWarning}>
+                            ⚠️ 위 3개 항목을 모두 체크해야 제출할 수 있습니다.
+                        </p>
+                    )}
                 </div>
             </section>
 
@@ -454,7 +789,7 @@ export default function ProjectEditForm({
                 <button
                     type="submit"
                     className={styles.submitButton}
-                    disabled={loading}
+                    disabled={loading || !allSafetyChecked}
                 >
                     💾 저장하기
                 </button>

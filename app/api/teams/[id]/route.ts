@@ -30,6 +30,12 @@ export async function PATCH(
             'prototype_link', 'github_link',
             'experiment_log', 'wrong_assumption', 'next_test',
             'adoption_checklist',
+            // AI 활용내역
+            'ai_tools', 'ai_scope', 'ai_verification',
+            // 성과 측정
+            'perf_problem_type', 'perf_improvement', 'perf_etc_desc',
+            // 안전성 체크리스트
+            'safety_no_pii', 'safety_anonymous', 'safety_restricted_link',
         ];
 
         const updates: Record<string, any> = {};

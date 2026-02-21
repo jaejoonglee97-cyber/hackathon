@@ -206,6 +206,147 @@
     transform: none;
 }
 
+/* ── 서브섹션 블록 (AI 활용내역, 성과 측정) ── */
+.subsectionBlock {
+    margin-top: var(--space-xl);
+    padding: var(--space-lg);
+    background: linear-gradient(135deg, hsl(210, 60%, 97%) 0%, hsl(200, 50%, 95%) 100%);
+    border: 2px solid hsl(210, 50%, 85%);
+    border-radius: var(--radius-md);
+}
+
+.subsectionTitle {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: hsl(210, 60%, 30%);
+    margin: 0 0 var(--space-sm) 0;
+}
+
+.helperText {
+    font-size: var(--font-size-sm);
+    color: hsl(210, 30%, 45%);
+    margin: 0 0 var(--space-lg) 0;
+    line-height: 1.5;
+    padding: var(--space-xs) var(--space-sm);
+    background: hsl(50, 80%, 95%);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid hsl(50, 80%, 55%);
+}
+
+.labelSub {
+    margin-left: var(--space-xs);
+    font-weight: 400;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+}
+
+/* ── 체크박스 그룹 ── */
+.checkboxGroup {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: var(--font-size-base);
+    cursor: pointer;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    transition: background 0.15s;
+}
+
+.checkboxLabel:hover {
+    background: hsl(210, 40%, 92%);
+}
+
+.checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: hsl(210, 70%, 50%);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* ── 라디오 그룹 ── */
+.radioGroup {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.radioLabel {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: var(--font-size-base);
+    cursor: pointer;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    transition: background 0.15s;
+}
+
+.radioLabel:hover {
+    background: hsl(210, 40%, 92%);
+}
+
+.radio {
+    width: 18px;
+    height: 18px;
+    accent-color: hsl(210, 70%, 50%);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* ── 안전성(개인정보) 체크리스트 블록 ── */
+.safetyBlock {
+    margin-top: var(--space-xl);
+    padding: var(--space-lg);
+    background: linear-gradient(135deg, hsl(0, 60%, 98%) 0%, hsl(30, 60%, 97%) 100%);
+    border: 2px solid hsl(0, 50%, 80%);
+    border-radius: var(--radius-md);
+}
+
+.safetyCheckboxGroup {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.safetyCheckboxLabel {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    font-size: var(--font-size-base);
+    cursor: pointer;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-sm);
+    background: white;
+    border: 1px solid hsl(0, 30%, 88%);
+    transition: all 0.15s;
+    line-height: 1.5;
+}
+
+.safetyCheckboxLabel:hover {
+    border-color: hsl(0, 50%, 65%);
+    background: hsl(0, 50%, 99%);
+}
+
+.safetyWarning {
+    margin-top: var(--space-md);
+    padding: var(--space-sm) var(--space-md);
+    background: hsl(45, 100%, 92%);
+    color: hsl(30, 80%, 30%);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+}
+
 /* 반응형 */
 @media (max-width: 768px) {
     .section {
@@ -235,5 +376,14 @@
     .privacyWarning {
         display: block;
         margin: var(--space-sm) 0 0 0;
+    }
+
+    .subsectionBlock,
+    .safetyBlock {
+        padding: var(--space-md);
+    }
+
+    .radioGroup {
+        flex-direction: column !important;
     }
 }

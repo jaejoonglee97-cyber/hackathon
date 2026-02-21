@@ -107,6 +107,18 @@ export const sheets = {
         'wrong_assumption',
         'next_test',
         'adoption_checklist',
+        // ── AI 활용내역 ──
+        'ai_tools',           // 사용한 AI 도구 (단답)
+        'ai_scope',           // AI 사용 범위 (쉼표 구분 복수값)
+        'ai_verification',    // 결과 확인 방법 (짧은 문장)
+        // ── 성과 측정 ──
+        'perf_problem_type',  // 문제 유형 (1개 선택)
+        'perf_improvement',   // 개선 정도 (1개 선택)
+        'perf_etc_desc',      // 기타 설명 (조건부)
+        // ── 안전성(개인정보) 체크리스트 ──
+        'safety_no_pii',          // TRUE/FALSE
+        'safety_anonymous',       // TRUE/FALSE
+        'safety_restricted_link', // TRUE/FALSE
         'updated_at',
     ] as const),
 
