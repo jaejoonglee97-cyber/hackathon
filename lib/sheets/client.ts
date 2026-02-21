@@ -147,6 +147,17 @@ function rowToObject(headers: string[], row: string[]): Record<string, string> {
     return obj;
 }
 
+/** 0-based 컬럼 인덱스 → 스프레드시트 컬럼 문자 (A..Z, AA..AZ, ...) */
+function colIndexToLetter(index: number): string {
+    let result = '';
+    let n = index;
+    while (n >= 0) {
+        result = String.fromCharCode(65 + (n % 26)) + result;
+        n = Math.floor(n / 26) - 1;
+    }
+    return result;
+}
+
 // ─────────────────────────────────────────────
 // 공개 API
 // ─────────────────────────────────────────────
@@ -299,7 +310,7 @@ export async function updateRow(
         }
 
         const actualRow = rowIdx + 2; // 헤더 + 0-index
-        const endCol = String.fromCharCode(65 + headers.length - 1);
+        const endCol = colIndexToLetter(headers.length - 1);
         const updateRange = `${def.tab}!A${actualRow}:${endCol}${actualRow}`;
 
         await client!.spreadsheets.values.update({
