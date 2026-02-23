@@ -68,6 +68,19 @@ export default function GuidePage() {
                                     <li><strong>2단계(검증):</strong> 프로토타입 제작 및 가설 검증</li>
                                     <li><strong>3단계(완성):</strong> 결과물 도출 및 확산 계획 수립</li>
                                 </ul>
+                                <div style={{
+                                    marginTop: '1rem',
+                                    padding: '0.85rem 1rem',
+                                    backgroundColor: '#fef3c7',
+                                    border: '1.5px solid #f59e0b',
+                                    borderRadius: '0.5rem',
+                                    fontSize: '0.95rem',
+                                    lineHeight: 1.7,
+                                }}>
+                                    ⚠️ <strong>심사는 &lsquo;3단계(완성)&rsquo; 상태의 프로젝트만 대상입니다.</strong><br />
+                                    앱·결과물 구동이 잘 된다면 반드시 진행 단계를 <strong>&lsquo;3단계(완성)&rsquo;으로 변경</strong>하고 저장해 주세요.<br />
+                                    <span style={{ color: '#92400e' }}>완성으로 바꾸지 않으면 심사 대상에서 제외될 수 있습니다!</span>
+                                </div>
                             </p>
                         </div>
 
