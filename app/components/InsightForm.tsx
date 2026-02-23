@@ -95,7 +95,7 @@ export default function InsightForm({ teamId, initialData, insightId }: InsightF
                     <option value="customer">고객 이해</option>
                     <option value="technical">기술</option>
                     <option value="process">프로세스</option>
-                    <option value="team">팀워크</option>
+                    <option value="team">협업</option>
                 </select>
             </div>
 

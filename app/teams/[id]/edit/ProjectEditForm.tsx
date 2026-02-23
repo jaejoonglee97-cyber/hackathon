@@ -282,7 +282,7 @@ export default function ProjectEditForm({
                 </h2>
                 <div className={styles.field}>
                     <label htmlFor="teamName" className={styles.label}>
-                        프로젝트(팀) 이름
+                        프로젝트 이름
                         <span style={{ marginLeft: '10px', fontSize: '0.9em', color: remainingEdits > 0 ? '#10b981' : '#ef4444' }}>
                             (남은 변경 횟수: {remainingEdits}회 / 총 3회 <span style={{ color: '#6b7280', fontWeight: 'normal' }}>— 이름만 제한, 내용은 무제한 수정 가능</span>)
                         </span>
@@ -414,7 +414,7 @@ export default function ProjectEditForm({
                         onChange={handleChange}
                         className={styles.textarea}
                         rows={3}
-                        placeholder="우리 팀 프로젝트만의 특별한 강점은 무엇인가요?"
+                        placeholder="우리 프로젝트만의 특별한 강점은 무엇인가요?"
                     />
                 </div>
             </section>

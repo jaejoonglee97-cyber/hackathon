@@ -46,7 +46,7 @@ export default function GuidePage() {
                         <div className={styles.card}>
                             <h3 className={styles.cardTitle}>1. 프로젝트 등록 및 관리</h3>
                             <p className={styles.cardText}>
-                                대시보드의 <strong style={{ color: '#ec4899' }}>[🚀 프로젝트 등록하기]</strong> 버튼으로 팀을 생성하세요.<br />
+                                대시보드의 <strong style={{ color: '#ec4899' }}>[🚀 프로젝트 등록하기]</strong> 버튼으로 개인 프로젝트를 등록하세요.<br />
                                 <br />
                                 ✅ <strong>분야 선택:</strong> 편집 화면에서 아래 3가지 분야 중 하나를 꼭 선택해주세요.
                                 <ul style={{ margin: '0.5rem 0', paddingLeft: '1.2rem', fontSize: '0.95rem' }}>
@@ -54,7 +54,7 @@ export default function GuidePage() {
                                     <li>이용자 지원 및 접근성 개선</li>
                                     <li>협업·지식관리·성과지표</li>
                                 </ul>
-                                ✅ <strong>이름 수정:</strong> 팀 이름은 최대 <strong>3회</strong>까지만 수정 가능하니 신중하게 정해주세요!
+                                ✅ <strong>이름 수정:</strong> 프로젝트 이름은 최대 <strong>3회</strong>까지만 수정 가능하니 신중하게 정해주세요!
                             </p>
                         </div>
 
@@ -91,16 +91,16 @@ export default function GuidePage() {
                                 </div>
                             </details>
                             <details className={styles.faqItem}>
-                                <summary className={styles.faqQuestion}>Q. 팀원을 추가할 수 있나요?</summary>
+                                <summary className={styles.faqQuestion}>Q. 이 해커톤은 개인 참가인가요, 팀 참가인가요?</summary>
                                 <div className={styles.faqAnswer}>
-                                    A. 현재 별도의 팀원 초대 기능은 제공되지 않습니다.<br />
-                                    운영진에게 문의해주시면 팀원을 추가해 드립니다.
+                                    A. 열매똑똑 해커톤은 <strong>개인 프로젝트 경진대회</strong>입니다.<br />
+                                    한 명의 참가자가 하나의 프로젝트를 등록하여 진행합니다.
                                 </div>
                             </details>
                             <details className={styles.faqItem}>
-                                <summary className={styles.faqQuestion}>Q. 다른 팀의 프로젝트를 볼 수 있나요?</summary>
+                                <summary className={styles.faqQuestion}>Q. 다른 참가자의 프로젝트를 볼 수 있나요?</summary>
                                 <div className={styles.faqAnswer}>
-                                    A. 네, 대시보드에서 다른 팀의 카드를 클릭하면 진행 상황과 내용을 열람할 수 있습니다.<br />
+                                    A. 네, 대시보드에서 다른 참가자의 카드를 클릭하면 진행 상황과 내용을 열람할 수 있습니다.<br />
                                     서로의 아이디어를 보고 배우며 인사이트를 얻어보세요!
                                 </div>
                             </details>

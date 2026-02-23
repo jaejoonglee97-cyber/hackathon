@@ -10,7 +10,7 @@ export default function AdminActions({ teamId, isAdmin }: { teamId: string, isAd
     if (!isAdmin) return null;
 
     const handleDelete = async () => {
-        if (!confirm('정말로 이 프로젝트(팀)를 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.')) return;
+        if (!confirm('정말로 이 프로젝트를 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.')) return;
 
         setDeleting(true);
         try {

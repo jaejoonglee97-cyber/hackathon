@@ -27,7 +27,7 @@ export default function PrivacyPage() {
                 </p>
                 <ul style={listStyle}>
                     <li>해커톤 참여 신청 접수 및 참가자 식별·연락</li>
-                    <li>팀 구성 및 운영(제출물 접수/관리, 일정 안내)</li>
+                    <li>참가자 운영(제출물 접수/관리, 일정 안내)</li>
                     <li>심사 진행 및 결과 안내</li>
                     <li>문의사항 처리 및 결과 회신</li>
                     <li>부정 이용 방지 및 분쟁 대응을 위한 기록 보존</li>
