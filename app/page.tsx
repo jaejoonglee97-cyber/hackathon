@@ -55,12 +55,36 @@ export default async function DashboardPage() {
 
     let uncategorized = 0;
 
+    // 단계별 현황 집계
+    const stageCounts: Record<string, number> = {
+        'intro': 0,
+        'validate': 0,
+        'complete': 0,
+    };
+    const stageLabels: Record<string, string> = {
+        'intro': '1단계(도입)',
+        'validate': '2단계(검증)',
+        'complete': '3단계(완성)',
+    };
+    const stageIcons: Record<string, string> = {
+        'intro': '💡',
+        'validate': '🔬',
+        'complete': '🏆',
+    };
+
     allProjects.forEach((project) => {
         const track = project.track?.trim();
         if (track && trackCounts[track] !== undefined) {
             trackCounts[track]++;
         } else {
             uncategorized++;
+        }
+    });
+
+    allTeams.forEach((team) => {
+        const s = team.stage?.trim() || 'intro';
+        if (stageCounts[s] !== undefined) {
+            stageCounts[s]++;
         }
     });
 
@@ -107,7 +131,7 @@ export default async function DashboardPage() {
                                         </Link>
                                     </div>
                                     <p className={styles.subGreeting}>
-                                        사회복지 현장의 아이디어 경진대회에 오신 것을 환영합니다!
+                                        스마트워크로 현장을 바꾸는 여러분의 아이디어를 기다립니다!
                                     </p>
                                 </>
                             )}
@@ -305,6 +329,55 @@ export default async function DashboardPage() {
                             * 분야 미선택 프로젝트 {uncategorized}건은 위 통계에 포함되지 않았습니다.
                         </p>
                     )}
+
+                    {/* 단계별 진행 현황 */}
+                    <h3 style={{
+                        fontSize: '1.1rem',
+                        fontWeight: 700,
+                        color: 'var(--color-text-primary)',
+                        marginTop: '2rem',
+                        marginBottom: '0.75rem',
+                    }}>
+                        🚦 단계별 진행 현황
+                    </h3>
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(3, 1fr)',
+                        gap: '0.75rem',
+                    }}>
+                        {Object.entries(stageCounts).map(([key, count]) => (
+                            <div
+                                key={key}
+                                style={{
+                                    background: 'var(--color-surface, white)',
+                                    border: '1px solid var(--color-border)',
+                                    borderRadius: '0.75rem',
+                                    padding: '1rem',
+                                    textAlign: 'center',
+                                    boxShadow: 'var(--shadow-sm)',
+                                }}
+                            >
+                                <span style={{ fontSize: '1.5rem' }}>{stageIcons[key]}</span>
+                                <p style={{
+                                    fontSize: '0.82rem',
+                                    fontWeight: 600,
+                                    color: 'var(--color-text-secondary)',
+                                    margin: '0.3rem 0 0.2rem',
+                                }}>
+                                    {stageLabels[key]}
+                                </p>
+                                <span style={{
+                                    fontSize: '1.8rem',
+                                    fontWeight: 800,
+                                    color: 'var(--color-primary)',
+                                    lineHeight: 1,
+                                }}>
+                                    {count}
+                                </span>
+                                <span style={{ fontSize: '0.85rem', color: 'var(--color-text-tertiary)', marginLeft: '2px' }}>건</span>
+                            </div>
+                        ))}
+                    </div>
                 </section>
             </div>
         </div>
