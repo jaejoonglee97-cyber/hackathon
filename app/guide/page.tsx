@@ -28,6 +28,20 @@ export default function GuidePage() {
                                     <li><strong>열매똑똑 참여기관 부문:</strong> 기존 1·2차년도 스마트워크 사업 참여 경험이 있는 기관</li>
                                     <li><strong>서울시 사회복지사 부문:</strong> 서울 소재 사회복지시설·기관 종사자 누구나</li>
                                 </ul>
+                                <div style={{
+                                    marginTop: '1.2rem',
+                                    padding: '0.9rem 1.1rem',
+                                    backgroundColor: '#eff6ff',
+                                    border: '1.5px solid #93c5fd',
+                                    borderRadius: '0.6rem',
+                                    fontSize: '0.93rem',
+                                    lineHeight: 1.75,
+                                }}>
+                                    <strong style={{ fontSize: '1rem' }}>💡 &lsquo;해커톤&rsquo;이 처음이신가요?</strong><br />
+                                    원래 해커톤(Hackathon)은 정해진 기간 동안 팀이 모여 <em>밤새 코딩·개발</em>하는 경진대회를 뜻합니다.<br />
+                                    <strong>열매똑똑 해커톤은 이와 다르게, 현장 문제를 해결하는 아이디어·개선안을 온라인으로 제출하는 <em>아이디어 경진대회 형식</em>으로 진행됩니다.</strong><br />
+                                    코딩이나 개발 경험이 없어도 괜찮습니다. 사회복지사의 현장 경험과 아이디어가 핵심입니다! 🌱
+                                </div>
                             </p>
                             <br />
                             <h4 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem', color: '#374151' }}>📅 주요 일정</h4>
