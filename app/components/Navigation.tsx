@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTheme } from './ThemeProvider';
 import styles from './navigation.module.css';
 
 interface NavigationProps {
@@ -13,9 +14,8 @@ interface NavigationProps {
 export default function Navigation({ initialUser }: NavigationProps) {
     const pathname = usePathname();
     const [user, setUser] = useState<any>(initialUser || null);
-    // If initialUser is explicitly null (guest from server) or object (user from server), not loading.
-    // Only if undefined (not passed), we are loading.
     const [loading, setLoading] = useState(initialUser === undefined);
+    const { theme, toggle } = useTheme();
 
     // Sync state with prop (e.g. after router.refresh())
     useEffect(() => {
@@ -94,6 +94,16 @@ export default function Navigation({ initialUser }: NavigationProps) {
                             💬 문의게시판
                         </Link>
                     </div>
+
+                    {/* 다크모드 토글 */}
+                    <button
+                        onClick={toggle}
+                        className={styles.themeToggle}
+                        aria-label={theme === 'dark' ? '라이트 모드로 전환' : '다크 모드로 전환'}
+                        title={theme === 'dark' ? '라이트 모드' : '다크 모드'}
+                    >
+                        {theme === 'dark' ? '☀️' : '🌙'}
+                    </button>
 
                     {!loading && user && (
                         <div className={styles.userMenu}>

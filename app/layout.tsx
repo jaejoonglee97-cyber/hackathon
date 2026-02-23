@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
+import { ThemeProvider } from './components/ThemeProvider';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -28,11 +29,13 @@ export default async function RootLayout({
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
             </head>
             <body>
-                <Navigation initialUser={user} />
-                <main style={{ minHeight: 'calc(100vh - 160px)' }}>
-                    {children}
-                </main>
-                <Footer />
+                <ThemeProvider>
+                    <Navigation initialUser={user} />
+                    <main style={{ minHeight: 'calc(100vh - 160px)' }}>
+                        {children}
+                    </main>
+                    <Footer />
+                </ThemeProvider>
             </body>
         </html>
     );

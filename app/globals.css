@@ -69,6 +69,26 @@
   --focus-ring: 0 0 0 3px var(--color-primary-light);
 }
 
+/* ── 다크모드 토큰 ── */
+[data-theme="dark"] {
+  --color-primary: hsl(175, 70%, 50%);
+  --color-primary-dark: hsl(175, 70%, 40%);
+  --color-primary-light: hsl(175, 70%, 15%);
+  --gradient-primary: linear-gradient(135deg, hsl(160, 70%, 45%) 0%, hsl(200, 70%, 55%) 100%);
+
+  --color-bg: hsl(222, 25%, 10%);
+  --color-bg-secondary: hsl(222, 25%, 14%);
+  --color-surface: hsl(222, 25%, 18%);
+  --color-border: hsl(222, 20%, 28%);
+  --color-text-primary: hsl(220, 15%, 90%);
+  --color-text-secondary: hsl(220, 10%, 60%);
+  --color-text-tertiary: hsl(220, 10%, 45%);
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4);
+}
+
 /* CSS Reset */
 *,
 *::before,
@@ -89,6 +109,7 @@ body {
   line-height: 1.6;
   color: var(--color-text-primary);
   background-color: var(--color-bg-secondary);
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 /* Typography */
