@@ -111,6 +111,10 @@ export default function ProjectEditForm({
         safety_no_pii: project?.safety_no_pii || '',
         safety_anonymous: project?.safety_anonymous || '',
         safety_restricted_link: project?.safety_restricted_link || '',
+
+        // ── 창작물 공개 동의 ──
+        consent_award_public: project?.consent_award_public || '',
+        consent_nonprize_option: project?.consent_nonprize_option || '',
     });
 
     /* ── AI 범위: 기타 직접 입력 상태 ── */
@@ -228,6 +232,18 @@ export default function ProjectEditForm({
         // ── 안전성 체크리스트 제출 조건 ──
         if (!allSafetyChecked) {
             setError('안전성(개인정보) 체크리스트를 모두 체크해야 제출할 수 있습니다.');
+            setLoading(false);
+            return;
+        }
+
+        // ── 창작물 공개 동의 제출 조건 ──
+        if (formData.consent_award_public !== 'TRUE') {
+            setError('수상 시 공개에 동의해야 제출할 수 있습니다.');
+            setLoading(false);
+            return;
+        }
+        if (!formData.consent_nonprize_option) {
+            setError('비수상 시 공개 여부를 선택해 주세요.');
             setLoading(false);
             return;
         }
@@ -745,6 +761,72 @@ export default function ProjectEditForm({
                     {!allSafetyChecked && (
                         <p className={styles.safetyWarning}>
                             ⚠️ 위 3개 항목을 모두 체크해야 제출할 수 있습니다.
+                        </p>
+                    )}
+                </div>
+            </section>
+
+            {/* ── 섹션: 창작물 공개 동의 ── */}
+            <section className={styles.section}>
+                <div className={styles.sectionInner}>
+                    <h3 className={styles.sectionTitle} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        📝 창작물 공개 동의
+                    </h3>
+                    <p className={styles.helperText}>
+                        해커톤 종료 후, 제출물을 다른 사회복지사의 참고 자료로 공개하기 위한 동의입니다.
+                    </p>
+
+                    <div className={styles.safetyCheckboxGroup}>
+                        {/* 수상 시 공개 동의 (필수) */}
+                        <label className={styles.safetyCheckboxLabel}>
+                            <input
+                                type="checkbox"
+                                checked={formData.consent_award_public === 'TRUE'}
+                                onChange={(e) => setFormData(prev => ({ ...prev, consent_award_public: e.target.checked ? 'TRUE' : '' }))}
+                                className={styles.checkbox}
+                            />
+                            <span><strong>[필수]</strong> 수상 시, 제출한 프로젝트가 사례 자료로 공개되는 것에 동의합니다.</span>
+                        </label>
+
+                        {/* 비수상 시 선택 */}
+                        <div style={{
+                            marginTop: '0.75rem',
+                            padding: '0.85rem 1rem',
+                            backgroundColor: 'var(--color-bg-secondary)',
+                            borderRadius: '0.5rem',
+                            border: '1px solid var(--color-border)',
+                        }}>
+                            <p style={{ fontWeight: 600, fontSize: '0.95rem', marginBottom: '0.6rem', color: 'var(--color-text-primary)' }}>
+                                비수상 시, 제출물 공개 여부를 선택해 주세요.
+                            </p>
+                            <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', cursor: 'pointer', marginBottom: '0.5rem', fontSize: '0.93rem', color: 'var(--color-text-secondary)' }}>
+                                <input
+                                    type="radio"
+                                    name="consent_nonprize"
+                                    value="public"
+                                    checked={formData.consent_nonprize_option === 'public'}
+                                    onChange={() => setFormData(prev => ({ ...prev, consent_nonprize_option: 'public' }))}
+                                    style={{ marginTop: '3px' }}
+                                />
+                                <span>공개에 동의합니다 — 현장 사회복지사들이 참고할 수 있도록 기여하겠습니다 🌱</span>
+                            </label>
+                            <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', cursor: 'pointer', fontSize: '0.93rem', color: 'var(--color-text-secondary)' }}>
+                                <input
+                                    type="radio"
+                                    name="consent_nonprize"
+                                    value="private"
+                                    checked={formData.consent_nonprize_option === 'private'}
+                                    onChange={() => setFormData(prev => ({ ...prev, consent_nonprize_option: 'private' }))}
+                                    style={{ marginTop: '3px' }}
+                                />
+                                <span>비공개를 희망합니다</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    {formData.consent_award_public !== 'TRUE' && (
+                        <p className={styles.safetyWarning}>
+                            ⚠️ 수상 시 공개 동의는 필수 항목입니다.
                         </p>
                     )}
                 </div>

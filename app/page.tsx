@@ -9,8 +9,6 @@ import {
     getActiveDeadlines,
 } from '@/lib/sheets';
 import styles from './page.module.css';
-import TeamGrid from './components/TeamGrid';
-import type { Team } from './components/TeamCard';
 import CountdownWidget from './components/CountdownWidget';
 
 export const dynamic = 'force-dynamic';
@@ -28,8 +26,8 @@ export default async function DashboardPage() {
         redirect('/onboarding/profile');
     }
 
-    // 3) 병렬 데이터 로딩 (안전하게 처리)
-    const [allTeams, allProjects, deadlines, allTeamMembers, allProfiles] = await Promise.all([
+    // 3) 데이터 로딩
+    const [allTeams, allProjects, deadlines, allTeamMembers] = await Promise.all([
         listRows('teams'),
         listRows('projects'),
         getActiveDeadlines().catch(err => {
@@ -37,51 +35,43 @@ export default async function DashboardPage() {
             return [];
         }),
         listRows('team_members'),
-        listRows('users_profile'),
     ]);
 
-    // 4) 내 팀 정보 (개인화 영역용)
+    // 4) 내 팀 정보
     const teamMember = await getRowBy('team_members', 'user_id', currentUser.userId);
     const myTeamId = teamMember?.team_id;
     const myTeam = allTeams.find((t) => t.id === myTeamId);
 
-    // 5) 팀 카드 데이터 가공
-    const teamsData: Team[] = allTeams.map((team) => {
-        const project = allProjects.find((p) => p.team_id === team.id);
-        const recentUpdate = project?.updated_at || team.created_at;
+    // 5) 부문별 접수 현황 집계
+    const trackCounts: Record<string, number> = {
+        '현장 업무경감 자동화': 0,
+        '이용자 지원 및 접근성 개선': 0,
+        '협업·지식관리·성과지표': 0,
+    };
+    const trackIcons: Record<string, string> = {
+        '현장 업무경감 자동화': '⚙️',
+        '이용자 지원 및 접근성 개선': '♿',
+        '협업·지식관리·성과지표': '📊',
+    };
 
-        // 리더의 참여 유형 찾기
-        const members = allTeamMembers.filter(m => m.team_id === team.id);
-        // role이 'leader'인 멤버 찾기, 없으면 첫 번째 멤버
-        const leader = members.find(m => m.role === 'leader') || members[0];
-        const leaderProfile = allProfiles.find(p => p.user_id === leader?.user_id);
-        const participantType = leaderProfile?.participant_type;
+    let uncategorized = 0;
 
-        // 뱃지 (예시 로직 - 현재는 기여도 측정 불가로 빈 배열)
-        const badges: string[] = [];
-
-        return {
-            id: team.id,
-            name: team.name,
-            org: team.org,
-            track: project?.track || '', // 분야
-            participantType,
-            stage: (team.stage as Team['stage']) || 'intro',
-            recentUpdate: new Date(team.created_at).toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' }), // 등록일로 사용
-            createdAt: team.created_at, // 실제 등록일
-            updatedAt: recentUpdate, // 최종 업데이트
-            helpCount: 0,
-            insightCount: 0,
-            badges,
-        };
+    allProjects.forEach((project) => {
+        const track = project.track?.trim();
+        if (track && trackCounts[track] !== undefined) {
+            trackCounts[track]++;
+        } else {
+            uncategorized++;
+        }
     });
 
+    const totalCount = allTeams.length;
     const now = new Date();
 
     return (
         <div className={styles.page}>
             <div className={styles.container}>
-                {/* 1. 상단: 환영 & 다짐 & 퀵액션 */}
+                {/* 1. 상단: 환영 & 퀵액션 */}
                 <section className={styles.welcomeSection}>
                     <div className={styles.welcomeHeader}>
                         <div className={styles.welcomeText}>
@@ -154,7 +144,7 @@ export default async function DashboardPage() {
                             여러분의 도전을 응원합니다! 🌱
                         </span>
                     </div>
-                    <a href="/guide#시상" style={{
+                    <a href="/guide" style={{
                         flexShrink: 0,
                         padding: '0.5rem 1rem',
                         backgroundColor: '#f59e0b',
@@ -169,8 +159,99 @@ export default async function DashboardPage() {
                     </a>
                 </div>
 
-                {/* 3. 메인 콘텐츠: 팀 카드 그리드 */}
-                <TeamGrid teams={teamsData} />
+                {/* 3. 부문별 접수 현황 대시보드 */}
+                <section style={{ marginBottom: '2rem' }}>
+                    <h2 style={{
+                        fontSize: '1.3rem',
+                        fontWeight: 700,
+                        color: 'var(--color-text-primary)',
+                        marginBottom: '1rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                    }}>
+                        📈 실시간 접수 현황
+                        <span style={{
+                            fontSize: '0.8rem',
+                            fontWeight: 500,
+                            color: 'var(--color-text-tertiary)',
+                            marginLeft: '0.5rem',
+                        }}>
+                            총 {totalCount}건 등록
+                        </span>
+                    </h2>
+
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                        gap: '1rem',
+                    }}>
+                        {Object.entries(trackCounts).map(([track, count]) => (
+                            <div
+                                key={track}
+                                style={{
+                                    background: 'var(--color-surface, white)',
+                                    border: '1px solid var(--color-border)',
+                                    borderRadius: '1rem',
+                                    padding: '1.5rem',
+                                    boxShadow: 'var(--shadow-sm)',
+                                    transition: 'transform 0.2s, box-shadow 0.2s',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '0.5rem',
+                                }}
+                            >
+                                <span style={{ fontSize: '2rem', lineHeight: 1 }}>{trackIcons[track]}</span>
+                                <span style={{
+                                    fontSize: '0.9rem',
+                                    fontWeight: 600,
+                                    color: 'var(--color-text-secondary)',
+                                    marginTop: '0.25rem',
+                                }}>
+                                    {track}
+                                </span>
+                                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.3rem' }}>
+                                    <span style={{
+                                        fontSize: '2.5rem',
+                                        fontWeight: 800,
+                                        color: 'var(--color-primary)',
+                                        lineHeight: 1,
+                                    }}>
+                                        {count}
+                                    </span>
+                                    <span style={{
+                                        fontSize: '1rem',
+                                        fontWeight: 500,
+                                        color: 'var(--color-text-tertiary)',
+                                    }}>건</span>
+                                </div>
+                                {/* 비율 바 */}
+                                <div style={{
+                                    width: '100%',
+                                    height: '6px',
+                                    borderRadius: '3px',
+                                    backgroundColor: 'var(--color-bg-secondary)',
+                                    overflow: 'hidden',
+                                    marginTop: '0.3rem',
+                                }}>
+                                    <div style={{
+                                        width: totalCount > 0 ? `${Math.round((count / totalCount) * 100)}%` : '0%',
+                                        height: '100%',
+                                        borderRadius: '3px',
+                                        background: 'var(--gradient-primary)',
+                                        transition: 'width 0.6s ease',
+                                    }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {uncategorized > 0 && (
+                        <p style={{ marginTop: '0.75rem', fontSize: '0.85rem', color: 'var(--color-text-tertiary)' }}>
+                            * 분야 미선택 프로젝트 {uncategorized}건은 위 통계에 포함되지 않았습니다.
+                        </p>
+                    )}
+                </section>
             </div>
         </div>
     );
