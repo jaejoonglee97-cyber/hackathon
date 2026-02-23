@@ -123,6 +123,26 @@ export default function SignupPage() {
                             />
                         </div>
 
+                        {/* 비밀번호 기억 안내 */}
+                        <div style={{
+                            padding: '0.75rem 1rem',
+                            backgroundColor: '#fffbeb',
+                            border: '1px solid #fbbf24',
+                            borderRadius: '0.5rem',
+                            fontSize: '0.85rem',
+                            lineHeight: 1.6,
+                            color: '#92400e',
+                            display: 'flex',
+                            alignItems: 'flex-start',
+                            gap: '0.5rem',
+                        }}>
+                            <span style={{ fontSize: '1.1rem', flexShrink: 0 }}>⚠️</span>
+                            <span>
+                                <strong>비밀번호 재설정은 관리자에게 요청해야 하므로 번거롭습니다.</strong><br />
+                                이메일과 비밀번호를 꼭 기억해 주세요!
+                            </span>
+                        </div>
+
                         {/* 이용약관 동의 */}
                         <div style={{
                             marginTop: '0.5rem',
