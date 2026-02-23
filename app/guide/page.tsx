@@ -70,7 +70,85 @@ export default function GuidePage() {
                         </div>
                     </section>
 
-                    {/* 2. 사이트 활용 안내 */}
+                    {/* 2. 시상 안내 — 사이트 활용 안내 앞 */}
+                    <section className={styles.section}>
+                        <h2 className={styles.sectionTitle}>🏆 시상 안내</h2>
+                        <div className={styles.card}>
+                            <h3 className={styles.cardTitle}>열매똑똑 해커톤 시상(안)</h3>
+                            <p className={styles.cardText} style={{ marginBottom: '1rem' }}>
+                                총 <strong>2개 부문</strong>(열매똑똑 참여기관 / 서울시 사회복지사)에서 각각 수상자를 선정하며,
+                                심사위원 특별상과 참여상도 수여됩니다.
+                            </p>
+
+                            <div style={{ overflowX: 'auto' }}>
+                                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.92rem', lineHeight: 1.6 }}>
+                                    <thead>
+                                        <tr>
+                                            <th style={thStyle}>구분</th>
+                                            <th style={thStyle}>상 이름</th>
+                                            <th style={thStyle}>인원</th>
+                                            <th style={thStyle}>부상</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style={{ ...tdStyle, fontWeight: 700 }}>1등 (부문별)</td>
+                                            <td style={tdStyle}>열매똑똑 대상</td>
+                                            <td style={{ ...tdStyle, textAlign: 'center' }}>3명</td>
+                                            <td style={tdStyle}>🤖 AI 라이센스 1년권</td>
+                                        </tr>
+                                        <tr style={{ backgroundColor: '#fafafa' }}>
+                                            <td style={{ ...tdStyle, fontWeight: 700 }}>2등 (부문별)</td>
+                                            <td style={tdStyle}>열매똑똑 확산우수상</td>
+                                            <td style={{ ...tdStyle, textAlign: 'center' }}>3명</td>
+                                            <td style={tdStyle}>💻 디지털 장비</td>
+                                        </tr>
+                                        <tr>
+                                            <td style={{ ...tdStyle, fontWeight: 700 }}>3등 (부문별)</td>
+                                            <td style={tdStyle}>열매똑똑 현장혁신상</td>
+                                            <td style={{ ...tdStyle, textAlign: 'center' }}>3명</td>
+                                            <td style={tdStyle}>🔌 디지털 장비</td>
+                                        </tr>
+                                        <tr style={{ backgroundColor: '#fafafa' }}>
+                                            <td style={{ ...tdStyle, fontWeight: 700 }}>특별상<br /><span style={{ fontWeight: 400, fontSize: '0.85rem' }}>(심사위원)</span></td>
+                                            <td style={tdStyle}>열매똑똑 심사위원 특별상</td>
+                                            <td style={{ ...tdStyle, textAlign: 'center' }}>5명</td>
+                                            <td style={tdStyle}>🎁 기프티콘</td>
+                                        </tr>
+                                        <tr>
+                                            <td style={{ ...tdStyle, fontWeight: 700, color: '#d97706' }}>참여상</td>
+                                            <td style={tdStyle}>열매똑똑 참여상<br /><span style={{ fontSize: '0.82rem', color: '#9ca3af' }}>(최소요건 충족 시 추첨)</span></td>
+                                            <td style={{ ...tdStyle, textAlign: 'center' }}>40명</td>
+                                            <td style={tdStyle}>☕ 기프티콘</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {/* 참여상 강조 박스 */}
+                            <div style={{
+                                marginTop: '1.2rem',
+                                padding: '1rem 1.2rem',
+                                background: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)',
+                                border: '2px solid #f59e0b',
+                                borderRadius: '0.75rem',
+                                display: 'flex',
+                                alignItems: 'flex-start',
+                                gap: '0.75rem',
+                            }}>
+                                <span style={{ fontSize: '2rem', lineHeight: 1 }}>☕</span>
+                                <div>
+                                    <strong style={{ fontSize: '1rem', color: '#92400e' }}>제출만 해도 커피 쿠폰!</strong><br />
+                                    <span style={{ fontSize: '0.93rem', color: '#78350f', lineHeight: 1.6 }}>
+                                        최소 요건을 충족한 제출물을 출품하시면 <strong>추첨을 통해 40명에게 기프티콘</strong>을 드립니다.<br />
+                                        완성도보다 도전이 중요합니다. 꼭 참여해 보세요! 🌱
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* 3. 사이트 활용 안내 */}
                     <section className={styles.section}>
                         <h2 className={styles.sectionTitle}>💻 사이트 활용 안내</h2>
 
@@ -124,7 +202,7 @@ export default function GuidePage() {
                         </div>
                     </section>
 
-                    {/* 3. FAQ */}
+                    {/* 4. FAQ */}
                     <section className={styles.section}>
                         <h2 className={styles.sectionTitle}>❓ 자주 묻는 질문 (FAQ)</h2>
                         <div className={styles.faqList}>
@@ -208,87 +286,6 @@ export default function GuidePage() {
                                     추가 문의는 이 페이지의 <a href="/qna" style={{ color: '#7c3aed', fontWeight: 600 }}>문의 게시판</a>을 이용해 주세요.
                                 </div>
                             </details>
-                        </div>
-                    </section>
-
-                    {/* 4. 시상 안내 */}
-                    <section className={styles.section}>
-                        <h2 className={styles.sectionTitle}>🏆 시상 안내</h2>
-                        <div className={styles.card}>
-                            <h3 className={styles.cardTitle}>열매똑똑 해커톤 시상(안)</h3>
-                            <p className={styles.cardText} style={{ marginBottom: '1rem' }}>
-                                총 <strong>3개 부문</strong>에서 각각 수상자를 선정합니다.<br />
-                                (열매똑똑 참여기관 부문 / 서울시 사회복지사 부문 / 심사위원 특별 선정)
-                            </p>
-
-                            <div style={{ overflowX: 'auto' }}>
-                                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.92rem', lineHeight: 1.6 }}>
-                                    <thead>
-                                        <tr>
-                                            <th style={thStyle}>구분</th>
-                                            <th style={thStyle}>상 이름</th>
-                                            <th style={thStyle}>인원</th>
-                                            <th style={thStyle}>품목</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td style={{ ...tdStyle, fontWeight: 700 }}>1등 (부문별)</td>
-                                            <td style={tdStyle}>열매똑똑 대상</td>
-                                            <td style={{ ...tdStyle, textAlign: 'center' }}>3명</td>
-                                            <td style={tdStyle}>
-                                                🤖 <strong>AI 라이센스 1년권</strong><br />
-                                                <span style={{ fontSize: '0.85rem', color: '#6b7280' }}>ChatGPT / Claude / Gemini / Genspark 등 (40만원 이내)</span>
-                                            </td>
-                                        </tr>
-                                        <tr style={{ backgroundColor: '#fafafa' }}>
-                                            <td style={{ ...tdStyle, fontWeight: 700 }}>2등 (부문별)</td>
-                                            <td style={tdStyle}>열매똑똑 확산우수상</td>
-                                            <td style={{ ...tdStyle, textAlign: 'center' }}>3명</td>
-                                            <td style={tdStyle}>💻 무선 키보드·마우스 세트 등 <span style={{ color: '#6b7280' }}>(10만원 상당)</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ ...tdStyle, fontWeight: 700 }}>3등 (부문별)</td>
-                                            <td style={tdStyle}>열매똑똑 현장혁신상</td>
-                                            <td style={{ ...tdStyle, textAlign: 'center' }}>3명</td>
-                                            <td style={tdStyle}>🔌 USB-C 멀티허브·고속 충전기 등 <span style={{ color: '#6b7280' }}>(5만원 상당)</span></td>
-                                        </tr>
-                                        <tr style={{ backgroundColor: '#fafafa' }}>
-                                            <td style={{ ...tdStyle, fontWeight: 700 }}>특별상<br /><span style={{ fontWeight: 400, fontSize: '0.85rem' }}>(심사위원)</span></td>
-                                            <td style={tdStyle}>열매똑똑 심사위원 특별상</td>
-                                            <td style={{ ...tdStyle, textAlign: 'center' }}>5명</td>
-                                            <td style={tdStyle}>🎁 기프티콘 <span style={{ color: '#6b7280' }}>(3만원 상당)</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ ...tdStyle, fontWeight: 700, color: '#d97706' }}>참여상</td>
-                                            <td style={tdStyle}>열매똑똑 참여상<br /><span style={{ fontSize: '0.82rem', color: '#9ca3af' }}>(최소요건 충족 시 추첨)</span></td>
-                                            <td style={{ ...tdStyle, textAlign: 'center' }}>40명</td>
-                                            <td style={tdStyle}>☕ 기프티콘 <span style={{ color: '#6b7280' }}>(7천원 상당)</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            {/* 참여상 강조 박스 */}
-                            <div style={{
-                                marginTop: '1.2rem',
-                                padding: '1rem 1.2rem',
-                                background: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)',
-                                border: '2px solid #f59e0b',
-                                borderRadius: '0.75rem',
-                                display: 'flex',
-                                alignItems: 'flex-start',
-                                gap: '0.75rem',
-                            }}>
-                                <span style={{ fontSize: '2rem', lineHeight: 1 }}>☕</span>
-                                <div>
-                                    <strong style={{ fontSize: '1rem', color: '#92400e' }}>제출만 해도 커피 쿠폰!</strong><br />
-                                    <span style={{ fontSize: '0.93rem', color: '#78350f', lineHeight: 1.6 }}>
-                                        최소 요건을 충족한 제출물을 출품하시면 <strong>추첨을 통해 40명에게 기프티콘(7천원)</strong>을 드립니다.<br />
-                                        완성도보다 도전이 중요합니다. 꼭 참여해 보세요! 🌱
-                                    </span>
-                                </div>
-                            </div>
                         </div>
                     </section>
 

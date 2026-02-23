@@ -150,7 +150,7 @@ export default async function DashboardPage() {
                             제출만 해도 커피 쿠폰! — 열매똑똑 참여상
                         </strong>
                         <span style={{ fontSize: '0.92rem', color: '#78350f', lineHeight: 1.6 }}>
-                            최소 요건을 충족한 제출물을 등록하면 <strong>추첨으로 40명에게 기프티콘(7천원)</strong>을 드립니다.
+                            최소 요건을 충족한 제출물을 등록하면 <strong>추첨으로 40명에게 기프티콘</strong>을 드립니다.
                             완성도보다 도전이 중요합니다!
                         </span>
                     </div>
