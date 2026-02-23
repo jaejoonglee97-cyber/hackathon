@@ -54,8 +54,10 @@ export default function ProjectEditForm({
 }: ProjectEditFormProps) {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
+    const [draftLoading, setDraftLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
+    const [draftSuccess, setDraftSuccess] = useState(false);
 
     const [stage, setStage] = useState(initialStage);
 
@@ -271,6 +273,39 @@ export default function ProjectEditForm({
             setError(err.message);
         } finally {
             setLoading(false);
+        }
+    };
+
+    /* ── 임시 저장 (검증 없이 현재 내용만 서버 저장) ── */
+    const handleDraftSave = async () => {
+        setError('');
+        setDraftSuccess(false);
+        setDraftLoading(true);
+
+        try {
+            const response = await fetch(`/api/teams/${teamId}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    ...formData,
+                    stage,
+                    name: name.trim(),
+                    draft_saved_at: new Date().toISOString(),
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || '임시 저장에 실패했습니다.');
+            }
+
+            setDraftSuccess(true);
+            setTimeout(() => setDraftSuccess(false), 3000);
+        } catch (err: any) {
+            setError(err.message);
+        } finally {
+            setDraftLoading(false);
         }
     };
 
@@ -841,10 +876,26 @@ export default function ProjectEditForm({
                 <input name="next_test" value={formData.next_test} readOnly />
             </div>
 
-            {/* 하단 저장 알림 (사용자 요청 반영) */}
+            {/* 하단 알림 */}
             {success && (
                 <div className={styles.successBanner} style={{ marginTop: '2rem', textAlign: 'center', animation: 'fadeIn 0.5s' }}>
-                    ✅ 저장되었습니다! 잠시 후 상세 페이지로 이동합니다...
+                    ✅ 최종 제출 완료! 잠시 후 상세 페이지로 이동합니다...
+                </div>
+            )}
+            {draftSuccess && (
+                <div style={{
+                    marginTop: '1.5rem',
+                    padding: '0.85rem 1.2rem',
+                    backgroundColor: '#ecfdf5',
+                    border: '1.5px solid #34d399',
+                    borderRadius: '0.5rem',
+                    textAlign: 'center',
+                    fontSize: '0.95rem',
+                    fontWeight: 600,
+                    color: '#065f46',
+                    animation: 'fadeIn 0.5s',
+                }}>
+                    📝 임시 저장되었습니다. 나중에 이어서 작성하세요!
                 </div>
             )}
 
@@ -854,11 +905,11 @@ export default function ProjectEditForm({
                     type="button"
                     onClick={() => router.back()}
                     className={styles.cancelButton}
-                    disabled={loading}
+                    disabled={loading || draftLoading}
                 >
                     취소
                 </button>
-                {loading && (
+                {(loading || draftLoading) && (
                     <span style={{
                         color: '#2563eb',
                         fontWeight: 'bold',
@@ -870,11 +921,29 @@ export default function ProjectEditForm({
                     </span>
                 )}
                 <button
+                    type="button"
+                    onClick={handleDraftSave}
+                    disabled={loading || draftLoading}
+                    style={{
+                        padding: '0.7rem 1.5rem',
+                        borderRadius: '0.5rem',
+                        border: '1.5px solid var(--color-primary)',
+                        backgroundColor: 'transparent',
+                        color: 'var(--color-primary)',
+                        fontWeight: 700,
+                        fontSize: '0.95rem',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s',
+                    }}
+                >
+                    📝 임시 저장
+                </button>
+                <button
                     type="submit"
                     className={styles.submitButton}
                     disabled={loading || !allSafetyChecked}
                 >
-                    💾 저장하기
+                    💾 최종 제출
                 </button>
             </div>
         </form>

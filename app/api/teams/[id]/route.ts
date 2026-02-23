@@ -36,6 +36,10 @@ export async function PATCH(
             'perf_problem_type', 'perf_improvement', 'perf_etc_desc',
             // 안전성 체크리스트
             'safety_no_pii', 'safety_anonymous', 'safety_restricted_link',
+            // 창작물 공개 동의
+            'consent_award_public', 'consent_nonprize_option',
+            // 임시저장 타임스탬프
+            'draft_saved_at',
         ];
 
         const updates: Record<string, any> = {};

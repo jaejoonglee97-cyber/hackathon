@@ -138,6 +138,43 @@ export default async function DashboardPage() {
                     </section>
                 )}
 
+                {/* 이용가이드 안내 배너 */}
+                <div style={{
+                    background: 'linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)',
+                    border: '2px solid #60a5fa',
+                    borderRadius: '1rem',
+                    padding: '1.1rem 1.5rem',
+                    marginBottom: '1rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '1rem',
+                    flexWrap: 'wrap',
+                    boxShadow: '0 2px 8px rgba(96,165,250,0.15)',
+                }}>
+                    <span style={{ fontSize: '2.2rem', lineHeight: 1, flexShrink: 0 }}>📖</span>
+                    <div style={{ flex: 1, minWidth: '200px' }}>
+                        <strong style={{ fontSize: '1.05rem', color: '#1e40af', display: 'block', marginBottom: '0.2rem' }}>
+                            참여 전, 이용가이드를 꼭 확인해 주세요!
+                        </strong>
+                        <span style={{ fontSize: '0.92rem', color: '#1e3a5f', lineHeight: 1.6 }}>
+                            접수 방법, 심사 기준, 시상 안내 등 중요한 정보가 정리되어 있습니다.
+                        </span>
+                    </div>
+                    <a href="/guide" style={{
+                        flexShrink: 0,
+                        padding: '0.5rem 1rem',
+                        backgroundColor: '#3b82f6',
+                        color: 'white',
+                        borderRadius: '0.5rem',
+                        fontWeight: 700,
+                        fontSize: '0.88rem',
+                        textDecoration: 'none',
+                        whiteSpace: 'nowrap',
+                    }}>
+                        이용가이드 보기 →
+                    </a>
+                </div>
+
                 {/* 참여상 안내 카드 */}
                 <div style={{
                     background: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)',
