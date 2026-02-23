@@ -141,7 +141,7 @@ export default function GuidePage() {
                                     <strong style={{ fontSize: '1rem', color: '#92400e' }}>제출만 해도 커피 쿠폰!</strong><br />
                                     <span style={{ fontSize: '0.93rem', color: '#78350f', lineHeight: 1.6 }}>
                                         최소 요건을 충족한 제출물을 출품하시면 <strong>추첨을 통해 40명에게 기프티콘</strong>을 드립니다.<br />
-                                        완성도보다 도전이 중요합니다. 꼭 참여해 보세요! 🌱
+                                        여러분의 도전을 응원합니다! 🌱
                                     </span>
                                 </div>
                             </div>
