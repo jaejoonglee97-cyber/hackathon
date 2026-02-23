@@ -76,8 +76,13 @@ export default function GuidePage() {
                         <div className={styles.card}>
                             <h3 className={styles.cardTitle}>열매똑똑 해커톤 시상(안)</h3>
                             <p className={styles.cardText} style={{ marginBottom: '1rem' }}>
-                                총 <strong>2개 부문</strong>(열매똑똑 참여기관 / 서울시 사회복지사)에서 각각 수상자를 선정하며,
-                                심사위원 특별상과 참여상도 수여됩니다.
+                                표의 <strong>&lsquo;부문별&rsquo;</strong>은 아래 3가지 <strong>제출 주제</strong>를 기준으로 각각 수상자를 선정한다는 의미입니다.
+                                <ul style={{ marginTop: '0.4rem', paddingLeft: '1.2rem', fontSize: '0.93rem', lineHeight: 1.8 }}>
+                                    <li>현장 업무경감 자동화</li>
+                                    <li>이용자 지원 및 접근성 개선</li>
+                                    <li>협업·지식관리·성과지표</li>
+                                </ul>
+                                심사위원 특별상과 참여상은 주제 구분 없이 별도 선정됩니다.
                             </p>
 
                             <div style={{ overflowX: 'auto' }}>
