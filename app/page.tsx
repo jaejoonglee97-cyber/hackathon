@@ -1,5 +1,4 @@
-// 대시보드 (서버 컴포넌트) — 프로필 미완료 시 /onboarding/profile로 리다이렉트
-import { redirect } from 'next/navigation';
+// 대시보드 (서버 컴포넌트) — 비로그인도 접근 가능, 로그인 시 개인 영역 표시
 import Link from 'next/link';
 import { getCurrentUser } from '@/lib/auth';
 import {
@@ -14,35 +13,35 @@ import CountdownWidget from './components/CountdownWidget';
 export const dynamic = 'force-dynamic';
 
 export default async function DashboardPage() {
-    // 1) 로그인 확인
+    // 1) 로그인 여부 확인 (비로그인도 허용)
     const currentUser = await getCurrentUser();
-    if (!currentUser) {
-        redirect('/auth/signin');
+
+    // 2) 로그인 상태라면 프로필 정보 가져오기
+    let profile: any = null;
+    let myTeam: any = null;
+
+    if (currentUser) {
+        const profileResult = await checkProfileComplete(currentUser.userId);
+        profile = profileResult.profile;
+
+        const allTeams = await listRows('teams');
+        const teamMember = await getRowBy('team_members', 'user_id', currentUser.userId);
+        if (teamMember?.team_id) {
+            myTeam = allTeams.find((t) => t.id === teamMember.team_id);
+        }
     }
 
-    // 2) 프로필 완료 확인
-    const { complete, profile } = await checkProfileComplete(currentUser.userId);
-    if (!complete) {
-        redirect('/onboarding/profile');
-    }
-
-    // 3) 데이터 로딩
-    const [allTeams, allProjects, deadlines, allTeamMembers] = await Promise.all([
+    // 3) 통계용 데이터 (모든 방문자에게 보여줄 부문별 접수 현황)
+    const [allTeams, allProjects, deadlines] = await Promise.all([
         listRows('teams'),
         listRows('projects'),
         getActiveDeadlines().catch(err => {
             console.warn('Failed to fetch deadlines:', err);
             return [];
         }),
-        listRows('team_members'),
     ]);
 
-    // 4) 내 팀 정보
-    const teamMember = await getRowBy('team_members', 'user_id', currentUser.userId);
-    const myTeamId = teamMember?.team_id;
-    const myTeam = allTeams.find((t) => t.id === myTeamId);
-
-    // 5) 부문별 접수 현황 집계
+    // 4) 부문별 접수 현황 집계
     const trackCounts: Record<string, number> = {
         '현장 업무경감 자동화': 0,
         '이용자 지원 및 접근성 개선': 0,
@@ -71,29 +70,47 @@ export default async function DashboardPage() {
     return (
         <div className={styles.page}>
             <div className={styles.container}>
-                {/* 1. 상단: 환영 & 퀵액션 */}
+                {/* 1. 상단: 환영 영역 */}
                 <section className={styles.welcomeSection}>
                     <div className={styles.welcomeHeader}>
                         <div className={styles.welcomeText}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
-                                <h1 className={styles.greeting} style={{ margin: 0 }}>
-                                    안녕하세요, <span className={styles.userName}>{profile?.name || currentUser.name}</span>님!
-                                </h1>
-                                {myTeam ? (
-                                    <Link href={`/teams/${myTeam.id}`} className={styles.actionButtonSecondary} style={{ padding: '0.5rem 1rem', fontSize: '0.9em' }}>
-                                        🏠 내 프로젝트 바로가기
-                                    </Link>
-                                ) : (
-                                    <Link href="/teams/new" className={styles.actionButton} style={{ padding: '0.5rem 1rem', fontSize: '0.9em' }}>
-                                        🚀 프로젝트 등록하기
-                                    </Link>
-                                )}
-                            </div>
-                            <p className={styles.subGreeting}>
-                                {myTeam
-                                    ? `${myTeam.name} 프로젝트를 진행 중이시네요.`
-                                    : '아직 참여 중인 프로젝트가 없습니다.'}
-                            </p>
+                            {currentUser ? (
+                                <>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
+                                        <h1 className={styles.greeting} style={{ margin: 0 }}>
+                                            안녕하세요, <span className={styles.userName}>{profile?.name || currentUser.name}</span>님!
+                                        </h1>
+                                        {myTeam ? (
+                                            <Link href={`/teams/${myTeam.id}`} className={styles.actionButtonSecondary} style={{ padding: '0.5rem 1rem', fontSize: '0.9em' }}>
+                                                🏠 내 프로젝트 바로가기
+                                            </Link>
+                                        ) : (
+                                            <Link href="/teams/new" className={styles.actionButton} style={{ padding: '0.5rem 1rem', fontSize: '0.9em' }}>
+                                                🚀 프로젝트 등록하기
+                                            </Link>
+                                        )}
+                                    </div>
+                                    <p className={styles.subGreeting}>
+                                        {myTeam
+                                            ? `${myTeam.name} 프로젝트를 진행 중이시네요.`
+                                            : '아직 참여 중인 프로젝트가 없습니다.'}
+                                    </p>
+                                </>
+                            ) : (
+                                <>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
+                                        <h1 className={styles.greeting} style={{ margin: 0 }}>
+                                            🚀 열매똑똑 해커톤
+                                        </h1>
+                                        <Link href="/auth/signin" className={styles.actionButton} style={{ padding: '0.5rem 1rem', fontSize: '0.9em' }}>
+                                            로그인 / 프로젝트 등록
+                                        </Link>
+                                    </div>
+                                    <p className={styles.subGreeting}>
+                                        사회복지 현장의 아이디어 경진대회에 오신 것을 환영합니다!
+                                    </p>
+                                </>
+                            )}
                         </div>
 
                         {/* D-Day Counter Widget */}
