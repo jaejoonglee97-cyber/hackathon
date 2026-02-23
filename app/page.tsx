@@ -9,6 +9,8 @@ import {
 } from '@/lib/sheets';
 import styles from './page.module.css';
 import CountdownWidget from './components/CountdownWidget';
+import TeamGrid from './components/TeamGrid';
+import type { Team } from './components/TeamCard';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,27 +21,55 @@ export default async function DashboardPage() {
     // 2) 로그인 상태라면 프로필 정보 가져오기
     let profile: any = null;
     let myTeam: any = null;
+    const isAdmin = currentUser && ['admin', 'judge'].includes(currentUser.role);
 
     if (currentUser) {
         const profileResult = await checkProfileComplete(currentUser.userId);
         profile = profileResult.profile;
 
-        const allTeams = await listRows('teams');
+        const teamsForUser = await listRows('teams');
         const teamMember = await getRowBy('team_members', 'user_id', currentUser.userId);
         if (teamMember?.team_id) {
-            myTeam = allTeams.find((t) => t.id === teamMember.team_id);
+            myTeam = teamsForUser.find((t) => t.id === teamMember.team_id);
         }
     }
 
     // 3) 통계용 데이터 (모든 방문자에게 보여줄 부문별 접수 현황)
-    const [allTeams, allProjects, deadlines] = await Promise.all([
+    const [allTeams, allProjects, deadlines, allTeamMembers, allProfiles] = await Promise.all([
         listRows('teams'),
         listRows('projects'),
         getActiveDeadlines().catch(err => {
             console.warn('Failed to fetch deadlines:', err);
             return [];
         }),
+        isAdmin ? listRows('team_members') : Promise.resolve([]),
+        isAdmin ? listRows('users_profile') : Promise.resolve([]),
     ]);
+
+    // 관리자용 팀 카드 데이터
+    let teamsData: Team[] = [];
+    if (isAdmin) {
+        teamsData = allTeams.map((team) => {
+            const project = allProjects.find((p) => p.team_id === team.id);
+            const members = allTeamMembers.filter((m: any) => m.team_id === team.id);
+            const leader = members.find((m: any) => m.role === 'leader') || members[0];
+            const leaderProfile = allProfiles.find((p: any) => p.user_id === leader?.user_id);
+            return {
+                id: team.id,
+                name: team.name,
+                org: team.org,
+                track: project?.track || '',
+                participantType: leaderProfile?.participant_type,
+                stage: (team.stage as Team['stage']) || 'intro',
+                recentUpdate: new Date(team.created_at).toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' }),
+                createdAt: team.created_at,
+                updatedAt: project?.updated_at || team.created_at,
+                helpCount: 0,
+                insightCount: 0,
+                badges: [],
+            };
+        });
+    }
 
     // 4) 부문별 접수 현황 집계
     const trackCounts: Record<string, number> = {
@@ -379,6 +409,27 @@ export default async function DashboardPage() {
                         ))}
                     </div>
                 </section>
+
+                {/* 관리자용: 전체 프로젝트 카드 목록 */}
+                {isAdmin && teamsData.length > 0 && (
+                    <section style={{ marginTop: '2rem' }}>
+                        <h2 style={{
+                            fontSize: '1.3rem',
+                            fontWeight: 700,
+                            color: 'var(--color-text-primary)',
+                            marginBottom: '1rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                        }}>
+                            🔒 관리자 전용 — 전체 프로젝트
+                            <span style={{ fontSize: '0.8rem', fontWeight: 500, color: 'var(--color-text-tertiary)' }}>
+                                ({teamsData.length}건)
+                            </span>
+                        </h2>
+                        <TeamGrid teams={teamsData} />
+                    </section>
+                )}
             </div>
         </div>
     );
