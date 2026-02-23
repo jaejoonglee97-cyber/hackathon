@@ -97,7 +97,8 @@ export default function ProjectEditForm({
         adoption_checklist: project?.adoption_checklist || '',
 
         // ── AI 활용내역 ──
-        ai_tools: project?.ai_tools || '',
+        // ISO 타임스탬프(예: 2026-02-12T04:46:32.796Z)가 들어오면 빈 문자열로 초기화
+        ai_tools: /^\d{4}-\d{2}-\d{2}T/.test(project?.ai_tools || '') ? '' : (project?.ai_tools || ''),
         ai_scope: project?.ai_scope || '',           // 쉼표 구분 복수값
         ai_verification: project?.ai_verification || '',
 
@@ -526,7 +527,7 @@ export default function ProjectEditForm({
                             value={formData.ai_verification}
                             onChange={handleChange}
                             className={styles.input}
-                            placeholder="예: 사람이 최종 확인 / 간단 테스트로 확인 / 샘플 데이터로 검증 등"
+                            placeholder="예: AI 답변을 사람이 직접 읽고 사실 여부 확인 / 직접 테스트해서 오류 없음 확인 / 기존 방식과 비교해서 결과 동일 확인"
                             required
                         />
                     </div>
