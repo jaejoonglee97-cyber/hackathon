@@ -104,6 +104,65 @@ export default function GuidePage() {
                                     서로의 아이디어를 보고 배우며 인사이트를 얻어보세요!
                                 </div>
                             </details>
+                            <details className={styles.faqItem}>
+                                <summary className={styles.faqQuestion}>Q. 접수 마감 이후에도 내용을 수정할 수 있나요?</summary>
+                                <div className={styles.faqAnswer}>
+                                    A. <strong>마감일(3월 27일 18:00) 이후</strong>에는 내용 수정이 제한됩니다.<br />
+                                    마감 후에는 제출된 내용을 기준으로 서류 심사가 진행되니, 반드시 마감 전에 저장을 완료해 주세요.
+                                </div>
+                            </details>
+                            <details className={styles.faqItem}>
+                                <summary className={styles.faqQuestion}>Q. AI 도구를 사용하면 감점이 되나요?</summary>
+                                <div className={styles.faqAnswer}>
+                                    A. 아닙니다! AI 도구 활용 여부는 <strong>감점 요소가 없습니다.</strong><br />
+                                    오히려 어떤 AI 도구를 어떻게 활용했는지 성실히 기록하면, 다른 기관이 따라 만들 수 있는 참고 자료가 됩니다.<br />
+                                    사용한 AI 도구·범위·결과 확인 방법을 편집 화면에 솔직하게 기재해 주세요.
+                                </div>
+                            </details>
+                            <details className={styles.faqItem}>
+                                <summary className={styles.faqQuestion}>Q. 아직 완성이 안 된 프로젝트도 제출할 수 있나요?</summary>
+                                <div className={styles.faqAnswer}>
+                                    A. 네, 가능합니다. 완성도보다 <strong>문제 정의(Why)의 명확성, 시도한 과정, 확산 가능성</strong>을 중심으로 심사합니다.<br />
+                                    아이디어 단계라도 &ldquo;왜 이 문제를 해결하려 하는가&rdquo;를 잘 설명한 프로젝트를 적극 권장합니다.
+                                </div>
+                            </details>
+                            <details className={styles.faqItem}>
+                                <summary className={styles.faqQuestion}>Q. 제출물에 어떤 링크를 넣어야 하나요?</summary>
+                                <div className={styles.faqAnswer}>
+                                    A. 프로토타입·결과물 링크(구글 시트, 앱시트, 노션, 웹앱, GitHub 등)를 자유롭게 첨부하면 됩니다.<br />
+                                    단, <strong>링크는 권한 제한 공유(특정 인원에게만 공개)</strong>로 설정해 주세요.<br />
+                                    &lsquo;전체 공개&rsquo; 링크에 개인정보가 포함된 경우 심사에서 불이익이 있을 수 있습니다.
+                                </div>
+                            </details>
+                            <details className={styles.faqItem}>
+                                <summary className={styles.faqQuestion}>Q. 제출물에 이용자(클라이언트) 개인정보를 포함할 수 있나요?</summary>
+                                <div className={styles.faqAnswer}>
+                                    A. <strong>절대 포함하면 안 됩니다.</strong><br />
+                                    실명·연락처·주민번호·사례 기록 등 개인식별정보는 반드시 제외하거나 비식별 처리(익명화·가명 처리) 후 업로드해 주세요.<br />
+                                    편집 화면 하단의 &lsquo;안전성 체크리스트&rsquo;를 모두 체크해야 저장이 가능합니다.
+                                </div>
+                            </details>
+                            <details className={styles.faqItem}>
+                                <summary className={styles.faqQuestion}>Q. 심사 기준이 궁금해요.</summary>
+                                <div className={styles.faqAnswer}>
+                                    A. 심사는 아래 기준을 종합 평가합니다.
+                                    <ul style={{ marginTop: '0.4rem', paddingLeft: '1.2rem', lineHeight: 1.8 }}>
+                                        <li><strong>문제 정의(Why)의 명확성</strong> — 현장 문제와 필요성을 잘 설명했는가</li>
+                                        <li><strong>해결 방안의 창의성·실현 가능성</strong> — 현장에서 실제로 쓸 수 있는가</li>
+                                        <li><strong>AI 활용의 적절성</strong> — AI를 도구로 잘 활용했는가 (사용 여부와 무관)</li>
+                                        <li><strong>확산 가능성</strong> — 타 기관·현장에서 재사용할 수 있는가</li>
+                                        <li><strong>안전성</strong> — 개인정보 보호 원칙을 준수했는가</li>
+                                    </ul>
+                                </div>
+                            </details>
+                            <details className={styles.faqItem}>
+                                <summary className={styles.faqQuestion}>Q. 1차 서류 심사 결과는 어떻게 알 수 있나요?</summary>
+                                <div className={styles.faqAnswer}>
+                                    A. 1차 서류 심사(4월 1일~3일) 결과는 <strong>개별 이메일</strong>로 안내드립니다.<br />
+                                    입력하신 이메일 주소를 정확히 확인해 주세요.<br />
+                                    추가 문의는 이 페이지의 <a href="/qna" style={{ color: '#7c3aed', fontWeight: 600 }}>문의 게시판</a>을 이용해 주세요.
+                                </div>
+                            </details>
                         </div>
                     </section>
 
