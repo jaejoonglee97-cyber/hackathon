@@ -7,12 +7,12 @@ import { hashPassword } from '@/lib/bcrypt';
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-        const { email, password } = body;
+        const { name, email, password } = body;
 
         // 필수 입력 검증
-        if (!email || !password) {
+        if (!email || !password || !name?.trim()) {
             return NextResponse.json(
-                { error: '이메일과 비밀번호를 입력해주세요.' },
+                { error: '이름, 이메일, 비밀번호를 입력해주세요.' },
                 { status: 400 },
             );
         }
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
             'users_profile',
             {
                 user_id: userId,
-                name: '',
+                name: name.trim(),
                 phone: '',
                 org: '',
                 birthdate: '',

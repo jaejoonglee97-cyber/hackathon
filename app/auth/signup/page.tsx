@@ -9,6 +9,7 @@ import styles from './signup.module.css';
 export default function SignupPage() {
     const router = useRouter();
     const [formData, setFormData] = useState({
+        name: '',
         email: '',
         password: '',
         passwordConfirm: '',
@@ -26,6 +27,10 @@ export default function SignupPage() {
         e.preventDefault();
         setError('');
 
+        if (!formData.name.trim()) {
+            setError('이름을 입력해 주세요.');
+            return;
+        }
         if (formData.password !== formData.passwordConfirm) {
             setError('비밀번호가 일치하지 않습니다.');
             return;
@@ -41,6 +46,7 @@ export default function SignupPage() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
+                    name: formData.name.trim(),
                     email: formData.email,
                     password: formData.password,
                 }),
@@ -71,6 +77,23 @@ export default function SignupPage() {
 
                     <form onSubmit={handleSubmit} className={styles.form}>
                         {error && <div className={styles.error}>{error}</div>}
+
+                        <div className={styles.formGroup}>
+                            <label htmlFor="signup-name" className={styles.label}>
+                                이름 <span className={styles.required}>*</span>
+                            </label>
+                            <input
+                                type="text"
+                                id="signup-name"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                className={styles.input}
+                                required
+                                placeholder="실명을 입력해 주세요"
+                                autoComplete="name"
+                            />
+                        </div>
 
                         <div className={styles.formGroup}>
                             <label htmlFor="signup-email" className={styles.label}>

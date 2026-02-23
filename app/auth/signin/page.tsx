@@ -113,6 +113,11 @@ export default function SigninPage() {
                             아직 계정이 없으신가요?{' '}
                             <Link href="/auth/signup">회원가입</Link>
                         </p>
+                        <p style={{ textAlign: 'center', fontSize: '0.88rem', marginTop: '0.5rem' }}>
+                            <Link href="/auth/reset-password" style={{ color: 'var(--color-text-tertiary, #9ca3af)' }}>
+                                비밀번호를 잊으셨나요?
+                            </Link>
+                        </p>
                     </form>
                 </div>
 
