@@ -27,7 +27,7 @@ export default function GuidePage() {
                         letterSpacing: '-0.02em',
                         wordBreak: 'keep-all',
                     }}>
-                        &ldquo;해커톤이 끝나면,<br />2만 사회복지사 앞에 내 앱이 올라가 있을 겁니다.&rdquo;
+                        &ldquo;해커톤이 끝나면,<br />서울 2만 사회복지사 앞에 내 앱이 올라간다.&rdquo;
                     </p>
                     <p style={{
                         fontSize: '0.95rem',
@@ -57,8 +57,8 @@ export default function GuidePage() {
                                 <br /><br />
                                 👥 <strong>참가 대상</strong>
                                 <ul style={{ listStyle: 'disc', paddingLeft: '1.2rem', marginTop: '0.3rem', fontSize: '0.95rem' }}>
-                                    <li><strong>열매똑똑 참여기관 부문:</strong> 기존 1·2차년도 스마트워크 사업 참여 경험이 있는 기관</li>
-                                    <li><strong>서울시 사회복지사 부문:</strong> 서울 소재 사회복지시설·기관 종사자 누구나</li>
+                                    <li><strong>열매똑똑 참여기관:</strong> 기존 1·2차년도 스마트워크 사업 참여 경험이 있는 기관</li>
+                                    <li><strong>서울시 사회복지사:</strong> 서울 소재 사회복지시설·기관 종사자 누구나</li>
                                 </ul>
                                 <div style={{
                                     marginTop: '1.2rem',
@@ -176,7 +176,7 @@ export default function GuidePage() {
                                     <li>후보군: 본선 미진출 작품 중 본선 커트라인 점수 <strong>-10점 이내</strong> 작품으로 한정</li>
                                     <li>제외 기준: 감점(-10) 적용 대상(예: 실제 개인정보 포함 등)은 후보군에서 제외</li>
                                     <li>선정 방식: 후보군 내 총점 높은 순으로 최대 5팀 선정</li>
-                                    <li style={{ fontSize: '0.85rem', color: '#047857' }}>※ 심사위원 논의하에 동일·근접 점수대 내에서 소규모 시설 또는 직능(분야) 균형을 제한적으로 반영할 수 있음</li>
+
                                 </ul>
                             </div>
 
