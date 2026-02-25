@@ -24,15 +24,17 @@
 }
 
 .primaryLogo {
-    height: 36px;
+    height: 44px;
+    /* 시원하게 키움 */
     width: auto;
     object-fit: contain;
 }
 
 .divider {
     width: 1px;
-    height: 16px;
+    height: 20px;
     background-color: var(--color-border);
+    margin: 0 0.5rem;
 }
 
 .navLinks {
