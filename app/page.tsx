@@ -289,33 +289,14 @@ export default async function DashboardPage() {
                         </span>
                     </h2>
 
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                        gap: '1rem',
-                    }}>
+                    <div className={styles.trackGrid}>
                         {Object.entries(trackCounts).map(([track, count]) => (
                             <div
                                 key={track}
-                                style={{
-                                    background: 'var(--color-surface, white)',
-                                    border: '1px solid var(--color-border)',
-                                    borderRadius: '1rem',
-                                    padding: '1.5rem',
-                                    boxShadow: 'var(--shadow-sm)',
-                                    transition: 'transform 0.2s, box-shadow 0.2s',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    gap: '0.5rem',
-                                }}
+                                className={styles.trackCard}
                             >
                                 <span style={{ fontSize: '2rem', lineHeight: 1 }}>{trackIcons[track]}</span>
-                                <span style={{
-                                    fontSize: '0.9rem',
-                                    fontWeight: 600,
-                                    color: 'var(--color-text-secondary)',
-                                    marginTop: '0.25rem',
-                                }}>
+                                <span className={styles.trackName}>
                                     {track}
                                 </span>
                                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.3rem' }}>
@@ -370,30 +351,14 @@ export default async function DashboardPage() {
                     }}>
                         🚦 단계별 진행 현황
                     </h3>
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(3, 1fr)',
-                        gap: '0.75rem',
-                    }}>
+                    <div className={styles.stageGrid}>
                         {Object.entries(stageCounts).map(([key, count]) => (
                             <div
                                 key={key}
-                                style={{
-                                    background: 'var(--color-surface, white)',
-                                    border: '1px solid var(--color-border)',
-                                    borderRadius: '0.75rem',
-                                    padding: '1rem',
-                                    textAlign: 'center',
-                                    boxShadow: 'var(--shadow-sm)',
-                                }}
+                                className={styles.stageCard}
                             >
                                 <span style={{ fontSize: '1.5rem' }}>{stageIcons[key]}</span>
-                                <p style={{
-                                    fontSize: '0.82rem',
-                                    fontWeight: 600,
-                                    color: 'var(--color-text-secondary)',
-                                    margin: '0.3rem 0 0.2rem',
-                                }}>
+                                <p className={styles.stageLabel}>
                                     {stageLabels[key]}
                                 </p>
                                 <span style={{

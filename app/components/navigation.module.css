@@ -147,6 +147,29 @@
     background: var(--color-primary-dark);
 }
 
+/* 태블릿: 네비게이션 링크 축소 */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .navLinks {
+        margin-left: var(--space-md);
+        gap: var(--space-xs);
+    }
+
+    .navLink,
+    .navLinkActive {
+        font-size: var(--font-size-sm);
+        padding: var(--space-xs) var(--space-sm);
+    }
+
+    .qnaLink {
+        font-size: var(--font-size-sm);
+        padding: var(--space-xs) var(--space-sm);
+    }
+
+    .logo {
+        font-size: var(--font-size-lg);
+    }
+}
+
 @media (max-width: 768px) {
     .navLinks {
         display: none;

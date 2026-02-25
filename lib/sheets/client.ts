@@ -98,6 +98,7 @@ const SAMPLE_DATA: Record<string, Record<string, string>[]> = {
         },
     ],
     audit_events: [],
+    visitors: [],
 };
 
 // ─────────────────────────────────────────────

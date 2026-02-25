@@ -180,6 +180,12 @@ export const sheets = {
         'meta_json',
         'created_at',
     ] as const),
+
+    /** 방문자 카운터 — IP 해시 기반 유니크 방문자 추적 (원본 IP 미저장) */
+    visitors: def('visitors', 'data', [
+        'ip_hash',
+        'visited_at',
+    ] as const),
 } as const;
 
 // 타입 유틸
