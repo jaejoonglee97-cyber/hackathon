@@ -24,8 +24,7 @@
 }
 
 .primaryLogo {
-    height: 44px;
-    /* 시원하게 키움 */
+    height: 32px;
     width: auto;
     object-fit: contain;
 }
@@ -216,7 +215,7 @@
 }
 
 .secondaryLogo {
-    height: 28px;
+    height: 32px;
     width: auto;
     object-fit: contain;
 }
