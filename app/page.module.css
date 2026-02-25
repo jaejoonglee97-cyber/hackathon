@@ -12,103 +12,120 @@
     padding: 0 1.5rem;
 }
 
-/* 1. 환영 섹션 */
-.welcomeSection {
-    padding: 2.5rem 0 2rem;
-    animation: fadeIn 0.5s ease-out;
+/* 1. Hero 섹션 (제공된 이미지 스타일 반영) */
+.heroSection {
+    position: relative;
+    padding: 4rem 1.5rem 6rem;
+    margin: 1.5rem 0 2rem;
+    background: linear-gradient(135deg, #e11d48 0%, #be123c 50%, #881337 100%);
+    border-radius: 2rem;
+    color: white;
+    text-align: center;
+    overflow: hidden;
+    box-shadow: 0 20px 25px -5px rgba(190, 18, 60, 0.1), 0 10px 10px -5px rgba(190, 18, 60, 0.04);
 }
 
-.logoRow {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+/* 배경 장식 원 */
+.heroSection::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    right: -5%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
 }
 
-.partnerLogo {
-    height: 32px;
-    width: auto;
-    object-fit: contain;
-    filter: grayscale(0.2);
-    transition: filter 0.3s ease;
+.heroContent {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
-.partnerLogo:hover {
-    filter: grayscale(0);
-}
-
-.welcomeHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 2rem;
-    flex-wrap: wrap;
-}
-
-.greeting {
-    font-size: 2rem;
+.heroTitle {
+    font-size: 2.75rem;
     font-weight: 800;
-    color: #111827;
-    /* Explicit dark color */
-    margin: 0 0 0.5rem 0;
-    line-height: 1.2;
+    line-height: 1.25;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+    word-break: keep-all;
 }
 
-.greeting .userName {
-    color: var(--color-primary);
-    /* Use brand color instead of gradient for safety */
-    /* Removed gradient text clip which was causing visibility issues */
+.heroTitle strong {
+    color: #fff;
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 3.25rem;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.subGreeting {
-    font-size: 1.1rem;
-    color: var(--color-text-secondary);
-    margin: 0;
+.heroSubtitle {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    opacity: 0.9;
+    margin-bottom: 2.5rem;
+    word-break: keep-all;
+    font-weight: 400;
 }
 
-.quickActions {
+.heroActions {
     display: flex;
-    gap: 0.75rem;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
 }
 
-.actionButton,
-.actionButtonSecondary {
+.heroPrimaryButton {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    padding: 0.6rem 1.25rem;
-    font-size: 0.95rem;
-    font-weight: 600;
-    border-radius: 0.5rem;
+    padding: 1rem 2rem;
+    background-color: white;
+    color: #be123c;
+    border-radius: 9999px;
+    font-weight: 700;
+    font-size: 1.1rem;
     text-decoration: none;
-    transition: all 0.2s;
-    box-shadow: var(--shadow-sm);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.actionButton {
-    background-color: var(--color-primary);
+.heroPrimaryButton:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+}
+
+.heroWelcomeBadge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1.5rem;
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 9999px;
+    font-weight: 600;
     color: white;
 }
 
-.actionButton:hover {
-    background-color: var(--color-primary-dark);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+.heroWelcomeBadge .userName {
+    color: #fff;
+    font-weight: 800;
+    margin-right: 0.2rem;
+    text-decoration: underline;
+    text-underline-offset: 4px;
 }
 
-.actionButtonSecondary {
-    background-color: white;
-    color: var(--color-text-primary);
-    border: 1px solid var(--color-border);
-}
-
-.actionButtonSecondary:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+.heroWidgetWrapper {
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 500px;
+    z-index: 5;
 }
 
 /* 2. 마감일 배너 */
@@ -234,18 +251,34 @@
 
 /* 반응형 - 모바일 */
 @media (max-width: 768px) {
-    .welcomeHeader {
+    .heroSection {
+        padding: 3rem 1.25rem 5rem;
+        border-radius: 1.5rem;
+    }
+
+    .heroTitle {
+        font-size: 1.8rem;
+    }
+
+    .heroTitle strong {
+        font-size: 2.2rem;
+    }
+
+    .heroSubtitle {
+        font-size: 1rem;
+    }
+
+    .heroActions {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
     }
 
-    .quickActions {
-        width: 100%;
+    .heroPrimaryButton {
+        justify-content: center;
     }
 
-    .actionButton,
-    .actionButtonSecondary {
-        flex: 1;
+    .heroWidgetWrapper {
+        width: 95%;
     }
 
     .trackGrid {

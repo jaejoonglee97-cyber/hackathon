@@ -124,50 +124,44 @@ export default async function DashboardPage() {
     return (
         <div className={styles.page}>
             <div className={styles.container}>
-                {/* 1. 상단: 환영 영역 */}
-                <section className={styles.welcomeSection}>
-                    <div className={styles.welcomeHeader}>
-                        <div className={styles.welcomeText}>
+                {/* 1. 상단: 프리미엄 Hero 영역 (제공된 이미지 스타일 반영) */}
+                <section className={styles.heroSection}>
+                    <div className={styles.heroContent}>
+                        <h1 className={styles.heroTitle}>
+                            사랑의열매와 사회복지사가 함께 만드는<br />
+                            <strong>디지털 기반 현장 변화의 기록</strong>
+                        </h1>
+                        <p className={styles.heroSubtitle}>
+                            기술은 도구일 뿐입니다. 사회복지사의 진심 어린 아이디어가 AI와 만날 때,<br />
+                            우리 현장의 고질적인 문제는 해결되고 나눔의 가치는 더욱 넓게 확산됩니다.
+                        </p>
+
+                        <div className={styles.heroActions}>
                             {currentUser ? (
-                                <>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
-                                        <h1 className={styles.greeting} style={{ margin: 0 }}>
-                                            안녕하세요, <span className={styles.userName}>{profile?.name || currentUser.name}</span>님!
-                                        </h1>
-                                        {myTeam ? (
-                                            <Link href={`/teams/${myTeam.id}`} className={styles.actionButtonSecondary} style={{ padding: '0.5rem 1rem', fontSize: '0.9em' }}>
-                                                🏠 내 프로젝트 바로가기
-                                            </Link>
-                                        ) : (
-                                            <Link href="/teams/new" className={styles.actionButton} style={{ padding: '0.5rem 1rem', fontSize: '0.9em' }}>
-                                                🚀 프로젝트 등록하기
-                                            </Link>
-                                        )}
-                                    </div>
-                                    <p className={styles.subGreeting}>
-                                        {myTeam
-                                            ? `${myTeam.name} 프로젝트를 진행 중이시네요.`
-                                            : '아직 참여 중인 프로젝트가 없습니다.'}
-                                    </p>
-                                </>
-                            ) : (
-                                <>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
-                                        <h1 className={styles.greeting} style={{ margin: 0 }}>
-                                            🚀 열매똑똑 해커톤
-                                        </h1>
-                                        <Link href="/auth/signin" className={styles.actionButton} style={{ padding: '0.5rem 1rem', fontSize: '0.9em' }}>
-                                            로그인 / 프로젝트 등록
+                                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                                    {myTeam ? (
+                                        <Link href={`/teams/${myTeam.id}`} className={styles.heroPrimaryButton}>
+                                            🏠 내 프로젝트 대시보드
                                         </Link>
+                                    ) : (
+                                        <Link href="/teams/new" className={styles.heroPrimaryButton}>
+                                            🚀 프로젝트 등록하기
+                                        </Link>
+                                    )}
+                                    <div className={styles.heroWelcomeBadge}>
+                                        <span className={styles.userName}>{profile?.name || currentUser.name}</span>님, 환영합니다!
                                     </div>
-                                    <p className={styles.subGreeting}>
-                                        스마트워크로 현장을 바꾸는 여러분의 아이디어를 기다립니다!
-                                    </p>
-                                </>
+                                </div>
+                            ) : (
+                                <Link href="/auth/signin" className={styles.heroPrimaryButton}>
+                                    지금 도전하기 (로그인)
+                                </Link>
                             )}
                         </div>
+                    </div>
 
-                        {/* D-Day Counter Widget */}
+                    {/* D-Day Counter Widget - Hero 섹션 내부 또는 바로 아래 배치 */}
+                    <div className={styles.heroWidgetWrapper}>
                         <CountdownWidget targetDate="2026-03-27T18:00:00+09:00" title="🔥 아이디어 접수 마감까지" />
                     </div>
                 </section>
