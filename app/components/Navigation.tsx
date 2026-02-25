@@ -70,10 +70,18 @@ export default function Navigation({ initialUser }: NavigationProps) {
         <nav className={styles.nav}>
             <div className="container">
                 <div className={styles.navContent}>
-                    <Link href="/" className={styles.logo}>
-                        🚀 Hackathon Hub
-                    </Link>
+                    {/* 로고 영역 */}
+                    <div className={styles.logoGroup}>
+                        <Link href="/">
+                            <img src="/love-chest.png" alt="사랑의열매" className={styles.primaryLogo} />
+                        </Link>
+                        <div className={styles.divider} />
+                        <a href="https://sasw.or.kr" target="_blank" rel="noopener noreferrer">
+                            <img src="/logo.png" alt="서울특별시사회복지사협회" className={styles.secondaryLogo} />
+                        </a>
+                    </div>
 
+                    {/* 메뉴 링크 (중앙/좌측) */}
                     <div className={styles.navLinks}>
                         <Link
                             href="/"
@@ -85,54 +93,47 @@ export default function Navigation({ initialUser }: NavigationProps) {
                             href="/guide"
                             className={pathname?.startsWith('/guide') ? styles.navLinkActive : styles.navLink}
                         >
-                            📚 이용가이드
+                            이용가이드
                         </Link>
                         <Link
                             href="/qna"
                             className={pathname?.startsWith('/qna') ? styles.navLinkActive : styles.navLink}
                         >
-                            💬 문의게시판
+                            문의게시판
                         </Link>
                     </div>
 
-                    {/* 다크모드 토글 */}
-                    <button
-                        onClick={toggle}
-                        className={styles.themeToggle}
-                        aria-label={theme === 'dark' ? '라이트 모드로 전환' : '다크 모드로 전환'}
-                        title={theme === 'dark' ? '라이트 모드' : '다크 모드'}
-                    >
-                        {theme === 'dark' ? '☀️' : '🌙'}
-                    </button>
+                    {/* 우측 그룹 (테마 + 유저메뉴) */}
+                    <div className={styles.rightGroup}>
+                        <button
+                            onClick={toggle}
+                            className={styles.themeToggle}
+                            aria-label={theme === 'dark' ? '라이트 모드로 전환' : '다크 모드로 전환'}
+                            title={theme === 'dark' ? '라이트 모드' : '다크 모드'}
+                        >
+                            {theme === 'dark' ? '☀️' : '🌙'}
+                        </button>
 
-                    {!loading && user && (
-                        <div className={styles.userMenu}>
-                            <span className={styles.userName}>{user.name || user.email}</span>
-                            <button onClick={handleSignOut} className={styles.signOutButton}>
-                                로그아웃
-                            </button>
-                        </div>
-                    )}
+                        {!loading && user && (
+                            <div className={styles.userMenu}>
+                                <span className={styles.userName}>{user.name || user.email}</span>
+                                <button onClick={handleSignOut} className={styles.signOutButton}>
+                                    로그아웃
+                                </button>
+                            </div>
+                        )}
 
-                    {!loading && !user && (
-                        <div className={styles.authButtons}>
-                            <Link href="/auth/signin" className={styles.signInLink}>
-                                로그인
-                            </Link>
-                            <Link href="/auth/signup" className={styles.signUpButton}>
-                                회원가입
-                            </Link>
-                        </div>
-                    )}
-
-                    {/* Seoul Association of Social Workers Logo */}
-                    <a href="https://sasw.or.kr" target="_blank" rel="noopener noreferrer">
-                        <img
-                            src="/logo.png"
-                            alt="서울특별시사회복지사협회"
-                            className={styles.saswLogo}
-                        />
-                    </a>
+                        {!loading && !user && (
+                            <div className={styles.authButtons}>
+                                <Link href="/auth/signin" className={styles.signInLink}>
+                                    로그인
+                                </Link>
+                                <Link href="/auth/signup" className={styles.signUpButton}>
+                                    회원가입
+                                </Link>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </nav>

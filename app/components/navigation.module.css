@@ -9,32 +9,31 @@
     transition: background 0.25s ease;
 }
 
-.navContent {
+.logoGroup {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: var(--space-md) 0;
-    gap: var(--space-lg);
+    gap: 1rem;
+    flex-shrink: 0;
 }
 
-.logo {
-    font-size: var(--font-size-xl);
-    font-weight: 700;
-    color: var(--color-primary);
-    text-decoration: none;
-    transition: opacity 0.2s;
+.primaryLogo {
+    height: 32px;
+    width: auto;
+    object-fit: contain;
 }
 
-.logo:hover {
-    opacity: 0.8;
+.divider {
+    width: 1px;
+    height: 16px;
+    background-color: var(--color-border);
 }
 
 .navLinks {
     display: flex;
     align-items: center;
-    gap: var(--space-sm);
+    gap: var(--space-xs);
     flex-grow: 1;
-    margin-left: var(--space-2xl);
+    margin-left: 2rem;
 }
 
 .navLink,
@@ -81,6 +80,13 @@
     background-color: var(--color-primary-light);
     transform: translateY(-1px);
     box-shadow: var(--shadow-sm);
+}
+
+.rightGroup {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-shrink: 0;
 }
 
 .userMenu {
@@ -200,18 +206,16 @@
     }
 }
 
-.saswLogo {
-    height: 32px;
+.secondaryLogo {
+    height: 28px;
     width: auto;
     object-fit: contain;
-    margin-left: var(--space-md);
-    padding-left: var(--space-md);
-    border-left: 1px solid var(--color-border);
-    flex-shrink: 0;
 }
 
 @media (max-width: 640px) {
-    .saswLogo {
+
+    .divider,
+    .secondaryLogo {
         display: none;
     }
 }
