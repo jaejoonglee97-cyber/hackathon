@@ -12,17 +12,17 @@
     padding: 0 1.5rem;
 }
 
-/* 1. Hero 섹션 (제공된 이미지 스타일 반영) */
+/* 1. Hero 섹션 (스마트워크 & DX 컨셉) */
 .heroSection {
     position: relative;
     padding: 4rem 1.5rem 6rem;
-    margin: 1.5rem 0 2rem;
-    background: linear-gradient(135deg, #e11d48 0%, #be123c 50%, #881337 100%);
+    margin: 1.5rem 0 2.5rem;
+    background: linear-gradient(135deg, #1e293b 0%, #1e1b4b 50%, #312e81 100%);
     border-radius: 2rem;
     color: white;
     text-align: center;
     overflow: hidden;
-    box-shadow: 0 20px 25px -5px rgba(190, 18, 60, 0.1), 0 10px 10px -5px rgba(190, 18, 60, 0.04);
+    box-shadow: 0 20px 25px -5px rgba(30, 41, 59, 0.1), 0 10px 10px -5px rgba(30, 41, 59, 0.04);
 }
 
 /* 배경 장식 원 */
@@ -33,7 +33,7 @@
     right: -5%;
     width: 300px;
     height: 300px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
 }
@@ -41,60 +41,65 @@
 .heroContent {
     position: relative;
     z-index: 2;
-    max-width: 800px;
+    max-width: 850px;
     margin: 0 auto;
 }
 
 .heroTitle {
-    font-size: 2.75rem;
-    font-weight: 800;
-    line-height: 1.25;
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.35;
     margin-bottom: 1.5rem;
     letter-spacing: -0.02em;
     word-break: keep-all;
+    opacity: 0.95;
 }
 
 .heroTitle strong {
     color: #fff;
     display: block;
-    margin-top: 0.5rem;
-    font-size: 3.25rem;
-    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-top: 0.8rem;
+    font-size: 3rem;
+    font-weight: 800;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .heroSubtitle {
-    font-size: 1.2rem;
-    line-height: 1.7;
-    opacity: 0.9;
-    margin-bottom: 2.5rem;
+    font-size: 1.15rem;
+    line-height: 1.75;
+    opacity: 0.8;
+    margin-bottom: 3rem;
     word-break: keep-all;
     font-weight: 400;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .heroActions {
     display: flex;
     justify-content: center;
-    gap: 1rem;
-    margin-bottom: 3rem;
+    gap: 1.2rem;
+    margin-bottom: 3.5rem;
 }
 
 .heroPrimaryButton {
     display: inline-flex;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 1rem 2.2rem;
     background-color: white;
-    color: #be123c;
+    color: #1e1b4b;
     border-radius: 9999px;
     font-weight: 700;
     font-size: 1.1rem;
     text-decoration: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .heroPrimaryButton:hover {
     transform: translateY(-3px) scale(1.03);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
     background-color: #fff;
 }
 

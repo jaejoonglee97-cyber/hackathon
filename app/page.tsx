@@ -124,12 +124,12 @@ export default async function DashboardPage() {
     return (
         <div className={styles.page}>
             <div className={styles.container}>
-                {/* 1. 상단: 프리미엄 Hero 영역 (제공된 이미지 스타일 반영) */}
+                {/* 1. 상단: 프리미엄 Hero 영역 (스마트워크 & DX 컨셉) */}
                 <section className={styles.heroSection}>
                     <div className={styles.heroContent}>
                         <h1 className={styles.heroTitle}>
-                            사랑의열매와 사회복지사가 함께 만드는<br />
-                            <strong>디지털 기반 현장 변화의 기록</strong>
+                            열매똑똑 스마트워크와 서울 사회복지사가 함께 만드는<br />
+                            <strong>사회복지 현장의 디지털 전환, 열매똑똑 해커톤</strong>
                         </h1>
                         <p className={styles.heroSubtitle}>
                             기술은 도구일 뿐입니다. 사회복지사의 진심 어린 아이디어가 AI와 만날 때,<br />
