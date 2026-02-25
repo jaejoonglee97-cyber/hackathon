@@ -27,7 +27,7 @@ export default function GuidePage() {
                         letterSpacing: '-0.02em',
                         wordBreak: 'keep-all',
                     }}>
-                        &ldquo;해커톤이 끝나면,<br />서울 2만 사회복지사 앞에 내 앱이 올라간다.&rdquo;
+                        ✨ 해커톤 이후,<br />서울 2만 사회복지사 앞에 내 앱이 올라가 있을 겁니다.
                     </p>
                     <p style={{
                         fontSize: '0.95rem',
