@@ -15,14 +15,14 @@
 /* 1. Hero 섹션 (스마트워크 & DX 컨셉) */
 .heroSection {
     position: relative;
-    padding: 4rem 1.5rem 6rem;
+    padding: 3.5rem 1.5rem 5.5rem;
     margin: 1.5rem 0 2.5rem;
     background: linear-gradient(135deg, #1e293b 0%, #1e1b4b 50%, #312e81 100%);
-    border-radius: 2rem;
+    border-radius: 2.2rem;
     color: white;
     text-align: center;
     overflow: hidden;
-    box-shadow: 0 20px 25px -5px rgba(30, 41, 59, 0.1), 0 10px 10px -5px rgba(30, 41, 59, 0.04);
+    box-shadow: 0 20px 25px -5px rgba(30, 41, 59, 0.15), 0 10px 10px -5px rgba(30, 41, 59, 0.1);
 }
 
 /* 배경 장식 원 */
@@ -46,32 +46,38 @@
 }
 
 .heroTitle {
-    font-size: 2.25rem;
-    font-weight: 700;
-    line-height: 1.35;
-    margin-bottom: 1.5rem;
-    letter-spacing: -0.02em;
+    font-size: 2rem;
+    /* 크기 약간 축소 */
+    font-weight: 600;
+    line-height: 1.5;
+    /* 줄간격 확보 */
+    margin-bottom: 2rem;
+    letter-spacing: -0.01em;
     word-break: keep-all;
-    opacity: 0.95;
+    opacity: 0.9;
 }
 
 .heroTitle strong {
     color: #fff;
     display: block;
-    margin-top: 0.8rem;
-    font-size: 3rem;
-    font-weight: 800;
-    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    margin-top: 1rem;
+    font-size: 2.75rem;
+    /* 강조 텍스트 크기 조절 */
+    font-weight: 850;
+    line-height: 1.2;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    letter-spacing: -0.02em;
 }
 
 .heroSubtitle {
-    font-size: 1.15rem;
-    line-height: 1.75;
-    opacity: 0.8;
-    margin-bottom: 3rem;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    opacity: 0.85;
+    margin-bottom: 3.5rem;
     word-break: keep-all;
     font-weight: 400;
-    max-width: 700px;
+    max-width: 720px;
+    /* 가독성을 위한 너비 제한 */
     margin-left: auto;
     margin-right: auto;
 }
