@@ -9,6 +9,13 @@
     transition: background 0.25s ease;
 }
 
+.navContent {
+    display: flex;
+    align-items: center;
+    padding: var(--space-sm) 0;
+    gap: var(--space-md);
+}
+
 .logoGroup {
     display: flex;
     align-items: center;
