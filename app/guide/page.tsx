@@ -52,8 +52,12 @@ export default function GuidePage() {
                         <div className={styles.card}>
                             <h3 className={styles.cardTitle}>열매똑똑 해커톤이란?</h3>
                             <p className={styles.cardText}>
-                                사회복지 현장 문제를 사회복지사 관점에서 해결하는 아이디어 및 개선안을 발굴하고,<br />
-                                스마트워크 활용 기반 우수 모델을 선정하여 확산시키고자 하는 사업입니다.
+                                해커톤(Hackathon)의 핵심은 <strong>&lsquo;집중적으로 문제를 해결하고, 결과물을 만들어내는 것&rsquo;</strong>입니다.<br />
+                                열매똑똑 해커톤은 이 정신을 사회복지 현장에 가져왔습니다.
+                                <br /><br />
+                                🎯 <strong>우리가 푸는 문제</strong><br />
+                                매일 반복되는 서류 작업, 접근이 어려운 이용자 지원, 팀 간 공유가 안 되는 지식 —<br />
+                                현장에서 직접 느끼는 불편함을 <strong>AI와 디지털 도구</strong>로 해결하는 프로젝트를 만듭니다.
                                 <br /><br />
                                 👥 <strong>참가 대상</strong>
                                 <ul style={{ listStyle: 'disc', paddingLeft: '1.2rem', marginTop: '0.3rem', fontSize: '0.95rem' }}>
@@ -69,10 +73,10 @@ export default function GuidePage() {
                                     fontSize: '0.93rem',
                                     lineHeight: 1.75,
                                 }}>
-                                    <strong style={{ fontSize: '1rem' }}>💡 &lsquo;해커톤&rsquo;이 처음이신가요?</strong><br />
-                                    원래 해커톤(Hackathon)은 정해진 기간 동안 팀이 모여 <em>밤새 코딩·개발</em>하는 경진대회를 뜻합니다.<br />
-                                    <strong>열매똑똑 해커톤은 이와 다르게, 현장 문제를 해결하는 아이디어·개선안을 온라인으로 제출하는 <em>아이디어 경진대회 형식</em>으로 진행됩니다.</strong><br />
-                                    코딩이나 개발 경험이 없어도 괜찮습니다. 사회복지사의 현장 경험과 아이디어가 핵심입니다! 🌱
+                                    <strong style={{ fontSize: '1rem' }}>💡 코딩을 못해도 되나요?</strong><br />
+                                    네, <strong>코딩이나 개발 경험은 전혀 필요 없습니다.</strong><br />
+                                    현장의 문제를 가장 잘 아는 사람은 사회복지사입니다. 여러분의 경험과 아이디어가 핵심이고,<br />
+                                    AI 도구가 기술적인 부분을 도와줍니다. 구글 시트, 앱시트, 노션 등 익숙한 도구도 충분합니다. 🌱
                                 </div>
                             </p>
                             <br />
