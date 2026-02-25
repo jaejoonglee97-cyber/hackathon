@@ -72,9 +72,9 @@ export default function Navigation({ initialUser }: NavigationProps) {
                 <div className={styles.navContent}>
                     {/* 로고 영역 */}
                     <div className={styles.logoGroup}>
-                        <Link href="/">
+                        <a href="https://seoul.chest.or.kr/" target="_blank" rel="noopener noreferrer">
                             <img src="/love-chest.png" alt="사랑의열매" className={styles.primaryLogo} />
-                        </Link>
+                        </a>
                         <div className={styles.divider} />
                         <a href="https://sasw.or.kr" target="_blank" rel="noopener noreferrer">
                             <img src="/logo.png" alt="서울특별시사회복지사협회" className={styles.secondaryLogo} />
