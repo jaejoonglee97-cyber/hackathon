@@ -24,7 +24,7 @@
 }
 
 .primaryLogo {
-    height: 32px;
+    height: 40px;
     width: auto;
     object-fit: contain;
 }
@@ -179,14 +179,10 @@
         padding: var(--space-xs) var(--space-sm);
     }
 
-    .logo {
-        font-size: var(--font-size-lg);
-    }
-
-    .saswLogo {
-        height: 24px;
-        margin-left: var(--space-sm);
-        padding-left: var(--space-sm);
+    .primaryLogo,
+    .secondaryLogo {
+        height: 32px;
+        /* 태블릿에서는 약간 축소 */
     }
 
     .themeToggle {
@@ -209,13 +205,14 @@
         padding: var(--space-sm) 0;
     }
 
-    .logo {
-        font-size: var(--font-size-lg);
+    .primaryLogo {
+        height: 32px;
+        /* 모바일에서도 충분한 크기 유지 */
     }
 }
 
 .secondaryLogo {
-    height: 32px;
+    height: 40px;
     width: auto;
     object-fit: contain;
 }
