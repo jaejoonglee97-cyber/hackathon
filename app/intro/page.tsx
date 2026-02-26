@@ -18,19 +18,14 @@ export default function IntroPage() {
                     <h1 className={styles.title}>열매똑똑 스마트워크란?</h1>
                     <p className={styles.subtitle}>더 많이 만나기 위해, 더 스마트하게 일합니다.</p>
                 </div>
+                {/* 캐러셀을 헤더 하단에 통합 */}
+                <div className={styles.heroCarouselWrapper}>
+                    <Carousel />
+                </div>
             </header>
 
             <main className={styles.main}>
                 <div className="container">
-
-                    {/* 사진 캐러셀 (작게) */}
-                    <ScrollReveal>
-                        <section className={styles.sectionCenter}>
-                            <div className={styles.smallCarouselWrapper}>
-                                <Carousel />
-                            </div>
-                        </section>
-                    </ScrollReveal>
 
                     {/* 사업 소개 (담백하게) */}
                     <ScrollReveal delay={50}>

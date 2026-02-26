@@ -37,9 +37,6 @@ export default function PosterCarousel() {
                     <div key={index} className={styles.posterCard}>
                         <div className={styles.imageBox}>
                             <img src={poster.src} alt={poster.title} className={styles.posterImage} />
-                            <div className={styles.overlay}>
-                                <span>{poster.title}</span>
-                            </div>
                         </div>
                     </div>
                 ))}

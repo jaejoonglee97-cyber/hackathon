@@ -4,39 +4,53 @@
 }
 
 .header {
-    background: linear-gradient(135deg, hsl(230, 80%, 40%) 0%, hsl(260, 80%, 50%) 100%);
+    background: linear-gradient(150deg, hsl(230, 85%, 35%) 0%, hsl(260, 85%, 45%) 100%);
     color: white;
-    padding: 5rem 0;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    padding: 4rem 0 0 0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
     text-align: center;
+    overflow: hidden;
 }
 
 .backLink {
     text-decoration: none;
     color: white;
-    opacity: 0.8;
-    font-size: 0.9rem;
-    margin-bottom: 2rem;
+    opacity: 0.7;
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
     display: inline-block;
+    letter-spacing: 0.05em;
+    transition: opacity 0.2s;
 }
 
 .backLink:hover {
     opacity: 1;
-    text-decoration: underline;
 }
 
 .title {
-    font-size: 3rem;
-    font-weight: 800;
+    font-size: 3.5rem;
+    font-weight: 900;
     margin: 0 0 1rem 0;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
 }
 
 .subtitle {
-    font-size: 1.25rem;
-    opacity: 0.9;
-    margin: 0;
-    font-weight: 400;
+    font-size: 1.5rem;
+    font-weight: 600;
+    opacity: 0.95;
+    margin: 0 0 3rem 0;
+    letter-spacing: -0.01em;
+}
+
+.heroCarouselWrapper {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    border-radius: 1.5rem 1.5rem 0 0;
+    overflow: hidden;
+    box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.3);
 }
 
 .main {
