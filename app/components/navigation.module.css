@@ -24,7 +24,7 @@
 }
 
 .primaryLogo {
-    height: 40px;
+    height: 32px;
     width: auto;
     object-fit: contain;
 }
@@ -46,12 +46,13 @@
 
 .navLink,
 .navLinkActive {
-    padding: var(--space-sm) var(--space-lg);
-    border-radius: var(--radius-md);
-    font-size: var(--font-size-base);
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 0.95rem;
     font-weight: 600;
     text-decoration: none;
     transition: all 0.2s;
+    position: relative;
+    white-space: nowrap;
 }
 
 .navLink {
@@ -59,13 +60,22 @@
 }
 
 .navLink:hover {
-    background: var(--color-bg-secondary);
-    color: var(--color-text-primary);
+    color: var(--color-primary);
 }
 
 .navLinkActive {
+    color: var(--color-primary);
+}
+
+.navLinkActive::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: var(--space-sm);
+    right: var(--space-sm);
+    height: 2px;
     background: var(--color-primary);
-    color: white;
+    border-radius: 2px;
 }
 
 .qnaLink {
@@ -212,7 +222,7 @@
 }
 
 .secondaryLogo {
-    height: 40px;
+    height: 32px;
     width: auto;
     object-fit: contain;
 }
@@ -225,24 +235,24 @@
     }
 }
 
-/* 다크모드 토글 버튼 */
+/* 다크모드 토글 버튼 (더 심플하게) */
 .themeToggle {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: var(--radius-full);
-    border: 1px solid var(--color-border);
-    background: var(--color-bg-secondary);
-    font-size: 1.1rem;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    font-size: 1rem;
     cursor: pointer;
     transition: all 0.2s;
     flex-shrink: 0;
+    opacity: 0.6;
 }
 
 .themeToggle:hover {
-    background: var(--color-primary-light);
-    border-color: var(--color-primary);
-    transform: scale(1.1);
+    opacity: 1;
+    background: var(--color-bg-secondary);
 }

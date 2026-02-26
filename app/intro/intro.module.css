@@ -56,28 +56,62 @@
     letter-spacing: -0.01em;
 }
 
-.introCard {
+.sectionCenter {
+    margin-bottom: 4rem;
+    display: flex;
+    justify-content: center;
+}
+
+.smallCarouselWrapper {
+    width: 100%;
+    max-width: 800px;
+    /* 크기를 적절히 제한 */
+}
+
+.simpleIntroCard {
     background: white;
-    padding: 3rem;
+    padding: 3.5rem;
     border-radius: 2rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.simpleTitle {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+    color: #1f2937;
+    position: relative;
+    display: inline-block;
+}
+
+.simpleTitle::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 20%;
+    right: 20%;
+    height: 3px;
+    background: hsl(230, 80%, 40%);
+    border-radius: 2px;
+}
+
+.introInfo {
     text-align: center;
 }
 
 .introLead {
     font-size: 1.4rem;
     line-height: 1.7;
-    color: #374151;
-    margin-bottom: 3rem;
+    color: #1f2937;
+    margin-bottom: 2rem;
     word-break: keep-all;
 }
 
 .introLead strong {
     color: hsl(230, 80%, 40%);
-}
-
-.carouselWrapper {
-    margin: 0 auto;
 }
 
 .grid {
