@@ -4,12 +4,16 @@ import { useState, useEffect, useCallback } from 'react';
 import styles from './Carousel.module.css';
 
 const images = [
-    { src: '/intro/photo1.png', alt: '열매똑똑 사업 성과 공유회' },
-    { src: '/intro/photo2.png', alt: '열매똑똑 네트워크 캠퍼스 단체사진' },
-    { src: '/intro/photo3.jpg', alt: '스마트워크 실무 교육 현장' },
-    { src: '/intro/photo4.jpg', alt: '디지털 역량강화 워크숍' },
-    { src: '/intro/photo5.jpeg', alt: '업무 효율화 사례 발표' },
-    { src: '/intro/photo6.jpg', alt: '사례 관리 자동화 실습' },
+    { src: '/intro/photo1.png', alt: '활동 사진 1' },
+    { src: '/intro/photo2.png', alt: '활동 사진 2' },
+    { src: '/intro/photo3.jpg', alt: '활동 사진 3' },
+    { src: '/intro/photo4.jpg', alt: '활동 사진 4' },
+    { src: '/intro/photo5.jpeg', alt: '활동 사진 5' },
+    { src: '/intro/photo6.jpg', alt: '활동 사진 6' },
+    { src: '/intro/photo7.jpg', alt: '활동 사진 7' },
+    { src: '/intro/photo8.jpg', alt: '활동 사진 8' },
+    { src: '/intro/photo9.jpg', alt: '활동 사진 9' },
+    { src: '/intro/photo10.jpg', alt: '활동 사진 10' },
 ];
 
 export default function Carousel() {
