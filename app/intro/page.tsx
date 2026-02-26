@@ -33,15 +33,13 @@ export default function IntroPage() {
                             <div className={styles.simpleIntroCard}>
                                 <h2 className={styles.simpleTitle}>사업 소개</h2>
                                 <p className={styles.introLead}>
-                                    <span className={styles.phrase}><strong>열매똑똑 Smart Work</strong>는</span>{' '}
-                                    <span className={styles.phrase}>사회복지사가 다시 사람에게</span>{' '}
-                                    <span className={styles.phrase}>집중할 수 있도록,</span><br />
-                                    <span className={styles.phrase}><strong>일하는 방식의 변화</strong>를</span>{' '}
-                                    <span className={styles.phrase}>함께 만들어가는 사업입니다.</span>
+                                    <span className={styles.phrase}><strong>열매똑똑 Smart Work</strong>는</span><br />
+                                    <span className={styles.phrase}>사회복지사가 다시 사람에게 집중할 수 있도록,</span><br />
+                                    <span className={styles.phrase}><strong>일하는 방식의 변화</strong>를 함께 만들어가는 사업입니다.</span>
                                 </p>
                                 <div className={styles.introDivider} />
                                 <p className={styles.cardText}>
-                                    <span className={styles.phrase}>기술은 도구입니다.</span>{' '}
+                                    <span className={styles.phrase}>기술은 도구입니다.</span><br />
                                     <span className={styles.phrase}>반복되는 행정 업무는 도구에게 맡기고,</span><br />
                                     <span className={styles.phrase}>가벼워진 몸과 마음으로 우리를 기다리는</span>{' '}
                                     <span className={styles.phrase}>사람들에게 돌아가는 것 —</span><br />
