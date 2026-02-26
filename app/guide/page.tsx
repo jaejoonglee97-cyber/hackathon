@@ -1,5 +1,6 @@
 import styles from './guide.module.css';
 import ScrollReveal from '@/app/components/ScrollReveal';
+import AwardTabs from './AwardTabs';
 
 export default function GuidePage() {
     return (
@@ -49,7 +50,7 @@ export default function GuidePage() {
             <main className={styles.main}>
                 <div className="container">
 
-                    {/* 1. 사업 개요 */}
+                    {/* ① 사업 개요 */}
                     <ScrollReveal>
                         <section className={styles.section}>
                             <h2 className={styles.sectionTitle}>📋 사업 개요</h2>
@@ -94,149 +95,8 @@ export default function GuidePage() {
                         </section>
                     </ScrollReveal>
 
-                    {/* 2. 시상 안내 */}
+                    {/* ② 사이트 활용 안내 */}
                     <ScrollReveal delay={100}>
-                        <section className={styles.section}>
-                            <h2 className={styles.sectionTitle}>🏆 시상 안내</h2>
-                            {/* ... (기존 내용 유지) ... */}
-                            <div className={styles.card}>
-                                <h3 className={styles.cardTitle}>열매똑똑 해커톤 시상</h3>
-                                <p className={styles.cardText} style={{ marginBottom: '1rem' }}>
-                                    아래 <strong>&lsquo;부문별&rsquo;</strong>은 3가지 <strong>제출 주제</strong>를 기준으로 각각 수상자를 선정한다는 의미입니다.
-                                    <ul style={{ marginTop: '0.4rem', paddingLeft: '1.2rem', fontSize: '0.93rem', lineHeight: 1.8 }}>
-                                        <li>현장 업무경감 자동화</li>
-                                        <li>이용자 지원 및 접근성 개선</li>
-                                        <li>협업·지식관리·성과지표</li>
-                                    </ul>
-                                    특별상과 참여상은 주제 구분 없이 별도 선정됩니다.
-                                </p>
-
-                                {/* 대상 */}
-                                <div style={{
-                                    border: '2px solid #f59e0b',
-                                    borderRadius: '0.75rem',
-                                    padding: '1.1rem 1.2rem',
-                                    marginBottom: '0.75rem',
-                                    background: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)',
-                                }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
-                                        <span style={{ fontSize: '1.5rem' }}>🏅</span>
-                                        <strong style={{ fontSize: '1.1rem', color: '#92400e' }}>열매똑똑 대상</strong>
-                                        <span style={{ fontSize: '0.85rem', color: '#b45309', fontWeight: 600, marginLeft: 'auto' }}>부문별 3명</span>
-                                    </div>
-                                    <ul style={{ paddingLeft: '1.2rem', fontSize: '0.9rem', color: '#78350f', lineHeight: 1.75, margin: 0 }}>
-                                        <li>해당 부문에서 가장 완성도 높은 결과물 <strong>(현장적용 가능 + 실행 가능 + 확산 가능 + 안전)</strong>을 종합적으로 인정하는 상</li>
-                                        <li>선정: 해당 부문 총점 1위 (100점 만점)</li>
-                                        <li>동점 시: 안전성 → 실행가능성 → 확산성 점수 순으로 우선</li>
-                                    </ul>
-                                </div>
-
-                                {/* 최우수상 */}
-                                <div style={{
-                                    border: '2px solid #8b5cf6',
-                                    borderRadius: '0.75rem',
-                                    padding: '1.1rem 1.2rem',
-                                    marginBottom: '0.75rem',
-                                    background: 'linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)',
-                                }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
-                                        <span style={{ fontSize: '1.5rem' }}>🥇</span>
-                                        <strong style={{ fontSize: '1.1rem', color: '#5b21b6' }}>열매똑똑 최우수상</strong>
-                                        <span style={{ fontSize: '0.85rem', color: '#6d28d9', fontWeight: 600, marginLeft: 'auto' }}>부문별 3명</span>
-                                    </div>
-                                    <ul style={{ paddingLeft: '1.2rem', fontSize: '0.9rem', color: '#4c1d95', lineHeight: 1.75, margin: 0 }}>
-                                        <li>다른 기관이 쉽게 따라 적용할 수 있도록 결과물을 잘 정리 <strong>(템플릿·매뉴얼·복제 방법 등)</strong>한 작품에 수여</li>
-                                        <li>선정: 해당 부문 총점 2위 (동점 처리 동일)</li>
-                                    </ul>
-                                </div>
-
-                                {/* 우수상 */}
-                                <div style={{
-                                    border: '2px solid #3b82f6',
-                                    borderRadius: '0.75rem',
-                                    padding: '1.1rem 1.2rem',
-                                    marginBottom: '0.75rem',
-                                    background: 'linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)',
-                                }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
-                                        <span style={{ fontSize: '1.5rem' }}>🥈</span>
-                                        <strong style={{ fontSize: '1.1rem', color: '#1e40af' }}>열매똑똑 우수상</strong>
-                                        <span style={{ fontSize: '0.85rem', color: '#1d4ed8', fontWeight: 600, marginLeft: 'auto' }}>부문별 3명</span>
-                                    </div>
-                                    <ul style={{ paddingLeft: '1.2rem', fontSize: '0.9rem', color: '#1e3a5f', lineHeight: 1.75, margin: 0 }}>
-                                        <li>현장의 문제를 구체적으로 해결하며, <strong>업무 방식 개선(혁신) 효과</strong>가 뚜렷한 작품에 수여</li>
-                                        <li>선정: 해당 부문 총점 3위 (동점 처리 동일)</li>
-                                    </ul>
-                                </div>
-
-                                {/* 특별상 */}
-                                <div style={{
-                                    border: '2px solid #10b981',
-                                    borderRadius: '0.75rem',
-                                    padding: '1.1rem 1.2rem',
-                                    marginBottom: '0.75rem',
-                                    background: 'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)',
-                                }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
-                                        <span style={{ fontSize: '1.5rem' }}>🌟</span>
-                                        <strong style={{ fontSize: '1.1rem', color: '#065f46' }}>열매똑똑 특별상</strong>
-                                        <span style={{ fontSize: '0.85rem', color: '#047857', fontWeight: 600, marginLeft: 'auto' }}>5명</span>
-                                    </div>
-                                    <ul style={{ paddingLeft: '1.2rem', fontSize: '0.9rem', color: '#064e3b', lineHeight: 1.75, margin: 0 }}>
-                                        <li>본선(부문별 1~3위)에는 들지 못했지만, 아쉽게 탈락한 작품 중 총점이 높은 팀을 격려하기 위한 상</li>
-                                        <li>후보군: 본선 미진출 작품 중 본선 커트라인 점수 <strong>-10점 이내</strong> 작품으로 한정</li>
-                                        <li>제외 기준: 감점(-10) 적용 대상(예: 실제 개인정보 포함 등)은 후보군에서 제외</li>
-                                        <li>선정 방식: 후보군 내 총점 높은 순으로 최대 5팀 선정</li>
-
-                                    </ul>
-                                </div>
-
-                                {/* 참여상 */}
-                                <div style={{
-                                    border: '2px solid #f59e0b',
-                                    borderRadius: '0.75rem',
-                                    padding: '1.1rem 1.2rem',
-                                    marginBottom: '0.5rem',
-                                    background: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)',
-                                }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
-                                        <span style={{ fontSize: '1.5rem' }}>☕</span>
-                                        <strong style={{ fontSize: '1.1rem', color: '#92400e' }}>열매똑똑 참여상</strong>
-                                        <span style={{ fontSize: '0.85rem', color: '#b45309', fontWeight: 600, marginLeft: 'auto' }}>최대 40명 (추첨)</span>
-                                    </div>
-                                    <ul style={{ paddingLeft: '1.2rem', fontSize: '0.9rem', color: '#78350f', lineHeight: 1.75, margin: 0 }}>
-                                        <li>참여 확보 및 도전 장려를 위한 <strong>추첨</strong></li>
-                                        <li>대상: 최소요건 충족 제출자 중 추첨 (최대 40명)</li>
-                                        <li>최소요건: <strong>프로토타입 링크 제출 + AI 활용내역 작성 + 안전 체크리스트 완료</strong></li>
-                                    </ul>
-                                </div>
-
-                                {/* 참여상 강조 박스 */}
-                                <div style={{
-                                    marginTop: '1.2rem',
-                                    padding: '1rem 1.2rem',
-                                    background: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)',
-                                    border: '2px solid #f59e0b',
-                                    borderRadius: '0.75rem',
-                                    display: 'flex',
-                                    alignItems: 'flex-start',
-                                    gap: '0.75rem',
-                                }}>
-                                    <span style={{ fontSize: '2rem', lineHeight: 1 }}>☕</span>
-                                    <div>
-                                        <strong style={{ fontSize: '1rem', color: '#92400e' }}>제출만 해도 커피 쿠폰!</strong><br />
-                                        <span style={{ fontSize: '0.93rem', color: '#78350f', lineHeight: 1.6 }}>
-                                            최소 요건을 충족한 제출물을 출품하시면 <strong>추첨을 통해 40명에게 기프티콘</strong>을 드립니다.<br />
-                                            여러분의 도전을 응원합니다! 🌱
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </ScrollReveal>
-
-                    {/* 3. 사이트 활용 안내 */}
-                    <ScrollReveal delay={200}>
                         <section className={styles.section}>
                             <h2 className={styles.sectionTitle}>💻 사이트 활용 안내</h2>
 
@@ -258,7 +118,7 @@ export default function GuidePage() {
                             <div className={styles.card}>
                                 <h3 className={styles.cardTitle}>2. 단계별 프로젝트 발전</h3>
                                 <p className={styles.cardText}>
-                                    프로젝트 편집 페이지에서 <strong>[Why - 가설 - 해결 - 검증]</strong> 내용을 채워나가세요.<br />
+                                    프로젝트 편집 페이지에서 <strong>[①프로젝트명 - ②목적 - ③문제의식 - ④내용 - ⑤기대효과 - ⑥활용계획]</strong> 내용을 채워나가세요.<br />
                                     진행 상황에 따라 단계를 직접 변경할 수 있습니다.
                                     <ul style={{ margin: '0.5rem 0', paddingLeft: '1.2rem', fontSize: '0.95rem' }}>
                                         <li><strong>1단계(도입):</strong> 문제 정의 및 아이디어 구상</li>
@@ -291,7 +151,31 @@ export default function GuidePage() {
                         </section>
                     </ScrollReveal>
 
-                    {/* 4. FAQ */}
+                    {/* ③ 시상 안내 (탭 UI) */}
+                    <ScrollReveal delay={200}>
+                        <section className={styles.section}>
+                            <h2 className={styles.sectionTitle}>🏆 시상 안내</h2>
+
+                            {/* 시상 개요 설명 */}
+                            <div className={styles.card} style={{ marginBottom: '1rem' }}>
+                                <h3 className={styles.cardTitle}>열매똑똑 해커톤 시상</h3>
+                                <p className={styles.cardText} style={{ marginBottom: 0 }}>
+                                    아래 <strong>&lsquo;부문별&rsquo;</strong>은 3가지 <strong>제출 주제</strong>를 기준으로 각각 수상자를 선정한다는 의미입니다.
+                                    <ul style={{ marginTop: '0.4rem', paddingLeft: '1.2rem', fontSize: '0.93rem', lineHeight: 1.8 }}>
+                                        <li>현장 업무경감 자동화</li>
+                                        <li>이용자 지원 및 접근성 개선</li>
+                                        <li>협업·지식관리·성과지표</li>
+                                    </ul>
+                                    특별상과 참여상은 주제 구분 없이 별도 선정됩니다.
+                                </p>
+                            </div>
+
+                            {/* 탭 UI */}
+                            <AwardTabs />
+                        </section>
+                    </ScrollReveal>
+
+                    {/* ④ FAQ */}
                     <ScrollReveal delay={300}>
                         <section className={styles.section}>
                             <h2 className={styles.sectionTitle}>❓ 자주 묻는 질문 (FAQ)</h2>

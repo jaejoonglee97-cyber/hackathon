@@ -214,12 +214,14 @@
 }
 
 .trackName {
-    font-size: 0.9rem;
+    font-size: 0.78rem;
     font-weight: 600;
     color: var(--color-text-secondary);
-    margin-top: 0.25rem;
+    margin-top: 0.2rem;
     word-break: keep-all;
     overflow-wrap: break-word;
+    letter-spacing: 0.01em;
+    text-transform: none;
 }
 
 /* 단계별 현황 그리드 */
@@ -265,7 +267,7 @@
     }
 
     .trackName {
-        font-size: 0.8rem;
+        font-size: 0.72rem;
     }
 
     .stageLabel {

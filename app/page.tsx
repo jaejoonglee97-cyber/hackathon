@@ -11,6 +11,7 @@ import styles from './page.module.css';
 import CountdownWidget from './components/CountdownWidget';
 import TeamGrid from './components/TeamGrid';
 import type { Team } from './components/TeamCard';
+import InfoBannerTabs from './components/InfoBannerTabs';
 
 export const dynamic = 'force-dynamic';
 
@@ -133,7 +134,7 @@ export default async function DashboardPage() {
                         </h1>
                         <p className={styles.heroSubtitle}>
                             기술은 도구일 뿐입니다. 사회복지사의 진심 어린 아이디어가 AI와 만날 때,<br />
-                            우리 현장의 고질적인 문제는 해결되고 나눔의 가치는 더욱 넓게 확산됩니다.
+                            현장의 가능성은 더 넓어지고 나눔의 가치는 더 멀리 닿습니다.
                         </p>
 
                         <div className={styles.heroActions}>
@@ -186,83 +187,11 @@ export default async function DashboardPage() {
                     </section>
                 )}
 
-                {/* 이용가이드 안내 배너 */}
-                <div style={{
-                    background: 'linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)',
-                    border: '2px solid #60a5fa',
-                    borderRadius: '1rem',
-                    padding: '1.1rem 1.5rem',
-                    marginBottom: '1rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '1rem',
-                    flexWrap: 'wrap',
-                    boxShadow: '0 2px 8px rgba(96,165,250,0.15)',
-                }}>
-                    <span style={{ fontSize: '2.2rem', lineHeight: 1, flexShrink: 0 }}>📖</span>
-                    <div style={{ flex: 1, minWidth: '200px' }}>
-                        <strong style={{ fontSize: '1.05rem', color: '#1e40af', display: 'block', marginBottom: '0.2rem' }}>
-                            참여 전, 이용가이드를 꼭 확인해 주세요!
-                        </strong>
-                        <span style={{ fontSize: '0.92rem', color: '#1e3a5f', lineHeight: 1.6 }}>
-                            접수 방법, 심사 기준, 시상 안내 등 중요한 정보가 정리되어 있습니다.
-                        </span>
-                    </div>
-                    <a href="/guide" style={{
-                        flexShrink: 0,
-                        padding: '0.5rem 1rem',
-                        backgroundColor: '#3b82f6',
-                        color: 'white',
-                        borderRadius: '0.5rem',
-                        fontWeight: 700,
-                        fontSize: '0.88rem',
-                        textDecoration: 'none',
-                        whiteSpace: 'nowrap',
-                    }}>
-                        이용가이드 보기 →
-                    </a>
-                </div>
-
-                {/* 참여상 안내 카드 */}
-                <div style={{
-                    background: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)',
-                    border: '2px solid #f59e0b',
-                    borderRadius: '1rem',
-                    padding: '1.1rem 1.5rem',
-                    marginBottom: '1.5rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '1rem',
-                    flexWrap: 'wrap',
-                    boxShadow: '0 2px 8px rgba(245,158,11,0.15)',
-                }}>
-                    <span style={{ fontSize: '2.2rem', lineHeight: 1, flexShrink: 0 }}>☕</span>
-                    <div style={{ flex: 1, minWidth: '200px' }}>
-                        <strong style={{ fontSize: '1.05rem', color: '#92400e', display: 'block', marginBottom: '0.2rem' }}>
-                            제출만 해도 커피 쿠폰! — 열매똑똑 참여상
-                        </strong>
-                        <span style={{ fontSize: '0.92rem', color: '#78350f', lineHeight: 1.6 }}>
-                            최소 요건을 충족한 제출물을 등록하면 <strong>추첨으로 40명에게 기프티콘</strong>을 드립니다.
-                            여러분의 도전을 응원합니다! 🌱
-                        </span>
-                    </div>
-                    <a href="/guide" style={{
-                        flexShrink: 0,
-                        padding: '0.5rem 1rem',
-                        backgroundColor: '#f59e0b',
-                        color: 'white',
-                        borderRadius: '0.5rem',
-                        fontWeight: 700,
-                        fontSize: '0.88rem',
-                        textDecoration: 'none',
-                        whiteSpace: 'nowrap',
-                    }}>
-                        시상 안내 보기 →
-                    </a>
-                </div>
+                {/* 이용가이드 + 참여상 탭 배너 */}
+                <InfoBannerTabs />
 
                 {/* 3. 부문별 접수 현황 대시보드 */}
-                <section style={{ marginBottom: '2rem' }}>
+                <section style={{ marginBottom: '3rem', marginTop: '0.5rem' }}>
                     <h2 style={{
                         fontSize: '1.3rem',
                         fontWeight: 700,
@@ -293,17 +222,18 @@ export default async function DashboardPage() {
                                 <span className={styles.trackName}>
                                     {track}
                                 </span>
-                                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.3rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.3rem', marginTop: '0.25rem' }}>
                                     <span style={{
-                                        fontSize: '2.5rem',
-                                        fontWeight: 800,
+                                        fontSize: '3.5rem',
+                                        fontWeight: 900,
                                         color: 'var(--color-primary)',
                                         lineHeight: 1,
+                                        letterSpacing: '-0.02em',
                                     }}>
                                         {count}
                                     </span>
                                     <span style={{
-                                        fontSize: '1rem',
+                                        fontSize: '0.95rem',
                                         fontWeight: 500,
                                         color: 'var(--color-text-tertiary)',
                                     }}>건</span>
@@ -340,7 +270,7 @@ export default async function DashboardPage() {
                         fontSize: '1.1rem',
                         fontWeight: 700,
                         color: 'var(--color-text-primary)',
-                        marginTop: '2rem',
+                        marginTop: '3rem',
                         marginBottom: '0.75rem',
                     }}>
                         🚦 단계별 진행 현황

@@ -1,0 +1,225 @@
+/* AwardTabs 전용 CSS 모듈 */
+
+/* ── 래퍼 ── */
+.wrapper {
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+}
+
+/* ── 탭 바 ── */
+.tabBar {
+    display: flex;
+    background: #f8fafc;
+    border-bottom: 1px solid #e5e7eb;
+    overflow-x: auto;
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.tabBar::-webkit-scrollbar {
+    display: none;
+}
+
+.tab {
+    flex: 1;
+    min-width: 72px;
+    padding: 0.7rem 0.5rem;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: background 0.18s, color 0.18s;
+    border-bottom: 3px solid transparent;
+    background: transparent;
+    color: #6b7280;
+    white-space: nowrap;
+}
+
+.tab:hover {
+    background: #f1f5f9;
+}
+
+.tabEmoji {
+    font-size: 1.3rem;
+    line-height: 1;
+}
+
+.tabLabel {
+    font-size: 0.78rem;
+    letter-spacing: -0.01em;
+}
+
+/* 탭별 활성 색상 */
+.tabInactive {
+    color: #9ca3af;
+    background: transparent;
+}
+
+/* gold = 대상 */
+.tabActive_gold {
+    color: #92400e;
+    border-bottom-color: #f59e0b;
+    background: #fffbeb;
+}
+
+/* purple = 최우수상 */
+.tabActive_purple {
+    color: #5b21b6;
+    border-bottom-color: #8b5cf6;
+    background: #f5f3ff;
+}
+
+/* blue = 우수상 */
+.tabActive_blue {
+    color: #1e40af;
+    border-bottom-color: #3b82f6;
+    background: #eff6ff;
+}
+
+/* green = 특별상 */
+.tabActive_green {
+    color: #065f46;
+    border-bottom-color: #10b981;
+    background: #ecfdf5;
+}
+
+/* yellow = 참여상 */
+.tabActive_yellow {
+    color: #92400e;
+    border-bottom-color: #f59e0b;
+    background: #fef9ec;
+}
+
+/* ── 패널 공통 ── */
+.panel {
+    background: white;
+}
+
+.panelInner {
+    padding: 1.5rem 1.4rem;
+    animation: fadeSlide 0.2s ease;
+    border-top: none;
+}
+
+/* 패널 배경 */
+.panelGold {
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+}
+
+.panelPurple {
+    background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+}
+
+.panelBlue {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+}
+
+.panelGreen {
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+}
+
+.panelYellow {
+    background: linear-gradient(135deg, #fffbeb 0%, #fef9c3 100%);
+}
+
+/* 상 헤더 */
+.awardHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.awardEmoji {
+    font-size: 2.2rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.awardTitle {
+    font-size: 1.15rem;
+    font-weight: 800;
+    display: block;
+    margin-bottom: 0.1rem;
+    letter-spacing: -0.01em;
+}
+
+.awardCount {
+    font-size: 0.83rem;
+    font-weight: 600;
+    color: #6b7280;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 0.15rem 0.55rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* 수상 조건 리스트 */
+.awardList {
+    padding-left: 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.8;
+    margin: 0;
+    list-style: disc;
+}
+
+.awardList li+li {
+    margin-top: 0.1rem;
+}
+
+/* 커피 쿠폰 강조 박스 (참여상 탭 내부) */
+.coffeeBox {
+    margin-top: 1.25rem;
+    padding: 1rem 1.2rem;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 2px solid #f59e0b;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.coffeeIcon {
+    font-size: 2rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+/* ── 애니메이션 ── */
+@keyframes fadeSlide {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── 모바일 ── */
+@media (max-width: 480px) {
+    .tab {
+        min-width: 58px;
+        padding: 0.6rem 0.3rem;
+    }
+
+    .tabEmoji {
+        font-size: 1.1rem;
+    }
+
+    .tabLabel {
+        font-size: 0.7rem;
+    }
+
+    .panelInner {
+        padding: 1.2rem 1rem;
+    }
+}

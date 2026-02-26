@@ -1,0 +1,156 @@
+/* InfoBannerTabs 전용 CSS */
+
+.wrapper {
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2.5rem;
+}
+
+/* 탭 바 */
+.tabBar {
+    display: flex;
+    border-bottom: none;
+}
+
+.tab {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    letter-spacing: -0.01em;
+}
+
+.tabInactive {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.tabInactive:hover {
+    background: #e2e8f0;
+    color: #334155;
+}
+
+.tabActiveBlue {
+    background: #dbeafe;
+    color: #1e40af;
+    border-bottom: 3px solid #3b82f6;
+}
+
+.tabActiveYellow {
+    background: #fef3c7;
+    color: #92400e;
+    border-bottom: 3px solid #f59e0b;
+}
+
+/* 패널 공통 */
+.panelBlue,
+.panelYellow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 1.2rem 1.5rem;
+    animation: fadeIn 0.2s ease;
+}
+
+.panelBlue {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border: 2px solid #60a5fa;
+    border-top: none;
+}
+
+.panelYellow {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 2px solid #f59e0b;
+    border-top: none;
+}
+
+.icon {
+    font-size: 2.2rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.textBlock {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.titleBlue {
+    font-size: 1.05rem;
+    color: #1e40af;
+    display: block;
+}
+
+.titleYellow {
+    font-size: 1.05rem;
+    color: #92400e;
+    display: block;
+}
+
+.descBlue {
+    font-size: 0.92rem;
+    color: #1e3a5f;
+    line-height: 1.6;
+}
+
+.descYellow {
+    font-size: 0.92rem;
+    color: #78350f;
+    line-height: 1.6;
+}
+
+.btnBlue {
+    flex-shrink: 0;
+    padding: 0.5rem 1.1rem;
+    background-color: #3b82f6;
+    color: white;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    font-size: 0.88rem;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.2s, transform 0.15s;
+}
+
+.btnBlue:hover {
+    background-color: #2563eb;
+    transform: translateY(-1px);
+}
+
+.btnYellow {
+    flex-shrink: 0;
+    padding: 0.5rem 1.1rem;
+    background-color: #f59e0b;
+    color: white;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    font-size: 0.88rem;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.2s, transform 0.15s;
+}
+
+.btnYellow:hover {
+    background-color: #d97706;
+    transform: translateY(-1px);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
