@@ -90,6 +90,12 @@ export default function Navigation({ initialUser }: NavigationProps) {
                             대시보드
                         </Link>
                         <Link
+                            href="/intro"
+                            className={pathname?.startsWith('/intro') ? styles.navLinkActive : styles.navLink}
+                        >
+                            열매똑똑 스마트워크란?
+                        </Link>
+                        <Link
                             href="/guide"
                             className={pathname?.startsWith('/guide') ? styles.navLinkActive : styles.navLink}
                         >
