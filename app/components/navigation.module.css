@@ -39,7 +39,7 @@
 .navLinks {
     display: flex;
     align-items: center;
-    gap: var(--space-xs);
+    gap: var(--space-md);
     flex-grow: 1;
     margin-left: 2rem;
 }
