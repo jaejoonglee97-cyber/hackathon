@@ -27,20 +27,30 @@ export default function IntroPage() {
             <main className={styles.main}>
                 <div className="container">
 
-                    {/* 사업 소개 (담백하게) */}
+                    {/* 사업 소개 */}
                     <ScrollReveal delay={50}>
                         <section className={styles.section}>
                             <div className={styles.simpleIntroCard}>
                                 <h2 className={styles.simpleTitle}>사업 소개</h2>
                                 <p className={styles.introLead}>
-                                    <strong>「열매똑똑 Smart work」</strong>는 서울 사회복지공동모금회의 지원으로 서울시사회복지사협회가 수행하는 3개년 디지털 역량강화 사업입니다.
+                                    <span className={styles.phrase}><strong>열매똑똑 Smart Work</strong>는</span>{' '}
+                                    <span className={styles.phrase}>사회복지사가 다시 사람에게</span>{' '}
+                                    <span className={styles.phrase}>집중할 수 있도록,</span><br />
+                                    <span className={styles.phrase}><strong>일하는 방식의 변화</strong>를</span>{' '}
+                                    <span className={styles.phrase}>함께 만들어가는 사업입니다.</span>
                                 </p>
+                                <div className={styles.introDivider} />
                                 <p className={styles.cardText}>
-                                    사회복지의 본질은 <strong>사람과 사람 사이</strong>에 있습니다.<br />
-                                    우리는 사회복지사가 이용자·주민과 더 깊이, 더 자주 만날 수 있도록
-                                    현장의 디지털 전환과 업무효율화를 지원합니다.<br />
-                                    디지털 전환은 목적이 아닌, <strong>사람 중심의 사회복지를 더 잘 실천하기 위한 수단</strong>입니다.
+                                    <span className={styles.phrase}>기술은 도구입니다.</span>{' '}
+                                    <span className={styles.phrase}>반복되는 행정 업무는 도구에게 맡기고,</span><br />
+                                    <span className={styles.phrase}>가벼워진 몸과 마음으로 우리를 기다리는</span>{' '}
+                                    <span className={styles.phrase}>사람들에게 돌아가는 것 —</span><br />
+                                    <span className={styles.phrase}>그것이 <strong>열매똑똑</strong>이 지향하는 방향입니다.</span>
                                 </p>
+                                <div className={styles.cardCta}>
+                                    <span className={styles.phrase}>처음엔 막막해 보여도 괜찮습니다.</span><br />
+                                    <span className={styles.phrase}><strong>열매똑똑이 함께하면, 달라집니다.</strong></span>
+                                </div>
                             </div>
                         </section>
                     </ScrollReveal>
