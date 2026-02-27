@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     try {
         const user = await requireAuth();
         const body = await request.json();
-        const { name, phone, org, participantType, birthdate, privacyConsent, termsConsent } = body;
+        const { name, phone, org, participantType, birthdate } = body;
 
         // 필수 입력 검증
         if (!name || !phone || !org || !participantType || !birthdate) {
@@ -40,13 +40,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // 동의 체크 (개인정보 체크리스트 게이트 — PRD FR-40)
-        if (!privacyConsent || !termsConsent) {
-            return NextResponse.json(
-                { error: '개인정보 수집 및 이용약관에 동의해주세요.' },
-                { status: 400 },
-            );
-        }
+
 
         // 이미 프로필 완료된 사용자인지 확인 (API가 업데이트도 허용하도록 수정)
         const profile = await getUserProfile(user.userId);

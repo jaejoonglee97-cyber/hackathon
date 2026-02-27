@@ -13,8 +13,6 @@ export default function OnboardingProfilePage() {
         org: '',
         participantType: '',
         birthdate: '',
-        privacyConsent: false,
-        termsConsent: false,
     });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -41,9 +39,6 @@ export default function OnboardingProfilePage() {
                     org: user.profile.org || '',
                     participantType: user.profile.participant_type || '', // 기존 값 로드
                     birthdate: user.profile.birthdate || '',
-                    // 동의 여부는 갱신 필요할 수 있으므로 false로 두거나 true로 설정 (여기선 사용자 편의 위해 체크된 상태로 둘 수 있음)
-                    privacyConsent: true,
-                    termsConsent: true,
                 }));
             }
         }).catch(() => {
@@ -63,11 +58,6 @@ export default function OnboardingProfilePage() {
 
         if (!formData.participantType) {
             setError('참여 유형을 선택해주세요.');
-            return;
-        }
-
-        if (!formData.privacyConsent || !formData.termsConsent) {
-            setError('필수 약관에 동의해주세요.');
             return;
         }
 
@@ -213,40 +203,7 @@ export default function OnboardingProfilePage() {
                             />
                         </div>
 
-                        <div className={styles.consentSection}>
-                            <label className={styles.checkboxLabel}>
-                                <input
-                                    type="checkbox"
-                                    name="privacyConsent"
-                                    checked={formData.privacyConsent}
-                                    onChange={handleChange}
-                                    className={styles.checkbox}
-                                    required
-                                />
-                                <span>
-                                    개인정보 수집 및 이용 동의 <span className={styles.required}>*</span>
-                                </span>
-                            </label>
-                            <p className={styles.consentDetail}>
-                                수집 항목: 이름, 휴대폰, 소속, 생년월일<br />
-                                목적: 해커톤 운영 및 참가자 확인<br />
-                                보관: 행사 종료 후 1년
-                            </p>
 
-                            <label className={styles.checkboxLabel}>
-                                <input
-                                    type="checkbox"
-                                    name="termsConsent"
-                                    checked={formData.termsConsent}
-                                    onChange={handleChange}
-                                    className={styles.checkbox}
-                                    required
-                                />
-                                <span>
-                                    이용약관 동의 <span className={styles.required}>*</span>
-                                </span>
-                            </label>
-                        </div>
 
                         <button
                             type="submit"
