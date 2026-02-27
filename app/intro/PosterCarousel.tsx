@@ -42,8 +42,8 @@ export default function PosterCarousel() {
                 ))}
             </div>
 
-            <button className={`${styles.navButton} ${styles.prev}`} onClick={() => scroll('left')}>&#10094;</button>
-            <button className={`${styles.navButton} ${styles.next}`} onClick={() => scroll('right')}>&#10095;</button>
+            <button className={`${styles.navButton} ${styles.prev}`} onClick={() => scroll('left')} aria-label="이전 포스터">&#10094;</button>
+            <button className={`${styles.navButton} ${styles.next}`} onClick={() => scroll('right')} aria-label="다음 포스터">&#10095;</button>
         </div>
     );
 }

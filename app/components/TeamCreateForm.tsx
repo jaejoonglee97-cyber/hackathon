@@ -59,8 +59,9 @@ export default function TeamCreateForm({ org }: { org?: string }) {
             </div>
 
             <div className={styles.field}>
-                <label className={styles.label}>소속 기관</label>
+                <label htmlFor="orgDisabled" className={styles.label}>소속 기관</label>
                 <input
+                    id="orgDisabled"
                     type="text"
                     value={org || '(프로필 설정값)'}
                     className={styles.inputDisabled}

@@ -40,14 +40,14 @@ export default function SharedGoal({
 
                 <div className={styles.stats}>
                     <div className={styles.stat}>
-                        <span className={styles.statValue}>
+                        <span className={styles.statValue} suppressHydrationWarning>
                             {current.toLocaleString('ko-KR')}
                             <span className={styles.statUnit}>{unit}</span>
                         </span>
                         <span className={styles.statLabel}>현재</span>
                     </div>
                     <div className={styles.stat}>
-                        <span className={styles.statValue}>
+                        <span className={styles.statValue} suppressHydrationWarning>
                             {target.toLocaleString('ko-KR')}
                             <span className={styles.statUnit}>{unit}</span>
                         </span>

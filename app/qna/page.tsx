@@ -174,8 +174,9 @@ export default function QnAPage() {
                         {isWriting && (
                             <form onSubmit={handleSubmit} className={styles.writeForm}>
                                 <div className={styles.formGroup}>
-                                    <label>제목</label>
+                                    <label htmlFor="qna-page-title">제목</label>
                                     <input
+                                        id="qna-page-title"
                                         type="text"
                                         value={title}
                                         onChange={e => setTitle(e.target.value)}
@@ -185,8 +186,9 @@ export default function QnAPage() {
                                     />
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label>내용</label>
+                                    <label htmlFor="qna-page-content">내용</label>
                                     <textarea
+                                        id="qna-page-content"
                                         value={content}
                                         onChange={e => setContent(e.target.value)}
                                         placeholder="상세 내용을 입력해주세요"
@@ -276,6 +278,7 @@ export default function QnAPage() {
                                                         <div className={styles.adminActionBox} style={{ marginTop: '20px', borderTop: '1px dashed #ccc', paddingTop: '10px' }}>
                                                             <h4>관리자 답변 작성</h4>
                                                             <textarea
+                                                                aria-label="관리자 답변"
                                                                 value={answerInput}
                                                                 onChange={e => setAnswerInput(e.target.value)}
                                                                 placeholder="답변을 입력하세요..."

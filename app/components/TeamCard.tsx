@@ -92,7 +92,7 @@ export default function TeamCard({ team }: TeamCardProps) {
                 </div>
             )}
 
-            <time className={styles.timestamp} dateTime={team.updatedAt}>
+            <time className={styles.timestamp} dateTime={team.updatedAt} suppressHydrationWarning>
                 최종 업데이트: {new Date(team.updatedAt).toLocaleDateString('ko-KR', {
                     month: 'short',
                     day: 'numeric',
