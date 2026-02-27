@@ -44,6 +44,9 @@ export default function TeamCreateForm({ org }: { org?: string }) {
             <div className={styles.field}>
                 <label htmlFor="name" className={styles.label}>
                     프로젝트 이름 <span className={styles.required}>*</span>
+                    <span style={{ marginLeft: '8px', fontSize: '0.85em', color: '#6b7280', fontWeight: 'normal' }}>
+                        (최대 3회 변경 가능)
+                    </span>
                 </label>
                 <input
                     type="text"
