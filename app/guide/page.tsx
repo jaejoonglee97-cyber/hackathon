@@ -188,10 +188,10 @@ export default function GuidePage() {
                                     </div>
                                 </details>
                                 <details className={styles.faqItem}>
-                                    <summary className={styles.faqQuestion}>Q. 이 해커톤은 개인 참가인가요, 팀 참가인가요?</summary>
+                                    <summary className={styles.faqQuestion}>Q. 이 해커톤은 개인 참가인가요, 팀 참가인가요? (여러 개 제출 가능한가요?)</summary>
                                     <div className={styles.faqAnswer}>
                                         A. 열매똑똑 해커톤은 <strong>개인 프로젝트 경진대회</strong>입니다.<br />
-                                        한 명의 참가자가 하나의 프로젝트를 등록하여 진행합니다.
+                                        원칙적으로 <strong>1인당 1개의 프로젝트만 제출</strong>할 수 있습니다. 한 명의 참가자가 하나의 프로젝트에 집중하여 등록하고 진행해 주시기 바랍니다.
                                     </div>
                                 </details>
                                 <details className={styles.faqItem}>

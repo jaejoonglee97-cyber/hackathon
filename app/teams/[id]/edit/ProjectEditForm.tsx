@@ -59,6 +59,9 @@ export default function ProjectEditForm({
     const [success, setSuccess] = useState(false);
     const [draftSuccess, setDraftSuccess] = useState(false);
 
+    // ── 3/9 전 저장 차단 ──
+    const isSaveAllowed = new Date() >= new Date('2026-03-09T00:00:00+09:00');
+
     const [stage, setStage] = useState(initialStage);
 
     // Project Name State
@@ -219,6 +222,12 @@ export default function ProjectEditForm({
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (!isSaveAllowed) {
+            setError('프로젝트 저장은 3월 9일부터 가능합니다.');
+            return;
+        }
+
         setError('');
         setSuccess(false);
         setLoading(true);
@@ -278,6 +287,11 @@ export default function ProjectEditForm({
 
     /* ── 임시 저장 (검증 없이 현재 내용만 서버 저장) ── */
     const handleDraftSave = async () => {
+        if (!isSaveAllowed) {
+            setError('프로젝트 임시저장은 3월 9일부터 가능합니다.');
+            return;
+        }
+
         setError('');
         setDraftSuccess(false);
         setDraftLoading(true);
@@ -315,6 +329,13 @@ export default function ProjectEditForm({
             {lockType === 'soft' && editReason && (
                 <div className={styles.warningBanner}>
                     ⚠️ {editReason}
+                </div>
+            )}
+
+            {/* 3/9 저장 차단 경고 */}
+            {!isSaveAllowed && (
+                <div className={styles.warningBanner} style={{ backgroundColor: '#fee2e2', color: '#b91c1c', border: '1px solid #ef4444' }}>
+                    🚨 현재는 미리 작성만 가능합니다. <b>저장은 3월 9일부터 가능</b>하니, 작성하신 내용은 따로 보관해주세요!
                 </div>
             )}
 
@@ -923,27 +944,33 @@ export default function ProjectEditForm({
                 <button
                     type="button"
                     onClick={handleDraftSave}
-                    disabled={loading || draftLoading}
+                    disabled={loading || draftLoading || !isSaveAllowed}
                     style={{
                         padding: '0.7rem 1.5rem',
                         borderRadius: '0.5rem',
                         border: '1.5px solid var(--color-primary)',
-                        backgroundColor: 'transparent',
-                        color: 'var(--color-primary)',
+                        backgroundColor: !isSaveAllowed ? '#f3f4f6' : 'transparent',
+                        color: !isSaveAllowed ? '#9ca3af' : 'var(--color-primary)',
                         fontWeight: 700,
                         fontSize: '0.95rem',
-                        cursor: 'pointer',
+                        cursor: !isSaveAllowed ? 'not-allowed' : 'pointer',
                         transition: 'all 0.2s',
                     }}
+                    title={!isSaveAllowed ? "3월 9일부터 임시저장이 가능합니다." : ""}
                 >
-                    📝 임시 저장
+                    📝 {isSaveAllowed ? '임시 저장' : '임시 저장 (3/9 오픈)'}
                 </button>
                 <button
                     type="submit"
                     className={styles.submitButton}
-                    disabled={loading || !allSafetyChecked}
+                    disabled={loading || (!allSafetyChecked && isSaveAllowed) || !isSaveAllowed}
+                    style={{
+                        backgroundColor: !isSaveAllowed ? '#d1d5db' : undefined,
+                        cursor: !isSaveAllowed ? 'not-allowed' : 'pointer',
+                    }}
+                    title={!isSaveAllowed ? "3월 9일부터 최종 제출이 가능합니다." : ""}
                 >
-                    💾 최종 제출
+                    💾 {isSaveAllowed ? '최종 제출' : '최종 제출 (3/9 오픈)'}
                 </button>
             </div>
         </form>

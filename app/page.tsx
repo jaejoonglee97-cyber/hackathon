@@ -163,7 +163,11 @@ export default async function DashboardPage() {
 
                     {/* D-Day Counter Widget - Hero 섹션 내부 또는 바로 아래 배치 */}
                     <div className={styles.heroWidgetWrapper}>
-                        <CountdownWidget targetDate="2026-03-27T18:00:00+09:00" title="🔥 아이디어 접수 마감까지" />
+                        <CountdownWidget
+                            targetDate="2026-03-27T18:00:00+09:00"
+                            title="🔥 아이디어 접수 마감까지"
+                            period="📅 접수 기간: 3/9 00시 ~ 3/27 18시"
+                        />
                     </div>
                 </section>
 

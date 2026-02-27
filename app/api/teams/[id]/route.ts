@@ -10,6 +10,12 @@ export async function PATCH(
     try {
         const user = await requireAuth();
 
+        // ── 3/9 전 저장 차단 ──
+        const isSaveAllowed = new Date() >= new Date('2026-03-09T00:00:00+09:00');
+        if (!isSaveAllowed && !['admin', 'judge'].includes(user.role)) {
+            return NextResponse.json({ error: '프로젝트 저장은 3월 9일부터 가능합니다.' }, { status: 403 });
+        }
+
         // 프로필 완료 + 소유자 + 마감 확인 (permissions 내부에서 처리)
         const permission = await canEditProject(params.id);
         if (!permission.canEdit) {

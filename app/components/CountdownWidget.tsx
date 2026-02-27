@@ -6,9 +6,10 @@ import styles from './CountdownWidget.module.css';
 interface CountdownWidgetProps {
     targetDate: string; // ISO string 2026-03-27T18:00:00+09:00
     title?: string;
+    period?: string; // Optional period string to display below the title
 }
 
-export default function CountdownWidget({ targetDate, title = '접수 마감까지' }: CountdownWidgetProps) {
+export default function CountdownWidget({ targetDate, title = '접수 마감까지', period }: CountdownWidgetProps) {
     const [timeLeft, setTimeLeft] = useState<{
         days: number;
         hours: number;
@@ -58,6 +59,7 @@ export default function CountdownWidget({ targetDate, title = '접수 마감까�
     return (
         <div className={styles.container}>
             <div className={styles.label}>{title}</div>
+            {period && <div className={styles.period} style={{ fontSize: '0.85rem', color: 'var(--color-primary-light)', marginTop: '0.25rem', marginBottom: '0.5rem', fontWeight: 500 }}>{period}</div>}
             <div className={styles.timerWrapper}>
                 <div className={styles.dDay}>D-{timeLeft.days}</div>
                 <div className={styles.timeDetail}>
