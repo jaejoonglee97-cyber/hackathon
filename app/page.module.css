@@ -15,7 +15,7 @@
 /* 1. Hero 섹션 (스마트워크 & DX 컨셉) */
 .heroSection {
     position: relative;
-    padding: 3.5rem 1.5rem 5.5rem;
+    padding: 3.5rem 1.5rem 8rem;
     margin: 1.5rem 0 2.5rem;
     background: linear-gradient(135deg, #1e293b 0%, #1e1b4b 50%, #312e81 100%);
     border-radius: 2.2rem;
@@ -86,7 +86,7 @@
     display: flex;
     justify-content: center;
     gap: 1.2rem;
-    margin-bottom: 3.5rem;
+    margin-bottom: 4.5rem;
 }
 
 .heroPrimaryButton {
@@ -278,7 +278,7 @@
 /* 반응형 - 모바일 */
 @media (max-width: 768px) {
     .heroSection {
-        padding: 3rem 1.25rem 5rem;
+        padding: 3rem 1.25rem 7rem;
         border-radius: 1.5rem;
     }
 
