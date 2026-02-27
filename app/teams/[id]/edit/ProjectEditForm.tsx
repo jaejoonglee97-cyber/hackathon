@@ -335,7 +335,7 @@ export default function ProjectEditForm({
             {/* 3/9 저장 차단 경고 */}
             {!isSaveAllowed && (
                 <div className={styles.warningBanner} style={{ backgroundColor: '#fee2e2', color: '#b91c1c', border: '1px solid #ef4444' }}>
-                    🚨 현재는 미리 작성만 가능합니다. <b>저장은 3월 9일부터 가능</b>하니, 작성하신 내용은 따로 보관해주세요!
+                    🚨 현재는 신청기간이 아닙니다. 임시저장 및 최종 제출은 <b>3월 9일</b>부터 가능하니, 작성하신 내용은 따로 보관해주세요!
                 </div>
             )}
 
@@ -941,25 +941,26 @@ export default function ProjectEditForm({
                         ⏳ 저장 중입니다... (잠시만 기다려주세요)
                     </span>
                 )}
-                <button
-                    type="button"
-                    onClick={handleDraftSave}
-                    disabled={loading || draftLoading || !isSaveAllowed}
-                    style={{
-                        padding: '0.7rem 1.5rem',
-                        borderRadius: '0.5rem',
-                        border: '1.5px solid var(--color-primary)',
-                        backgroundColor: !isSaveAllowed ? '#f3f4f6' : 'transparent',
-                        color: !isSaveAllowed ? '#9ca3af' : 'var(--color-primary)',
-                        fontWeight: 700,
-                        fontSize: '0.95rem',
-                        cursor: !isSaveAllowed ? 'not-allowed' : 'pointer',
-                        transition: 'all 0.2s',
-                    }}
-                    title={!isSaveAllowed ? "3월 9일부터 임시저장이 가능합니다." : ""}
-                >
-                    📝 {isSaveAllowed ? '임시 저장' : '임시 저장 (3/9 오픈)'}
-                </button>
+                {isSaveAllowed && (
+                    <button
+                        type="button"
+                        onClick={handleDraftSave}
+                        disabled={loading || draftLoading}
+                        style={{
+                            padding: '0.7rem 1.5rem',
+                            borderRadius: '0.5rem',
+                            border: '1.5px solid var(--color-primary)',
+                            backgroundColor: 'transparent',
+                            color: 'var(--color-primary)',
+                            fontWeight: 700,
+                            fontSize: '0.95rem',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                        }}
+                    >
+                        📝 임시 저장
+                    </button>
+                )}
                 <button
                     type="submit"
                     className={styles.submitButton}
