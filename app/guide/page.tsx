@@ -100,6 +100,40 @@ export default function GuidePage() {
                         <section className={styles.section}>
                             <h2 className={styles.sectionTitle}>💻 사이트 활용 안내</h2>
 
+                            {/* 0. 회원가입 안내 */}
+                            <div className={styles.card} style={{
+                                border: '2px solid #7c3aed',
+                                background: 'linear-gradient(135deg, #faf5ff 0%, #ede9fe 100%)',
+                            }}>
+                                <h3 className={styles.cardTitle} style={{ color: '#6d28d9' }}>
+                                    🔐 0. 먼저 회원가입을 해주세요!
+                                </h3>
+                                <p className={styles.cardText}>
+                                    <strong>프로젝트 등록은 회원가입 후 로그인한 상태에서만 가능합니다.</strong><br />
+                                    아직 계정이 없으시다면 아래 순서로 진행해 주세요.
+                                </p>
+                                <ol style={{ paddingLeft: '1.4rem', fontSize: '0.95rem', lineHeight: 2, margin: '0.5rem 0 1rem' }}>
+                                    <li>
+                                        오른쪽 상단 또는 대시보드의&nbsp;
+                                        <strong style={{ color: '#7c3aed' }}>[로그인 / 회원가입]</strong> 버튼 클릭
+                                    </li>
+                                    <li>이메일 주소와 비밀번호를 입력하여 계정 생성</li>
+                                    <li>가입 완료 후 로그인 → 대시보드에서 <strong>[🚀 프로젝트 등록하기]</strong> 버튼 활성화 확인</li>
+                                </ol>
+                                <div style={{
+                                    padding: '0.85rem 1.1rem',
+                                    backgroundColor: 'rgba(124, 58, 237, 0.08)',
+                                    border: '1.5px solid #c4b5fd',
+                                    borderRadius: '0.6rem',
+                                    fontSize: '0.93rem',
+                                    lineHeight: 1.75,
+                                }}>
+                                    💡 <strong>이미 계정이 있으신가요?</strong><br />
+                                    로그인하면 바로 프로젝트 등록이 가능합니다.<br />
+                                    비밀번호를 잊으셨다면 로그인 화면의 <strong>&lsquo;비밀번호 재설정&rsquo;</strong> 링크를 이용해 주세요.
+                                </div>
+                            </div>
+
                             <div className={styles.card}>
                                 <h3 className={styles.cardTitle}>1. 프로젝트 등록 및 관리</h3>
                                 <p className={styles.cardText}>
@@ -197,8 +231,9 @@ export default function GuidePage() {
                                 <details className={styles.faqItem}>
                                     <summary className={styles.faqQuestion}>Q. 다른 참가자의 프로젝트를 볼 수 있나요?</summary>
                                     <div className={styles.faqAnswer}>
-                                        A. 네, 대시보드에서 다른 참가자의 카드를 클릭하면 진행 상황과 내용을 열람할 수 있습니다.<br />
-                                        서로의 아이디어를 보고 배우며 인사이트를 얻어보세요!
+                                        A. <strong>아니요, 다른 참가자의 프로젝트 내용은 열람할 수 없습니다.</strong><br />
+                                        심사의 공정성을 위해 각자의 프로젝트는 본인만 확인·편집할 수 있습니다.<br />
+                                        대시보드에서는 <strong>부문별 지원 현황(접수 건수)</strong>만 공개됩니다.
                                     </div>
                                 </details>
                                 <details className={styles.faqItem}>
