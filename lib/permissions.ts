@@ -177,8 +177,9 @@ export async function getMyProject(teamId: string): Promise<{
         const team = await getRowBy('teams', 'id', teamId);
         if (!team) return null;
 
-        const project = await getRowBy('projects', 'team_id', teamId);
-        if (!project) return null;
+        // project가 없어도 (예: 생성 직후 Sheets 반영 지연) 페이지를 렌더링할 수 있도록
+        // null 대신 빈 객체를 사용
+        const project = await getRowBy('projects', 'team_id', teamId) ?? {};
 
         const editPermission = await canEditProject(teamId);
 
