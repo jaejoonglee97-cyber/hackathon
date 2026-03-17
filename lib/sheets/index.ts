@@ -24,4 +24,5 @@ export {
     checkDeadlineLock,
     isProfileComplete,
     checkProfileComplete,
+    upsertScore,
 } from './client';

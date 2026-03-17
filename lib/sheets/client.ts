@@ -99,6 +99,7 @@ const SAMPLE_DATA: Record<string, Record<string, string>[]> = {
     ],
     audit_events: [],
     visitors: [],
+    scores: [],
 };
 
 // ─────────────────────────────────────────────
@@ -513,4 +514,56 @@ export async function checkProfileComplete(userId: string): Promise<{
 }> {
     const profile = await getUserProfile(userId);
     return { complete: isProfileComplete(profile), profile };
+}
+
+/**
+ * 채점 upsert — team_id + judge_id 조합으로 이미 있으면 update, 없으면 append
+ */
+export async function upsertScore(
+    judgeId: string,
+    teamId: string,
+    patch: Record<string, string | number>,
+): Promise<void> {
+    // 기존 채점 행 조회
+    const rows = await listRows('scores', { team_id: teamId, judge_id: judgeId });
+    const existing = rows[0];
+
+    if (existing) {
+        // 기존 행 업데이트 (score_id 키 기준)
+        await updateRow('scores', 'score_id', existing.score_id, patch, {
+            actorUserId: judgeId,
+            action: 'score_update',
+            targetType: 'scores',
+            targetId: teamId,
+        });
+    } else {
+        // 신규 횟 입력
+        const scoreId = `score_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+        const now = new Date().toISOString();
+        await appendRow(
+            'scores',
+            {
+                score_id: scoreId,
+                team_id: teamId,
+                judge_id: judgeId,
+                field_relevance: String(patch.field_relevance ?? 0),
+                feasibility: String(patch.feasibility ?? 0),
+                outcomes: String(patch.outcomes ?? 0),
+                scalability: String(patch.scalability ?? 0),
+                safety: String(patch.safety ?? 0),
+                deduction: String(patch.deduction ?? 0),
+                deduction_reasons: String(patch.deduction_reasons ?? ''),
+                comment: String(patch.comment ?? ''),
+                is_submitted: String(patch.is_submitted ?? 'FALSE'),
+                submitted_at: patch.is_submitted === 'TRUE' ? now : '',
+                updated_at: now,
+            },
+            {
+                actorUserId: judgeId,
+                action: 'score_create',
+                targetType: 'scores',
+                targetId: teamId,
+            },
+        );
+    }
 }

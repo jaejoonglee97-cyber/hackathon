@@ -1,0 +1,220 @@
+/* app/admin/scores/scores.module.css */
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-primary, #111);
+    margin: 0 0 0.25rem;
+}
+
+.subtitle {
+    font-size: 0.88rem;
+    color: var(--text-secondary, #888);
+    margin: 0;
+}
+
+/* 전체 통계 요약 */
+.summaryGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.summaryCard {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+}
+
+.summaryLabel {
+    font-size: 0.78rem;
+    color: var(--text-secondary, #888);
+    margin-bottom: 0.3rem;
+}
+
+.summaryValue {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: #7c3aed;
+}
+
+/* CSV 버튼 */
+.csvBtn {
+    padding: 0.6rem 1.2rem;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #374151;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.csvBtn:hover { background: #e5e7eb; }
+
+/* 테이블 컨테이너 */
+.tableWrap {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.tableHead {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 80px 80px 100px 80px;
+    padding: 0.7rem 1.2rem;
+    background: var(--bg-secondary, #f9fafb);
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-secondary, #888);
+    gap: 0.5rem;
+}
+
+.tableRow {
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
+}
+
+.tableRowMain {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 80px 80px 100px 80px;
+    padding: 0.85rem 1.2rem;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.tableRowMain:hover { background: var(--bg-secondary, #f9fafb); }
+
+.tableRow:last-child { border-bottom: none; }
+
+.teamName {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary, #111);
+}
+
+.teamOrg {
+    font-size: 0.78rem;
+    color: var(--text-secondary, #888);
+}
+
+.cell {
+    font-size: 0.88rem;
+    color: var(--text-primary, #333);
+}
+
+.avgScore {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #7c3aed;
+}
+
+.noScore {
+    color: var(--text-secondary, #bbb);
+    font-size: 0.85rem;
+}
+
+.expandIcon {
+    font-size: 0.75rem;
+    color: var(--text-secondary, #aaa);
+}
+
+/* 확장 상세 */
+.expandedDetail {
+    background: var(--bg-secondary, #f9fafb);
+    border-top: 1px solid var(--border-color, #e5e7eb);
+    padding: 1rem 1.4rem;
+}
+
+.judgeScoreRow {
+    display: grid;
+    grid-template-columns: 120px repeat(6, 1fr) 60px;
+    gap: 0.4rem;
+    align-items: center;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--border-color, #eee);
+    font-size: 0.8rem;
+}
+
+.judgeScoreRow:last-child { border-bottom: none; }
+
+.judgeLabel {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-secondary, #555);
+}
+
+.scoreCell {
+    text-align: center;
+    color: var(--text-primary, #333);
+}
+
+.totalCell {
+    text-align: center;
+    font-weight: 700;
+    color: #7c3aed;
+}
+
+.subHeader {
+    display: grid;
+    grid-template-columns: 120px repeat(6, 1fr) 60px;
+    gap: 0.4rem;
+    padding: 0.3rem 0 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-secondary, #aaa);
+    border-bottom: 1px solid var(--border-color, #ddd);
+    margin-bottom: 0.3rem;
+}
+
+.submittedDot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+    margin-right: 4px;
+    vertical-align: middle;
+}
+
+.savedDot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #f59e0b;
+    margin-right: 4px;
+    vertical-align: middle;
+}
+
+.loading {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-secondary, #888);
+}
+
+.emptyMsg {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary, #aaa);
+    font-size: 0.9rem;
+}

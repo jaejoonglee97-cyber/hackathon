@@ -1,0 +1,395 @@
+/* app/admin/judge/[teamId]/score-form.module.css */
+
+.container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+}
+
+.backLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary, #666);
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+    transition: color 0.15s;
+}
+.backLink:hover { color: var(--primary, #7c3aed); }
+
+/* 팀 요약 */
+.teamCard {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 12px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.teamTitle {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary, #111);
+    margin: 0 0 0.25rem;
+}
+
+.teamMeta {
+    font-size: 0.82rem;
+    color: var(--text-secondary, #888);
+    margin: 0;
+}
+
+.protoLink {
+    font-size: 0.82rem;
+    color: #7c3aed;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.protoLink:hover { text-decoration: underline; }
+
+/* 저장 상태 배너 */
+.savedBanner {
+    background: #fef9c3;
+    border: 1px solid #fde68a;
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+    font-size: 0.82rem;
+    color: #92400e;
+    margin-bottom: 1rem;
+}
+
+.submittedBanner {
+    background: #dcfce7;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+    font-size: 0.82rem;
+    color: #166534;
+    margin-bottom: 1rem;
+}
+
+/* 채점 섹션 */
+.section {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.2rem;
+    cursor: default;
+    border-bottom: 1px solid transparent;
+}
+
+.sectionTitleRow {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.sectionName {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary, #111);
+}
+
+.sectionMax {
+    font-size: 0.75rem;
+    color: var(--text-secondary, #888);
+}
+
+.scoreInputRow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.slider {
+    width: 140px;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    border-radius: 999px;
+    outline: none;
+    cursor: pointer;
+    background: linear-gradient(
+        to right,
+        #7c3aed var(--val, 0%),
+        var(--border-color, #e5e7eb) var(--val, 0%)
+    );
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #7c3aed;
+    cursor: pointer;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+}
+
+.scoreInput {
+    width: 60px;
+    padding: 0.3rem 0.5rem;
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-align: center;
+    color: var(--text-primary, #111);
+    background: var(--card-bg, #fff);
+}
+
+.scoreInput:focus {
+    outline: none;
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 2px rgba(124,58,237,0.15);
+}
+
+/* 세부 기준 아코디언 */
+.criteriaToggle {
+    width: 100%;
+    background: none;
+    border: none;
+    border-top: 1px solid var(--border-color, #e5e7eb);
+    padding: 0.55rem 1.2rem;
+    text-align: left;
+    font-size: 0.78rem;
+    color: var(--text-secondary, #888);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: background 0.15s;
+}
+.criteriaToggle:hover { background: var(--bg-secondary, #f9fafb); }
+
+.criteriaContent {
+    padding: 0.75rem 1.2rem 1rem;
+    background: var(--bg-secondary, #f9fafb);
+    border-top: 1px solid var(--border-color, #e5e7eb);
+}
+
+.criteriaList {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.criteriaList li {
+    font-size: 0.82rem;
+    color: var(--text-secondary, #555);
+    padding-left: 1rem;
+    position: relative;
+}
+
+.criteriaList li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: #7c3aed;
+}
+
+/* 감점 섹션 */
+.deductSection {
+    background: var(--card-bg, #fff);
+    border: 1px solid #fca5a5;
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.deductTitle {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #ef4444;
+    margin: 0 0 0.75rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.deductNote {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #888;
+}
+
+.checkItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    margin-bottom: 0.55rem;
+    cursor: pointer;
+}
+
+.checkItem input[type='checkbox'] {
+    width: 16px;
+    height: 16px;
+    margin-top: 1px;
+    accent-color: #ef4444;
+    flex-shrink: 0;
+}
+
+.checkLabel {
+    font-size: 0.84rem;
+    color: var(--text-primary, #444);
+    line-height: 1.4;
+}
+
+.deductResult {
+    margin-top: 0.75rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.deductActive {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.deductInactive {
+    background: var(--bg-secondary, #f3f4f6);
+    color: var(--text-secondary, #888);
+}
+
+/* 코멘트 */
+.commentSection {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.commentLabel {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text-primary, #111);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.commentNote {
+    font-size: 0.75rem;
+    color: var(--text-secondary, #888);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.commentTextarea {
+    width: 100%;
+    min-height: 100px;
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 8px;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.88rem;
+    color: var(--text-primary, #111);
+    background: var(--card-bg, #fff);
+    resize: vertical;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.commentTextarea:focus {
+    outline: none;
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 2px rgba(124,58,237,0.15);
+}
+
+/* 총점 표시 */
+.totalRow {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 0.75rem 0;
+    margin-bottom: 1rem;
+}
+
+.totalLabel {
+    font-size: 0.9rem;
+    color: var(--text-secondary, #888);
+}
+
+.totalScore {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #7c3aed;
+}
+
+.totalMax {
+    font-size: 0.85rem;
+    color: var(--text-secondary, #aaa);
+}
+
+/* 액션 버튼 */
+.actionRow {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+.btnSave {
+    padding: 0.65rem 1.4rem;
+    background: var(--bg-secondary, #f3f4f6);
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary, #374151);
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.btnSave:hover:not(:disabled) { background: #e5e7eb; }
+.btnSave:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btnSubmit {
+    padding: 0.65rem 1.6rem;
+    background: #7c3aed;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.btnSubmit:hover:not(:disabled) { background: #6d28d9; }
+.btnSubmit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.successMsg {
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 0.85rem;
+    color: #166534;
+    background: #dcfce7;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+}
+
+.errorMsg {
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 0.85rem;
+    color: #b91c1c;
+    background: #fee2e2;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+}

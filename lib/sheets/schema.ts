@@ -186,6 +186,27 @@ export const sheets = {
         'ip_hash',
         'visited_at',
     ] as const),
+
+    /**
+     * 심사 채점 — FR-32 채점(비공개)
+     * team_id + judge_id 조합으로 1행 (upsert 방식)
+     */
+    scores: def('scores', 'data', [
+        'score_id',           // 고유 ID
+        'team_id',            // 대상 팀 ID
+        'judge_id',           // 심사위원 user_id
+        'field_relevance',    // 현장적합성 (0~20)
+        'feasibility',        // 실행가능성(프로토타입) (0~20)
+        'outcomes',           // 성과성 (0~20)
+        'scalability',        // 확산성 (0~20)
+        'safety',             // 안전성(개인정보) (0~20)
+        'deduction',          // 감점 (0 or -10)
+        'deduction_reasons',  // 감점 사유 쉼표 구분 (pii|open_edit|internal_leak)
+        'comment',            // 심사 코멘트
+        'is_submitted',       // 최종 제출 여부 TRUE/FALSE
+        'submitted_at',       // 최종 제출 일시
+        'updated_at',
+    ] as const),
 } as const;
 
 // 타입 유틸

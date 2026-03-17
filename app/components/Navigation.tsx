@@ -107,6 +107,16 @@ export default function Navigation({ initialUser }: NavigationProps) {
                         >
                             문의게시판
                         </Link>
+                        {/* 심사위원/관리자만 보이는 채점 메뉴 */}
+                        {user && ['admin', 'judge'].includes(user.role) && (
+                            <Link
+                                href="/admin/judge"
+                                className={pathname?.startsWith('/admin') ? styles.navLinkActive : styles.navLink}
+                                style={{ color: '#7c3aed', fontWeight: 700 }}
+                            >
+                                📋 채점
+                            </Link>
+                        )}
                     </div>
 
                     {/* 우측 그룹 (테마 + 유저메뉴) */}

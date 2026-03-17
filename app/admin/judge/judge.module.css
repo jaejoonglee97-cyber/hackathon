@@ -1,0 +1,288 @@
+/* app/admin/judge/judge.module.css */
+
+/* ── 레이아웃 ──────────────────────────────── */
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+}
+
+.header {
+    margin-bottom: 2rem;
+}
+
+.title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-primary, #111);
+    margin: 0 0 0.25rem;
+}
+
+.subtitle {
+    font-size: 0.9rem;
+    color: var(--text-secondary, #666);
+    margin: 0;
+}
+
+/* ── 통계 카드 그리드 ───────────────────────── */
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.statCard {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 12px;
+    padding: 1.1rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.statLabel {
+    font-size: 0.78rem;
+    color: var(--text-secondary, #888);
+    font-weight: 500;
+}
+
+.statValue {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--primary, #7c3aed);
+    line-height: 1;
+}
+
+.statUnit {
+    font-size: 0.75rem;
+    color: var(--text-secondary, #888);
+}
+
+/* ── 진행률 바 ──────────────────────────────── */
+.progressSection {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 12px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 2rem;
+}
+
+.progressLabel {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary, #111);
+}
+
+.progressTrack {
+    height: 10px;
+    background: var(--border-color, #e5e7eb);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #7c3aed, #a855f7);
+    transition: width 0.5s ease;
+}
+
+/* ── 항목별 평균 카드 ────────────────────────── */
+.avgSection {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 12px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 2rem;
+}
+
+.sectionTitle {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary, #111);
+    margin: 0 0 1rem;
+}
+
+.avgGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.75rem;
+}
+
+.avgItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.avgItemLabel {
+    font-size: 0.78rem;
+    color: var(--text-secondary, #666);
+}
+
+.avgBar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.avgBarTrack {
+    flex: 1;
+    height: 6px;
+    background: var(--border-color, #e5e7eb);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.avgBarFill {
+    height: 100%;
+    border-radius: 999px;
+    background: #7c3aed;
+}
+
+.avgBarFill.deduction {
+    background: #ef4444;
+}
+
+.avgBarValue {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-primary, #111);
+    min-width: 36px;
+    text-align: right;
+}
+
+/* ── 팀 목록 테이블 ─────────────────────────── */
+.teamSection {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.tableHeader {
+    display: grid;
+    grid-template-columns: 1fr 1fr 100px 80px 120px;
+    padding: 0.75rem 1.2rem;
+    background: var(--bg-secondary, #f9fafb);
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-secondary, #888);
+    gap: 0.5rem;
+}
+
+.tableRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr 100px 80px 120px;
+    padding: 0.85rem 1.2rem;
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.15s;
+}
+
+.tableRow:last-child {
+    border-bottom: none;
+}
+
+.tableRow:hover {
+    background: var(--bg-secondary, #f9fafb);
+}
+
+.teamName {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary, #111);
+}
+
+.teamOrg {
+    font-size: 0.78rem;
+    color: var(--text-secondary, #888);
+    margin-top: 0.1rem;
+}
+
+.orgText {
+    font-size: 0.85rem;
+    color: var(--text-secondary, #666);
+}
+
+.statusBadge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.statusNone {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.statusSaved {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.statusDone {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.totalScore {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-primary, #111);
+}
+
+.scoreEmpty {
+    color: var(--text-secondary, #bbb);
+    font-size: 0.85rem;
+}
+
+.actionBtn {
+    display: inline-block;
+    padding: 0.4rem 0.9rem;
+    background: #7c3aed;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    transition: background 0.15s;
+}
+
+.actionBtn:hover {
+    background: #6d28d9;
+}
+
+.actionBtnEdit {
+    background: var(--bg-secondary, #f3f4f6);
+    color: var(--text-primary, #374151);
+}
+
+.actionBtnEdit:hover {
+    background: var(--border-color, #e5e7eb);
+}
+
+/* ── 로딩 / 에러 ────────────────────────────── */
+.loading {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-secondary, #888);
+    font-size: 0.95rem;
+}
+
+.emptyMessage {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary, #aaa);
+    font-size: 0.9rem;
+}
