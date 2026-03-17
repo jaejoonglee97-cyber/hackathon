@@ -27,6 +27,7 @@ export default async function ScoreFormPage({ params }: { params: { teamId: stri
 
     // 프로젝트 데이터를 직렬화 가능 형태로 정리
     const projectData = project ? {
+        track: project.track || '',
         problemStatement: project.problem_statement || '',
         targetAudience: project.target_audience || '',
         situation: project.situation || '',

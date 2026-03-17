@@ -12,11 +12,13 @@ export async function GET() {
 
     // judge이면 본인 채점 통계만, admin이면 전체
     const filters: Record<string, string> = user.role === 'judge' ? { judge_id: user.userId } : {};
-    const [allScores, allTeams] = await Promise.all([
+    const [allScores, rawTeams] = await Promise.all([
         listRows('scores', filters),
         listRows('teams'),
     ]);
 
+    // "완성" 단계(complete)인 팀만 필터링
+    const allTeams = rawTeams.filter((t) => t.stage === 'complete');
     const totalTeams = allTeams.length;
 
     // ── judge 본인 통계 ──────────────────────────

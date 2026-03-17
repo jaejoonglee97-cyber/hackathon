@@ -67,22 +67,24 @@ export default function JudgeDashboardClient() {
                     scoresByTeam[s.team_id] = s;
                 }
 
-                const teamList: TeamScore[] = (teamsData.teams ?? []).map((t: any) => {
-                    const s = scoresByTeam[t.id];
-                    let status: 'none' | 'saved' | 'submitted' = 'none';
-                    let total: number | null = null;
-                    if (s) {
-                        status = s.is_submitted === 'TRUE' ? 'submitted' : 'saved';
-                        total =
-                            parseFloat(s.field_relevance || '0') +
-                            parseFloat(s.feasibility || '0') +
-                            parseFloat(s.outcomes || '0') +
-                            parseFloat(s.scalability || '0') +
-                            parseFloat(s.safety || '0') +
-                            parseFloat(s.deduction || '0');
-                    }
-                    return { teamId: t.id, teamName: t.name, org: t.org, status, total };
-                });
+                const teamList: TeamScore[] = (teamsData.teams ?? [])
+                    .filter((t: any) => t.stage === 'complete')
+                    .map((t: any) => {
+                        const s = scoresByTeam[t.id];
+                        let status: 'none' | 'saved' | 'submitted' = 'none';
+                        let total: number | null = null;
+                        if (s) {
+                            status = s.is_submitted === 'TRUE' ? 'submitted' : 'saved';
+                            total =
+                                parseFloat(s.field_relevance || '0') +
+                                parseFloat(s.feasibility || '0') +
+                                parseFloat(s.outcomes || '0') +
+                                parseFloat(s.scalability || '0') +
+                                parseFloat(s.safety || '0') +
+                                parseFloat(s.deduction || '0');
+                        }
+                        return { teamId: t.id, teamName: t.name, org: t.org, status, total };
+                    });
 
                 setTeams(teamList);
             } catch (e) {

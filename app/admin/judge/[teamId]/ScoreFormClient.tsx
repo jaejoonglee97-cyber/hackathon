@@ -72,6 +72,7 @@ const DEDUCTION_ITEMS = [
 ];
 
 interface ProjectData {
+    track: string;
     problemStatement: string;
     targetAudience: string;
     situation: string;
@@ -248,87 +249,80 @@ export default function ScoreFormClient({
 
                     {p ? (
                         <>
-                            {/* Why — 문제/고객 */}
+                            {/* 1. 프로젝트 정보 */}
                             <div className={styles.projectSection}>
-                                <h2 className={styles.projectSectionTitle}>🎯 Why — 문제/고객</h2>
-                                <InfoField label="대상(누구)" value={p.targetAudience} />
-                                <InfoField label="상황(언제)" value={p.situation} />
-                                <InfoField label="문제(무엇)" value={p.problemStatement} />
+                                <h2 className={styles.projectSectionTitle}>1️⃣ 프로젝트 정보</h2>
+                                <InfoField label="프로젝트명" value={teamName} />
+                                <InfoField label="분야" value={p.track || '아직 선택되지 않았습니다.'} />
+                            </div>
+
+                            {/* 2. 프로젝트 목적 */}
+                            <div className={styles.projectSection}>
+                                <h2 className={styles.projectSectionTitle}>2️⃣ 프로젝트 목적</h2>
+                                <InfoField label="목적" value={p.problemStatement || '아직 작성되지 않았습니다.'} />
+                            </div>
+
+                            {/* 3. 문제의식 (프로젝트 필요성) */}
+                            <div className={styles.projectSection}>
+                                <h2 className={styles.projectSectionTitle}>3️⃣ 문제의식 (프로젝트 필요성)</h2>
+                                <InfoField label="1) 계획 배경" value={p.situation || '아직 작성되지 않았습니다.'} />
+                                <InfoField label="2) 기존 프로젝트와의 차별성" value={p.evidence1 || '아직 작성되지 않았습니다.'} />
+                                <InfoField label="3) 프로젝트의 강점" value={p.evidence2 || '아직 작성되지 않았습니다.'} />
+                            </div>
+
+                            {/* 4. 프로젝트 내용 */}
+                            <div className={styles.projectSection}>
+                                <h2 className={styles.projectSectionTitle}>4️⃣ 프로젝트 내용</h2>
+                                <InfoField label="핵심 내용 및 기능" value={p.solution || '아직 작성되지 않았습니다.'} />
+                                {p.features && <InfoField label="추가 상세 기능" value={p.features} />}
+                            </div>
+
+                            {/* 5. 프로젝트로 인한 기대효과 */}
+                            <div className={styles.projectSection}>
+                                <h2 className={styles.projectSectionTitle}>5️⃣ 프로젝트로 인한 기대효과</h2>
+                                <InfoField label="기대효과" value={p.hypothesis1 || '아직 작성되지 않았습니다.'} />
+                            </div>
+
+                            {/* 6. 프로젝트의 활용 계획 */}
+                            <div className={styles.projectSection}>
+                                <h2 className={styles.projectSectionTitle}>6️⃣ 프로젝트의 활용 계획</h2>
+                                <InfoField label="1) 사용 계획" value={p.experimentLog || '아직 작성되지 않았습니다.'} />
+                                <InfoField label="2) 확산 전략" value={p.adoptionChecklist || '아직 작성되지 않았습니다.'} />
+                            </div>
+
+                            {/* 심사 참고용 추가 정보 (성과/안전성/AI 등) */}
+                            <div className={styles.projectSection}>
+                                <h2 className={styles.projectSectionTitle}>📊 심사 참고용 추가 정보</h2>
+                                
                                 <div className={styles.evidenceGroup}>
-                                    <span className={styles.infoLabel}>증거</span>
-                                    {p.evidence1 && <div className={styles.evidenceItem}>1. {p.evidence1}</div>}
-                                    {p.evidence2 && <div className={styles.evidenceItem}>2. {p.evidence2}</div>}
-                                    {p.evidence3 && <div className={styles.evidenceItem}>3. {p.evidence3}</div>}
+                                    <span className={styles.infoLabel}>📉 성과 측정</span>
+                                    {p.perfProblemType && <div className={styles.infoValue}>- 문제 유형: {p.perfProblemType}</div>}
+                                    {p.perfImprovement && <div className={styles.infoValue}>- 개선 정도: {p.perfImprovement}</div>}
+                                    {p.perfEtcDesc && <div className={styles.infoValue}>- 설명: {p.perfEtcDesc}</div>}
+                                </div>
+
+                                <div className={styles.evidenceGroup} style={{ marginTop: '0.8rem' }}>
+                                    <span className={styles.infoLabel}>🤖 AI 활용 내역</span>
+                                    {p.aiTools && <div className={styles.infoValue}>- 도구: {p.aiTools}</div>}
+                                    {p.aiScope && <div className={styles.infoValue}>- 범위: {p.aiScope}</div>}
+                                    {p.aiVerification && <div className={styles.infoValue}>- 검증: {p.aiVerification}</div>}
+                                </div>
+
+                                <div className={styles.evidenceGroup} style={{ marginTop: '0.8rem' }}>
+                                    <span className={styles.infoLabel}>🔒 안전성 체크</span>
+                                    <div className={styles.safetyChecks}>
+                                        <span className={p.safetyNoPii === 'TRUE' ? styles.safetyOk : styles.safetyWarn}>
+                                            {p.safetyNoPii === 'TRUE' ? '✅' : '⚠️'} 개인정보 미포함
+                                        </span>
+                                        <span className={p.safetyAnonymous === 'TRUE' ? styles.safetyOk : styles.safetyWarn}>
+                                            {p.safetyAnonymous === 'TRUE' ? '✅' : '⚠️'} 익명화
+                                        </span>
+                                        <span className={p.safetyRestrictedLink === 'TRUE' ? styles.safetyOk : styles.safetyWarn}>
+                                            {p.safetyRestrictedLink === 'TRUE' ? '✅' : '⚠️'} 링크 제한
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-
-                            {/* 가설 */}
-                            <div className={styles.projectSection}>
-                                <h2 className={styles.projectSectionTitle}>💡 가설</h2>
-                                <InfoField label="가설 1" value={p.hypothesis1} />
-                                <InfoField label="가설 2" value={p.hypothesis2} />
-                            </div>
-
-                            {/* 솔루션 */}
-                            <div className={styles.projectSection}>
-                                <h2 className={styles.projectSectionTitle}>🔧 솔루션</h2>
-                                <InfoField label="해결 방안" value={p.solution} />
-                                <InfoField label="핵심 기능" value={p.features} />
-                            </div>
-
-                            {/* 검증 로그 */}
-                            {(p.experimentLog || p.wrongAssumption || p.nextTest) && (
-                                <div className={styles.projectSection}>
-                                    <h2 className={styles.projectSectionTitle}>🧪 검증 로그</h2>
-                                    <InfoField label="실험 기록" value={p.experimentLog} />
-                                    <InfoField label="틀렸던 가정" value={p.wrongAssumption} />
-                                    <InfoField label="다음 검증" value={p.nextTest} />
-                                </div>
-                            )}
-
-                            {/* 성과 측정 */}
-                            {(p.perfProblemType || p.perfImprovement) && (
-                                <div className={styles.projectSection}>
-                                    <h2 className={styles.projectSectionTitle}>📈 성과 측정</h2>
-                                    <InfoField label="문제 유형" value={p.perfProblemType} />
-                                    <InfoField label="개선 정도" value={p.perfImprovement} />
-                                    {p.perfEtcDesc && <InfoField label="기타" value={p.perfEtcDesc} />}
-                                </div>
-                            )}
-
-                            {/* 확산 */}
-                            {p.adoptionChecklist && (
-                                <div className={styles.projectSection}>
-                                    <h2 className={styles.projectSectionTitle}>🌍 확산/운영</h2>
-                                    <InfoField label="재사용 체크리스트" value={p.adoptionChecklist} />
-                                </div>
-                            )}
-
-                            {/* 안전성 */}
-                            <div className={styles.projectSection}>
-                                <h2 className={styles.projectSectionTitle}>🔒 안전성 체크</h2>
-                                <div className={styles.safetyChecks}>
-                                    <span className={p.safetyNoPii === 'TRUE' ? styles.safetyOk : styles.safetyWarn}>
-                                        {p.safetyNoPii === 'TRUE' ? '✅' : '⚠️'} 개인정보 미포함
-                                    </span>
-                                    <span className={p.safetyAnonymous === 'TRUE' ? styles.safetyOk : styles.safetyWarn}>
-                                        {p.safetyAnonymous === 'TRUE' ? '✅' : '⚠️'} 익명화
-                                    </span>
-                                    <span className={p.safetyRestrictedLink === 'TRUE' ? styles.safetyOk : styles.safetyWarn}>
-                                        {p.safetyRestrictedLink === 'TRUE' ? '✅' : '⚠️'} 링크 접근 제한
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* AI 활용 */}
-                            {(p.aiTools || p.aiScope) && (
-                                <div className={styles.projectSection}>
-                                    <h2 className={styles.projectSectionTitle}>🤖 AI 활용</h2>
-                                    <InfoField label="사용 도구" value={p.aiTools} />
-                                    <InfoField label="사용 범위" value={p.aiScope} />
-                                    <InfoField label="결과 확인" value={p.aiVerification} />
-                                </div>
-                            )}
                         </>
                     ) : (
                         <div className={styles.emptyProject}>
