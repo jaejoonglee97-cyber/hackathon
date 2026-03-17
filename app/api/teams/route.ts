@@ -1,8 +1,21 @@
 import { NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth';
-import { appendRow, getRowBy, updateRow } from '@/lib/sheets';
+import { appendRow, getRowBy, listRows, updateRow } from '@/lib/sheets';
 import { v4 as uuidv4 } from 'uuid';
 
+/**
+ * GET /api/teams — 전체 팀 목록 반환
+ * judge/admin은 전체 조회, 그 외는 공개 팀 목록
+ */
+export async function GET() {
+    try {
+        const teams = await listRows('teams');
+        return NextResponse.json({ teams });
+    } catch (error: any) {
+        console.error('Failed to list teams:', error);
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    }
+}
 export async function POST(request: Request) {
     try {
         const user = await getCurrentUser();

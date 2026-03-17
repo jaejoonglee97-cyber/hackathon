@@ -1,6 +1,6 @@
 'use client';
 // app/admin/judge/[teamId]/ScoreFormClient.tsx
-// 루브릭 채점 폼 클라이언트 컴포넌트
+// 좌: 프로젝트 상세정보 / 우: 루브릭 채점 폼
 
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
@@ -71,19 +71,60 @@ const DEDUCTION_ITEMS = [
     { key: 'internal_leak', label: '공개 링크에서 내부자료 노출 — 제출물 외 기관 내부 문서/폴더/다른 파일까지 접근 가능' },
 ];
 
+interface ProjectData {
+    problemStatement: string;
+    targetAudience: string;
+    situation: string;
+    evidence1: string;
+    evidence2: string;
+    evidence3: string;
+    hypothesis1: string;
+    hypothesis2: string;
+    solution: string;
+    features: string;
+    prototypeLink: string;
+    githubLink: string;
+    experimentLog: string;
+    wrongAssumption: string;
+    nextTest: string;
+    adoptionChecklist: string;
+    aiTools: string;
+    aiScope: string;
+    aiVerification: string;
+    perfProblemType: string;
+    perfImprovement: string;
+    perfEtcDesc: string;
+    safetyNoPii: string;
+    safetyAnonymous: string;
+    safetyRestrictedLink: string;
+}
+
 interface ScoreFormClientProps {
     teamId: string;
     teamName: string;
     org: string;
-    prototypeLink?: string;
-    userRole: string;  // 'admin' | 'judge'
+    stage: string;
+    projectData: ProjectData | null;
+    userRole: string;
+}
+
+/* ── 프로젝트 상세 카드 컴포넌트 ── */
+function InfoField({ label, value }: { label: string; value: string }) {
+    if (!value) return null;
+    return (
+        <div className={styles.infoField}>
+            <span className={styles.infoLabel}>{label}</span>
+            <span className={styles.infoValue}>{value}</span>
+        </div>
+    );
 }
 
 export default function ScoreFormClient({
     teamId,
     teamName,
     org,
-    prototypeLink,
+    stage,
+    projectData,
     userRole,
 }: ScoreFormClientProps) {
     const isReadOnly = userRole === 'admin';
@@ -167,29 +208,13 @@ export default function ScoreFormClient({
         [teamId, scores, deductionReasons, comment],
     );
 
+    const p = projectData;
+
     return (
-        <div className={styles.container}>
+        <div className={styles.pageContainer}>
             <Link href="/admin/judge" className={styles.backLink}>
                 ← 채점 목록으로
             </Link>
-
-            {/* 팀 요약 */}
-            <div className={styles.teamCard}>
-                <div>
-                    <h1 className={styles.teamTitle}>{teamName}</h1>
-                    <p className={styles.teamMeta}>{org}</p>
-                </div>
-                {prototypeLink && (
-                    <a
-                        href={prototypeLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.protoLink}
-                    >
-                        🔗 프로토타입 열기
-                    </a>
-                )}
-            </div>
 
             {/* 저장 상태 배너 */}
             {status === 'saved' && (
@@ -199,141 +224,260 @@ export default function ScoreFormClient({
                 <div className={styles.submittedBanner}>✅ 최종 제출 완료. 수정 후 다시 제출할 수 있습니다.</div>
             )}
 
-            {/* 채점 섹션 */}
-            {RUBRIC.map((item) => {
-                const val = scores[item.key] ?? 0;
-                const pct = (val / item.max) * 100;
-                const isOpen = openCriteria[item.key];
-                return (
-                    <div className={styles.section} key={item.key}>
-                        <div className={styles.sectionHeader}>
-                            <div className={styles.sectionTitleRow}>
-                                <span className={styles.sectionName}>{item.label}</span>
-                                <span className={styles.sectionMax}>배점 {item.max}점</span>
+            {/* ── 2컬럼 레이아웃: 좌=프로젝트 / 우=채점 ── */}
+            <div className={styles.twoCol}>
+                {/* ──────── 좌측: 프로젝트 상세 ──────── */}
+                <div className={styles.leftCol}>
+                    {/* 팀 헤더 */}
+                    <div className={styles.teamCard}>
+                        <h1 className={styles.teamTitle}>{teamName}</h1>
+                        <p className={styles.teamMeta}>{org}{stage ? ` · ${stage}` : ''}</p>
+                        <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
+                            {p?.prototypeLink && (
+                                <a href={p.prototypeLink} target="_blank" rel="noopener noreferrer" className={styles.protoLink}>
+                                    🔗 프로토타입
+                                </a>
+                            )}
+                            {p?.githubLink && (
+                                <a href={p.githubLink} target="_blank" rel="noopener noreferrer" className={styles.protoLink}>
+                                    💻 GitHub
+                                </a>
+                            )}
+                        </div>
+                    </div>
+
+                    {p ? (
+                        <>
+                            {/* Why — 문제/고객 */}
+                            <div className={styles.projectSection}>
+                                <h2 className={styles.projectSectionTitle}>🎯 Why — 문제/고객</h2>
+                                <InfoField label="대상(누구)" value={p.targetAudience} />
+                                <InfoField label="상황(언제)" value={p.situation} />
+                                <InfoField label="문제(무엇)" value={p.problemStatement} />
+                                <div className={styles.evidenceGroup}>
+                                    <span className={styles.infoLabel}>증거</span>
+                                    {p.evidence1 && <div className={styles.evidenceItem}>1. {p.evidence1}</div>}
+                                    {p.evidence2 && <div className={styles.evidenceItem}>2. {p.evidence2}</div>}
+                                    {p.evidence3 && <div className={styles.evidenceItem}>3. {p.evidence3}</div>}
+                                </div>
                             </div>
-                            <div className={styles.scoreInputRow}>
-                                <input
-                                    type="range"
-                                    min={0}
-                                    max={item.max}
-                                    step={1}
-                                    value={val}
-                                    className={styles.slider}
-                                    style={{ '--val': `${pct}%` } as any}
-                                    disabled={isReadOnly}
-                                    onChange={(e) =>
-                                        handleScoreChange(item.key, parseInt(e.target.value))
-                                    }
-                                />
-                                <input
-                                    type="number"
-                                    min={0}
-                                    max={item.max}
-                                    value={val}
-                                    className={styles.scoreInput}
-                                    disabled={isReadOnly}
-                                    onChange={(e) =>
-                                        handleScoreChange(item.key, parseInt(e.target.value) || 0)
-                                    }
-                                />
+
+                            {/* 가설 */}
+                            <div className={styles.projectSection}>
+                                <h2 className={styles.projectSectionTitle}>💡 가설</h2>
+                                <InfoField label="가설 1" value={p.hypothesis1} />
+                                <InfoField label="가설 2" value={p.hypothesis2} />
+                            </div>
+
+                            {/* 솔루션 */}
+                            <div className={styles.projectSection}>
+                                <h2 className={styles.projectSectionTitle}>🔧 솔루션</h2>
+                                <InfoField label="해결 방안" value={p.solution} />
+                                <InfoField label="핵심 기능" value={p.features} />
+                            </div>
+
+                            {/* 검증 로그 */}
+                            {(p.experimentLog || p.wrongAssumption || p.nextTest) && (
+                                <div className={styles.projectSection}>
+                                    <h2 className={styles.projectSectionTitle}>🧪 검증 로그</h2>
+                                    <InfoField label="실험 기록" value={p.experimentLog} />
+                                    <InfoField label="틀렸던 가정" value={p.wrongAssumption} />
+                                    <InfoField label="다음 검증" value={p.nextTest} />
+                                </div>
+                            )}
+
+                            {/* 성과 측정 */}
+                            {(p.perfProblemType || p.perfImprovement) && (
+                                <div className={styles.projectSection}>
+                                    <h2 className={styles.projectSectionTitle}>📈 성과 측정</h2>
+                                    <InfoField label="문제 유형" value={p.perfProblemType} />
+                                    <InfoField label="개선 정도" value={p.perfImprovement} />
+                                    {p.perfEtcDesc && <InfoField label="기타" value={p.perfEtcDesc} />}
+                                </div>
+                            )}
+
+                            {/* 확산 */}
+                            {p.adoptionChecklist && (
+                                <div className={styles.projectSection}>
+                                    <h2 className={styles.projectSectionTitle}>🌍 확산/운영</h2>
+                                    <InfoField label="재사용 체크리스트" value={p.adoptionChecklist} />
+                                </div>
+                            )}
+
+                            {/* 안전성 */}
+                            <div className={styles.projectSection}>
+                                <h2 className={styles.projectSectionTitle}>🔒 안전성 체크</h2>
+                                <div className={styles.safetyChecks}>
+                                    <span className={p.safetyNoPii === 'TRUE' ? styles.safetyOk : styles.safetyWarn}>
+                                        {p.safetyNoPii === 'TRUE' ? '✅' : '⚠️'} 개인정보 미포함
+                                    </span>
+                                    <span className={p.safetyAnonymous === 'TRUE' ? styles.safetyOk : styles.safetyWarn}>
+                                        {p.safetyAnonymous === 'TRUE' ? '✅' : '⚠️'} 익명화
+                                    </span>
+                                    <span className={p.safetyRestrictedLink === 'TRUE' ? styles.safetyOk : styles.safetyWarn}>
+                                        {p.safetyRestrictedLink === 'TRUE' ? '✅' : '⚠️'} 링크 접근 제한
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* AI 활용 */}
+                            {(p.aiTools || p.aiScope) && (
+                                <div className={styles.projectSection}>
+                                    <h2 className={styles.projectSectionTitle}>🤖 AI 활용</h2>
+                                    <InfoField label="사용 도구" value={p.aiTools} />
+                                    <InfoField label="사용 범위" value={p.aiScope} />
+                                    <InfoField label="결과 확인" value={p.aiVerification} />
+                                </div>
+                            )}
+                        </>
+                    ) : (
+                        <div className={styles.emptyProject}>
+                            아직 프로젝트가 등록되지 않았습니다.
+                        </div>
+                    )}
+                </div>
+
+                {/* ──────── 우측: 채점 폼 ──────── */}
+                <div className={styles.rightCol}>
+                    <div className={styles.stickyScore}>
+                        <h2 className={styles.scoreTitle}>📋 채점표</h2>
+
+                        {/* 채점 섹션 */}
+                        {RUBRIC.map((item) => {
+                            const val = scores[item.key] ?? 0;
+                            const pct = (val / item.max) * 100;
+                            const isOpen = openCriteria[item.key];
+                            return (
+                                <div className={styles.section} key={item.key}>
+                                    <div className={styles.sectionHeader}>
+                                        <div className={styles.sectionTitleRow}>
+                                            <span className={styles.sectionName}>{item.label}</span>
+                                            <span className={styles.sectionMax}>{item.max}점</span>
+                                        </div>
+                                        <div className={styles.scoreInputRow}>
+                                            <input
+                                                type="range"
+                                                min={0}
+                                                max={item.max}
+                                                step={1}
+                                                value={val}
+                                                className={styles.slider}
+                                                style={{ '--val': `${pct}%` } as any}
+                                                disabled={isReadOnly}
+                                                onChange={(e) =>
+                                                    handleScoreChange(item.key, parseInt(e.target.value))
+                                                }
+                                            />
+                                            <input
+                                                type="number"
+                                                min={0}
+                                                max={item.max}
+                                                value={val}
+                                                className={styles.scoreInput}
+                                                disabled={isReadOnly}
+                                                onChange={(e) =>
+                                                    handleScoreChange(item.key, parseInt(e.target.value) || 0)
+                                                }
+                                            />
+                                        </div>
+                                    </div>
+                                    <button
+                                        className={styles.criteriaToggle}
+                                        onClick={() =>
+                                            setOpenCriteria((prev) => ({
+                                                ...prev,
+                                                [item.key]: !prev[item.key],
+                                            }))
+                                        }
+                                    >
+                                        {isOpen ? '▲' : '▼'} 기준 {isOpen ? '접기' : '보기'}
+                                    </button>
+                                    {isOpen && (
+                                        <div className={styles.criteriaContent}>
+                                            <ul className={styles.criteriaList}>
+                                                {item.criteria.map((c, i) => (
+                                                    <li key={i}>{c}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })}
+
+                        {/* 감점 */}
+                        <div className={styles.deductSection}>
+                            <div className={styles.deductTitle}>
+                                <span>* 감점 항목</span>
+                                <span className={styles.deductNote}>1개 이상 → -10점</span>
+                            </div>
+                            {DEDUCTION_ITEMS.map((d) => (
+                                <label key={d.key} className={styles.checkItem}>
+                                    <input
+                                        type="checkbox"
+                                        checked={deductionReasons.includes(d.key)}
+                                        disabled={isReadOnly}
+                                        onChange={() => toggleDeduction(d.key)}
+                                    />
+                                    <span className={styles.checkLabel}>{d.label}</span>
+                                </label>
+                            ))}
+                            <div
+                                className={`${styles.deductResult} ${
+                                    deductionReasons.length > 0 ? styles.deductActive : styles.deductInactive
+                                }`}
+                            >
+                                {deductionReasons.length > 0 ? '-10점 적용' : '감점 없음'}
                             </div>
                         </div>
-                        {/* 세부 기준 아코디언 */}
-                        <button
-                            className={styles.criteriaToggle}
-                            onClick={() =>
-                                setOpenCriteria((prev) => ({
-                                    ...prev,
-                                    [item.key]: !prev[item.key],
-                                }))
-                            }
-                        >
-                            {isOpen ? '▲' : '▼'} 세부 심사 기준 {isOpen ? '접기' : '보기'}
-                        </button>
-                        {isOpen && (
-                            <div className={styles.criteriaContent}>
-                                <ul className={styles.criteriaList}>
-                                    {item.criteria.map((c, i) => (
-                                        <li key={i}>{c}</li>
-                                    ))}
-                                </ul>
+
+                        {/* 코멘트 */}
+                        <div className={styles.commentSection}>
+                            <span className={styles.commentLabel}>심사 코멘트</span>
+                            <textarea
+                                className={styles.commentTextarea}
+                                placeholder="팀에 대한 의견을 자유롭게 작성해주세요."
+                                value={comment}
+                                disabled={isReadOnly}
+                                onChange={(e) => setComment(e.target.value)}
+                            />
+                        </div>
+
+                        {/* 총점 */}
+                        <div className={styles.totalRow}>
+                            <span className={styles.totalLabel}>총점</span>
+                            <span className={styles.totalScore}>{total}</span>
+                            <span className={styles.totalMax}>/ 100점</span>
+                        </div>
+
+                        {/* 버튼 — judge만 */}
+                        {!isReadOnly && (
+                            <div className={styles.actionRow}>
+                                <button
+                                    className={styles.btnSave}
+                                    disabled={saving}
+                                    onClick={() => handleSave(false)}
+                                >
+                                    {saving ? '저장 중…' : '임시저장'}
+                                </button>
+                                <button
+                                    className={styles.btnSubmit}
+                                    disabled={saving}
+                                    onClick={() => handleSave(true)}
+                                >
+                                    {saving ? '제출 중…' : '최종 제출'}
+                                </button>
+                            </div>
+                        )}
+
+                        {message && (
+                            <div className={message.type === 'success' ? styles.successMsg : styles.errorMsg}>
+                                {message.text}
                             </div>
                         )}
                     </div>
-                );
-            })}
-
-            {/* 감점 항목 */}
-            <div className={styles.deductSection}>
-                <div className={styles.deductTitle}>
-                    <span>* 감점 항목</span>
-                    <span className={styles.deductNote}>1개 이상 해당 시 -10점</span>
-                </div>
-                {DEDUCTION_ITEMS.map((d) => (
-                    <label key={d.key} className={styles.checkItem}>
-                        <input
-                            type="checkbox"
-                            checked={deductionReasons.includes(d.key)}
-                            disabled={isReadOnly}
-                            onChange={() => toggleDeduction(d.key)}
-                        />
-                        <span className={styles.checkLabel}>{d.label}</span>
-                    </label>
-                ))}
-                <div
-                    className={`${styles.deductResult} ${
-                        deductionReasons.length > 0 ? styles.deductActive : styles.deductInactive
-                    }`}
-                >
-                    {deductionReasons.length > 0 ? '-10점 적용됩니다.' : '감점 없음'}
                 </div>
             </div>
-
-            {/* 코멘트 */}
-            <div className={styles.commentSection}>
-                <span className={styles.commentLabel}>심사 코멘트</span>
-                <span className={styles.commentNote}>비공개 — 운영자와 본인만 확인합니다.</span>
-                <textarea
-                    className={styles.commentTextarea}
-                    placeholder="팀에 대한 전반적인 의견, 특이사항 등 자유롭게 작성해주세요."
-                    value={comment}
-                    disabled={isReadOnly}
-                    onChange={(e) => setComment(e.target.value)}
-                />
-            </div>
-
-            {/* 총점 표시 */}
-            <div className={styles.totalRow}>
-                <span className={styles.totalLabel}>총점</span>
-                <span className={styles.totalScore}>{total}</span>
-                <span className={styles.totalMax}>/ 100점</span>
-            </div>
-
-            {/* 액션 버튼 — judge만 표시 */}
-            {!isReadOnly && (
-                <div className={styles.actionRow}>
-                    <button
-                        className={styles.btnSave}
-                        disabled={saving}
-                        onClick={() => handleSave(false)}
-                    >
-                        {saving ? '저장 중…' : '임시저장'}
-                    </button>
-                    <button
-                        className={styles.btnSubmit}
-                        disabled={saving}
-                        onClick={() => handleSave(true)}
-                    >
-                        {saving ? '제출 중…' : '최종 제출'}
-                    </button>
-                </div>
-            )}
-
-            {message && (
-                <div className={message.type === 'success' ? styles.successMsg : styles.errorMsg}>
-                    {message.text}
-                </div>
-            )}
         </div>
     );
 }

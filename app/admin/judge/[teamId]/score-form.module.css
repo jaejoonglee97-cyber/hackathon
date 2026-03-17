@@ -1,9 +1,10 @@
 /* app/admin/judge/[teamId]/score-form.module.css */
 
-.container {
-    max-width: 760px;
+/* ── 2컬럼 페이지 레이아웃 ─────────────────── */
+.pageContainer {
+    max-width: 1280px;
     margin: 0 auto;
-    padding: 2rem 1rem 4rem;
+    padding: 1.5rem 1rem 4rem;
 }
 
 .backLink {
@@ -13,47 +14,12 @@
     font-size: 0.85rem;
     color: var(--text-secondary, #666);
     text-decoration: none;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     transition: color 0.15s;
 }
 .backLink:hover { color: var(--primary, #7c3aed); }
 
-/* 팀 요약 */
-.teamCard {
-    background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #e5e7eb);
-    border-radius: 12px;
-    padding: 1.2rem 1.4rem;
-    margin-bottom: 1.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.teamTitle {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text-primary, #111);
-    margin: 0 0 0.25rem;
-}
-
-.teamMeta {
-    font-size: 0.82rem;
-    color: var(--text-secondary, #888);
-    margin: 0;
-}
-
-.protoLink {
-    font-size: 0.82rem;
-    color: #7c3aed;
-    text-decoration: none;
-    white-space: nowrap;
-}
-.protoLink:hover { text-decoration: underline; }
-
-/* 저장 상태 배너 */
+/* 배너 */
 .savedBanner {
     background: #fef9c3;
     border: 1px solid #fde68a;
@@ -63,7 +29,6 @@
     color: #92400e;
     margin-bottom: 1rem;
 }
-
 .submittedBanner {
     background: #dcfce7;
     border: 1px solid #bbf7d0;
@@ -74,12 +39,169 @@
     margin-bottom: 1rem;
 }
 
+/* ── 2컬럼 그리드 ──────────────────────────── */
+.twoCol {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .twoCol {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── 좌측: 프로젝트 상세 ─────────────────── */
+.leftCol {
+    min-width: 0;
+}
+
+.teamCard {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 12px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 1rem;
+}
+
+.teamTitle {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary, #111);
+    margin: 0 0 0.2rem;
+}
+
+.teamMeta {
+    font-size: 0.82rem;
+    color: var(--text-secondary, #888);
+    margin: 0;
+}
+
+.protoLink {
+    display: inline-block;
+    font-size: 0.8rem;
+    color: #7c3aed;
+    text-decoration: none;
+    padding: 0.25rem 0.6rem;
+    border: 1px solid #7c3aed;
+    border-radius: 6px;
+}
+.protoLink:hover { background: #f5f0ff; }
+
+/* 프로젝트 섹션 카드 */
+.projectSection {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 0.75rem;
+}
+
+.projectSectionTitle {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-primary, #111);
+    margin: 0 0 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
+}
+
+.infoField {
+    margin-bottom: 0.55rem;
+}
+
+.infoLabel {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-secondary, #888);
+    margin-bottom: 0.15rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.infoValue {
+    display: block;
+    font-size: 0.88rem;
+    color: var(--text-primary, #333);
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.evidenceGroup {
+    margin-bottom: 0.55rem;
+}
+
+.evidenceItem {
+    font-size: 0.85rem;
+    color: var(--text-primary, #444);
+    padding: 0.3rem 0 0.3rem 0.5rem;
+    border-left: 2px solid #7c3aed;
+    margin-bottom: 0.3rem;
+    line-height: 1.4;
+}
+
+.safetyChecks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.safetyOk {
+    font-size: 0.82rem;
+    color: #166534;
+    background: #dcfce7;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+}
+
+.safetyWarn {
+    font-size: 0.82rem;
+    color: #92400e;
+    background: #fef3c7;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+}
+
+.emptyProject {
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    color: var(--text-secondary, #aaa);
+    font-size: 0.9rem;
+}
+
+/* ── 우측: 채점 폼 ───────────────────────── */
+.rightCol {
+    min-width: 0;
+}
+
+.stickyScore {
+    position: sticky;
+    top: 80px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.scoreTitle {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary, #111);
+    margin: 0 0 0.75rem;
+}
+
 /* 채점 섹션 */
 .section {
     background: var(--card-bg, #fff);
     border: 1px solid var(--border-color, #e5e7eb);
-    border-radius: 12px;
-    margin-bottom: 1rem;
+    border-radius: 10px;
+    margin-bottom: 0.6rem;
     overflow: hidden;
 }
 
@@ -87,39 +209,37 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 1.2rem;
-    cursor: default;
-    border-bottom: 1px solid transparent;
+    padding: 0.7rem 1rem;
 }
 
 .sectionTitleRow {
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
+    gap: 0.1rem;
 }
 
 .sectionName {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     font-weight: 700;
     color: var(--text-primary, #111);
 }
 
 .sectionMax {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--text-secondary, #888);
 }
 
 .scoreInputRow {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.5rem;
 }
 
 .slider {
-    width: 140px;
+    width: 100px;
     -webkit-appearance: none;
     appearance: none;
-    height: 6px;
+    height: 5px;
     border-radius: 999px;
     outline: none;
     cursor: pointer;
@@ -129,29 +249,30 @@
         var(--border-color, #e5e7eb) var(--val, 0%)
     );
 }
+.slider:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
     background: #7c3aed;
     cursor: pointer;
-    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+    box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
 }
 
 .scoreInput {
-    width: 60px;
-    padding: 0.3rem 0.5rem;
+    width: 50px;
+    padding: 0.25rem 0.4rem;
     border: 1px solid var(--border-color, #e5e7eb);
-    border-radius: 8px;
-    font-size: 0.9rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
     font-weight: 700;
     text-align: center;
     color: var(--text-primary, #111);
     background: var(--card-bg, #fff);
 }
-
+.scoreInput:disabled { opacity: 0.5; cursor: not-allowed; }
 .scoreInput:focus {
     outline: none;
     border-color: #7c3aed;
@@ -164,20 +285,17 @@
     background: none;
     border: none;
     border-top: 1px solid var(--border-color, #e5e7eb);
-    padding: 0.55rem 1.2rem;
+    padding: 0.4rem 1rem;
     text-align: left;
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     color: var(--text-secondary, #888);
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
     transition: background 0.15s;
 }
 .criteriaToggle:hover { background: var(--bg-secondary, #f9fafb); }
 
 .criteriaContent {
-    padding: 0.75rem 1.2rem 1rem;
+    padding: 0.5rem 1rem 0.75rem;
     background: var(--bg-secondary, #f9fafb);
     border-top: 1px solid var(--border-color, #e5e7eb);
 }
@@ -188,13 +306,13 @@
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: 0.25rem;
 }
 
 .criteriaList li {
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     color: var(--text-secondary, #555);
-    padding-left: 1rem;
+    padding-left: 0.8rem;
     position: relative;
 }
 
@@ -209,22 +327,22 @@
 .deductSection {
     background: var(--card-bg, #fff);
     border: 1px solid #fca5a5;
-    border-radius: 12px;
-    padding: 1rem 1.2rem;
-    margin-bottom: 1rem;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.6rem;
 }
 
 .deductTitle {
-    font-size: 0.92rem;
+    font-size: 0.85rem;
     font-weight: 700;
     color: #ef4444;
-    margin: 0 0 0.75rem;
+    margin: 0 0 0.55rem;
     display: flex;
     justify-content: space-between;
 }
 
 .deductNote {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 400;
     color: #888;
 }
@@ -232,30 +350,30 @@
 .checkItem {
     display: flex;
     align-items: flex-start;
-    gap: 0.65rem;
-    margin-bottom: 0.55rem;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
     cursor: pointer;
 }
 
 .checkItem input[type='checkbox'] {
-    width: 16px;
-    height: 16px;
+    width: 15px;
+    height: 15px;
     margin-top: 1px;
     accent-color: #ef4444;
     flex-shrink: 0;
 }
 
 .checkLabel {
-    font-size: 0.84rem;
+    font-size: 0.78rem;
     color: var(--text-primary, #444);
-    line-height: 1.4;
+    line-height: 1.35;
 }
 
 .deductResult {
-    margin-top: 0.75rem;
-    padding: 0.4rem 0.8rem;
-    border-radius: 8px;
-    font-size: 0.82rem;
+    margin-top: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.78rem;
     font-weight: 700;
 }
 
@@ -271,87 +389,76 @@
 
 /* 코멘트 */
 .commentSection {
-    background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #e5e7eb);
-    border-radius: 12px;
-    padding: 1rem 1.2rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.6rem;
 }
 
 .commentLabel {
-    font-size: 0.88rem;
+    font-size: 0.82rem;
     font-weight: 700;
     color: var(--text-primary, #111);
-    margin-bottom: 0.5rem;
-    display: block;
-}
-
-.commentNote {
-    font-size: 0.75rem;
-    color: var(--text-secondary, #888);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.35rem;
     display: block;
 }
 
 .commentTextarea {
     width: 100%;
-    min-height: 100px;
+    min-height: 80px;
     border: 1px solid var(--border-color, #e5e7eb);
     border-radius: 8px;
-    padding: 0.6rem 0.8rem;
-    font-size: 0.88rem;
+    padding: 0.5rem 0.7rem;
+    font-size: 0.82rem;
     color: var(--text-primary, #111);
     background: var(--card-bg, #fff);
     resize: vertical;
     box-sizing: border-box;
     font-family: inherit;
 }
-
+.commentTextarea:disabled { opacity: 0.5; cursor: not-allowed; }
 .commentTextarea:focus {
     outline: none;
     border-color: #7c3aed;
     box-shadow: 0 0 0 2px rgba(124,58,237,0.15);
 }
 
-/* 총점 표시 */
+/* 총점 */
 .totalRow {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 0.5rem;
-    padding: 0.75rem 0;
-    margin-bottom: 1rem;
+    gap: 0.4rem;
+    padding: 0.5rem 0;
+    margin-bottom: 0.5rem;
 }
 
 .totalLabel {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--text-secondary, #888);
 }
 
 .totalScore {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: 800;
     color: #7c3aed;
 }
 
 .totalMax {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--text-secondary, #aaa);
 }
 
-/* 액션 버튼 */
+/* 액션 */
 .actionRow {
     display: flex;
-    gap: 0.75rem;
+    gap: 0.6rem;
     justify-content: flex-end;
 }
 
 .btnSave {
-    padding: 0.65rem 1.4rem;
+    padding: 0.55rem 1.2rem;
     background: var(--bg-secondary, #f3f4f6);
     border: 1px solid var(--border-color, #e5e7eb);
-    border-radius: 10px;
-    font-size: 0.9rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
     font-weight: 600;
     color: var(--text-primary, #374151);
     cursor: pointer;
@@ -361,11 +468,11 @@
 .btnSave:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .btnSubmit {
-    padding: 0.65rem 1.6rem;
+    padding: 0.55rem 1.4rem;
     background: #7c3aed;
     border: none;
-    border-radius: 10px;
-    font-size: 0.9rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
     font-weight: 700;
     color: #fff;
     cursor: pointer;
@@ -376,20 +483,20 @@
 
 .successMsg {
     text-align: center;
-    padding: 0.5rem;
-    font-size: 0.85rem;
+    padding: 0.4rem;
+    font-size: 0.8rem;
     color: #166534;
     background: #dcfce7;
-    border-radius: 8px;
-    margin-top: 0.5rem;
+    border-radius: 6px;
+    margin-top: 0.4rem;
 }
 
 .errorMsg {
     text-align: center;
-    padding: 0.5rem;
-    font-size: 0.85rem;
+    padding: 0.4rem;
+    font-size: 0.8rem;
     color: #b91c1c;
     background: #fee2e2;
-    border-radius: 8px;
-    margin-top: 0.5rem;
+    border-radius: 6px;
+    margin-top: 0.4rem;
 }
