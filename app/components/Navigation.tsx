@@ -111,10 +111,20 @@ export default function Navigation({ initialUser }: NavigationProps) {
                         {user && ['admin', 'judge'].includes(user.role) && (
                             <Link
                                 href="/admin/judge"
-                                className={pathname?.startsWith('/admin') ? styles.navLinkActive : styles.navLink}
+                                className={pathname?.startsWith('/admin/judge') ? styles.navLinkActive : styles.navLink}
                                 style={{ color: '#7c3aed', fontWeight: 700 }}
                             >
                                 📋 채점
+                            </Link>
+                        )}
+                        {/* 관리자만 보이는 채점 집계 메뉴 */}
+                        {user && user.role === 'admin' && (
+                            <Link
+                                href="/admin/scores"
+                                className={pathname?.startsWith('/admin/scores') ? styles.navLinkActive : styles.navLink}
+                                style={{ color: '#ef4444', fontWeight: 700 }}
+                            >
+                                📊 채점 집계
                             </Link>
                         )}
                     </div>
