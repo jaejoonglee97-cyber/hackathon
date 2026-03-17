@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
                 user: {
                     id: user.user_id,
                     email: user.email,
-                    role: user.role,
+                    role: user.role?.toLowerCase()?.trim() || 'user',
                 },
             },
             { status: 200 },

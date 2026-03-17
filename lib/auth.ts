@@ -20,7 +20,7 @@ export function generateToken(userId: string, email: string, role: string, name?
     const payload: TokenPayload = {
         userId,
         email,
-        role,
+        role: role?.toLowerCase()?.trim() || 'user',
         name,
     };
 
@@ -33,6 +33,9 @@ export function generateToken(userId: string, email: string, role: string, name?
 export function verifyToken(token: string): TokenPayload | null {
     try {
         const decoded = jwt.verify(token, JWT_SECRET) as TokenPayload;
+        if (decoded && decoded.role) {
+            decoded.role = decoded.role.toLowerCase().trim();
+        }
         return decoded;
     } catch (error) {
         // 토큰 만료 또는 유효하지 않음
