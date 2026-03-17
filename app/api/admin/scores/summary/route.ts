@@ -74,20 +74,32 @@ export async function GET() {
                 ['field_relevance', 'feasibility', 'outcomes', 'scalability', 'safety', 'deduction']
                     .reduce((sum, col) => sum + parseFloat(s[col] || '0'), 0);
 
+            let avgTotal = null;
+            let avgSafety = null;
+            let avgFeasibility = null;
+            let avgScalability = null;
+            let hasDeduction = false;
+
+            if (submittedScores.length > 0) {
+                avgTotal = Math.round((submittedScores.reduce((sum, s) => sum + calcTotal(s), 0) / submittedScores.length) * 10) / 10;
+                avgSafety = Math.round((submittedScores.reduce((sum, s) => sum + parseFloat(s.safety || '0'), 0) / submittedScores.length) * 10) / 10;
+                avgFeasibility = Math.round((submittedScores.reduce((sum, s) => sum + parseFloat(s.feasibility || '0'), 0) / submittedScores.length) * 10) / 10;
+                avgScalability = Math.round((submittedScores.reduce((sum, s) => sum + parseFloat(s.scalability || '0'), 0) / submittedScores.length) * 10) / 10;
+                hasDeduction = submittedScores.some((s) => parseFloat(s.deduction || '0') < 0);
+            }
+
             return {
                 teamId: team.id,
                 teamName: team.name,
                 org: team.org,
+                track: team.track || '미지정', // Add track reference
                 judgeCount: teamScores.length,
                 submittedCount: submittedScores.length,
-                avgTotal:
-                    submittedScores.length > 0
-                        ? Math.round(
-                              (submittedScores.reduce((sum, s) => sum + calcTotal(s), 0) /
-                                  submittedScores.length) *
-                                  10,
-                          ) / 10
-                        : null,
+                avgTotal,
+                avgSafety,
+                avgFeasibility,
+                avgScalability,
+                hasDeduction,
                 scores: teamScores.map((s) => ({
                     judgeId: s.judge_id,
                     fieldRelevance: parseFloat(s.field_relevance || '0'),
