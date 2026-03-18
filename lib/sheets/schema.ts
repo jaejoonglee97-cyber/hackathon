@@ -188,7 +188,7 @@ export const sheets = {
     ] as const),
 
     /**
-     * 심사 채점 — FR-32 채점(비공개)
+     * 심사 — FR-32 심사(비공개)
      * team_id + judge_id 조합으로 1행 (upsert 방식)
      */
     scores: def('scores', 'data', [

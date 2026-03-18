@@ -1,6 +1,6 @@
 'use client';
 // app/admin/judge/JudgeDashboardClient.tsx
-// 심사위원 개인 채점 대시보드 — 클라이언트 컴포넌트
+// 심사위원 개인 심사 대시보드 — 클라이언트 컴포넌트
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -61,7 +61,7 @@ export default function JudgeDashboardClient() {
 
                 setStats(summaryData.myStats);
 
-                // 팀별 채점 상태 합산
+                // 팀별 심사 상태 합산
                 const scoresByTeam: Record<string, any> = {};
                 for (const s of scoresData.scores ?? []) {
                     scoresByTeam[s.team_id] = s;
@@ -107,15 +107,15 @@ export default function JudgeDashboardClient() {
     const statusLabel = (s: TeamScore['status']) => {
         if (s === 'submitted') return { text: '제출완료', cls: styles.statusDone };
         if (s === 'saved') return { text: '임시저장', cls: styles.statusSaved };
-        return { text: '미채점', cls: styles.statusNone };
+        return { text: '미심사', cls: styles.statusNone };
     };
 
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <h1 className={styles.title}>📋 내 채점 현황</h1>
+                <h1 className={styles.title}>📋 내 심사 현황</h1>
                 <p className={styles.subtitle}>
-                    언제든 들어와서 미리 채점하고 임시저장할 수 있습니다.
+                    언제든 들어와서 미리 심사하고 임시저장할 수 있습니다.
                 </p>
             </div>
 
@@ -128,7 +128,7 @@ export default function JudgeDashboardClient() {
                         <span className={styles.statUnit}>팀</span>
                     </div>
                     <div className={styles.statCard}>
-                        <span className={styles.statLabel}>채점 완료</span>
+                        <span className={styles.statLabel}>심사 완료</span>
                         <span className={styles.statValue}>{stats.submittedCount}</span>
                         <span className={styles.statUnit}>팀 제출</span>
                     </div>
@@ -138,12 +138,12 @@ export default function JudgeDashboardClient() {
                         <span className={styles.statUnit}>팀</span>
                     </div>
                     <div className={styles.statCard}>
-                        <span className={styles.statLabel}>미채점</span>
+                        <span className={styles.statLabel}>미심사</span>
                         <span className={styles.statValue}>{stats.remainingCount}</span>
                         <span className={styles.statUnit}>팀 남음</span>
                     </div>
                     <div className={styles.statCard}>
-                        <span className={styles.statLabel}>내 평균 총점</span>
+                        <span className={styles.statLabel}>내 평균 심사합계</span>
                         <span className={styles.statValue}>{stats.avgTotal || '-'}</span>
                         <span className={styles.statUnit}>점</span>
                     </div>
@@ -209,8 +209,8 @@ export default function JudgeDashboardClient() {
                     <span>팀명</span>
                     <span>기관</span>
                     <span>상태</span>
-                    <span>총점</span>
-                    <span>채점</span>
+                    <span>심사합계</span>
+                    <span>심사</span>
                 </div>
                 {teams.length === 0 ? (
                     <div className={styles.emptyMessage}>등록된 팀이 없습니다.</div>
@@ -238,7 +238,7 @@ export default function JudgeDashboardClient() {
                                         href={`/admin/judge/${t.teamId}`}
                                         className={`${styles.actionBtn} ${t.status !== 'none' ? styles.actionBtnEdit : ''}`}
                                     >
-                                        {t.status === 'none' ? '채점하기' : '수정하기'}
+                                        {t.status === 'none' ? '심사하기' : '수정하기'}
                                     </Link>
                                 </div>
                             </div>

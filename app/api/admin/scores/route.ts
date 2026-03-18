@@ -1,5 +1,5 @@
 // app/api/admin/scores/route.ts
-// FR-32: 채점(비공개) API — judge/admin 전용
+// FR-32: 심사(비공개) API — judge/admin 전용
 import { NextRequest, NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth';
 import { listRows, upsertScore } from '@/lib/sheets';
@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
     const teamId = searchParams.get('teamId');
     const judgeId = searchParams.get('judgeId');
 
-    // judge는 본인 채점만 조회 가능
+    // judge는 본인 심사만 조회 가능
     if (user.role === 'judge' && judgeId && judgeId !== user.userId) {
         return NextResponse.json({ error: '권한이 없습니다.' }, { status: 403 });
     }
@@ -57,9 +57,9 @@ export async function GET(req: NextRequest) {
  */
 export async function POST(req: NextRequest) {
     const user = await getCurrentUser();
-    // 채점 저장은 judge만 가능 (admin은 집계 조회만)
+    // 심사 저장은 judge만 가능 (admin은 집계 조회만)
     if (!user || user.role !== 'judge') {
-        return NextResponse.json({ error: '심사위원만 채점할 수 있습니다.' }, { status: 403 });
+        return NextResponse.json({ error: '심사위원만 심사할 수 있습니다.' }, { status: 403 });
     }
 
     let body: any;

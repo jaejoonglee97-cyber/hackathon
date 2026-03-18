@@ -107,24 +107,24 @@ export default function Navigation({ initialUser }: NavigationProps) {
                         >
                             문의게시판
                         </Link>
-                        {/* 심사위원/관리자만 보이는 채점 메뉴 */}
+                        {/* 심사위원/관리자만 보이는 심사 메뉴 */}
                         {user && ['admin', 'judge'].includes(user.role) && (
                             <Link
                                 href="/admin/judge"
                                 className={pathname?.startsWith('/admin/judge') ? styles.navLinkActive : styles.navLink}
                                 style={{ color: '#7c3aed', fontWeight: 700 }}
                             >
-                                📋 채점
+                                📋 심사
                             </Link>
                         )}
-                        {/* 관리자만 보이는 채점 집계 메뉴 */}
+                        {/* 관리자만 보이는 심사 집계 메뉴 */}
                         {user && user.role === 'admin' && (
                             <Link
                                 href="/admin/scores"
                                 className={pathname?.startsWith('/admin/scores') ? styles.navLinkActive : styles.navLink}
                                 style={{ color: '#ef4444', fontWeight: 700 }}
                             >
-                                📊 채점 집계
+                                📊 심사 집계
                             </Link>
                         )}
                     </div>

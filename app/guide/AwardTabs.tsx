@@ -49,7 +49,7 @@ export default function AwardTabs() {
                         </div>
                         <ul className={styles.awardList} style={{ color: '#78350f' }}>
                             <li>해당 부문에서 가장 완성도 높은 결과물 <strong>(현장적용 가능 + 실행 가능 + 확산 가능 + 안전)</strong>을 종합적으로 인정하는 상</li>
-                            <li>선정: 해당 부문 총점 1위 (100점 만점)</li>
+                            <li>선정: 해당 부문 심사합계 1위 (100점 만점)</li>
                             <li>동점 시: 안전성 → 실행가능성 → 확산성 점수 순으로 우선</li>
                         </ul>
                     </div>
@@ -67,7 +67,7 @@ export default function AwardTabs() {
                         </div>
                         <ul className={styles.awardList} style={{ color: '#4c1d95' }}>
                             <li>다른 기관이 쉽게 따라 적용할 수 있도록 결과물을 잘 정리 <strong>(템플릿·매뉴얼·복제 방법 등)</strong>한 작품에 수여</li>
-                            <li>선정: 해당 부문 총점 2위 (동점 처리 동일)</li>
+                            <li>선정: 해당 부문 심사합계 2위 (동점 처리 동일)</li>
                         </ul>
                     </div>
                 )}
@@ -84,7 +84,7 @@ export default function AwardTabs() {
                         </div>
                         <ul className={styles.awardList} style={{ color: '#1e3a5f' }}>
                             <li>현장의 문제를 구체적으로 해결하며, <strong>업무 방식 개선(혁신) 효과</strong>가 뚜렷한 작품에 수여</li>
-                            <li>선정: 해당 부문 총점 3위 (동점 처리 동일)</li>
+                            <li>선정: 해당 부문 심사합계 3위 (동점 처리 동일)</li>
                         </ul>
                     </div>
                 )}
@@ -103,7 +103,7 @@ export default function AwardTabs() {
                             <li>높은 완성도와 현장 적용 가능성을 인정받은 작품에 수여하는 상</li>
                             <li>후보군: 본선 미진출 작품 중 본선 커트라인 점수 <strong>-10점 이내</strong> 작품으로 한정</li>
                             <li>제외 기준: 감점(-10) 적용 대상(예: 실제 개인정보 포함 등)은 후보군에서 제외</li>
-                            <li>선정 방식: 후보군 내 총점 높은 순으로 최대 5팀 선정</li>
+                            <li>선정 방식: 후보군 내 심사합계 높은 순으로 최대 5팀 선정</li>
                         </ul>
                     </div>
                 )}

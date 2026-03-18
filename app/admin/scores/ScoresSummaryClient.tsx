@@ -1,6 +1,6 @@
 'use client';
 // app/admin/scores/ScoresSummaryClient.tsx
-// 운영자 전용 전체 채점 집계 클라이언트 컴포넌트
+// 운영자 전용 전체 심사 집계 클라이언트 컴포넌트
 
 import { useEffect, useState } from 'react';
 import styles from './scores.module.css';
@@ -129,7 +129,7 @@ export default function ScoresSummaryClient() {
     // CSV 내보내기
     const handleCSV = () => {
         const rows = [
-            ['팀ID', '팀명', '분야', '기관', '순위/배지', '심사위원ID', '현장적합성', '실행가능성', '성과성', '확산성', '안전성', '감점', '총점', '제출여부', '코멘트', '마지막수정'],
+            ['팀ID', '팀명', '분야', '기관', '순위/배지', '심사위원ID', '현장적합성', '실행가능성', '성과성', '확산성', '안전성', '감점', '심사합계', '제출여부', '코멘트', '마지막수정'],
         ];
         for (const t of allTeams) {
             for (const s of t.scores) {
@@ -151,7 +151,7 @@ export default function ScoresSummaryClient() {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `채점결과_${new Date().toISOString().slice(0, 10)}.csv`;
+        a.download = `심사결과_${new Date().toISOString().slice(0, 10)}.csv`;
         a.click();
         URL.revokeObjectURL(url);
     };
@@ -187,7 +187,7 @@ export default function ScoresSummaryClient() {
         <div className={styles.container}>
             <div className={styles.header}>
                 <div>
-                    <h1 className={styles.title}>📊 전체 채점 집계 (본선 진출팀)</h1>
+                    <h1 className={styles.title}>📊 전체 심사 집계 (본선 진출팀)</h1>
                     <p className={styles.subtitle}>
                         admin 전용 — 점수는 외부에 공개되지 않습니다.
                     </p>
@@ -210,7 +210,7 @@ export default function ScoresSummaryClient() {
                         <div className={styles.summaryValue}>{globalStats.totalTeams}</div>
                     </div>
                     <div className={styles.summaryCard}>
-                        <div className={styles.summaryLabel}>채점 참여 팀</div>
+                        <div className={styles.summaryLabel}>심사 참여 팀</div>
                         <div className={styles.summaryValue}>{globalStats.teamsWithAnyScore}</div>
                     </div>
                     <div className={styles.summaryCard}>
@@ -253,12 +253,12 @@ export default function ScoresSummaryClient() {
                     <span>기관</span>
                     <span>심사 수</span>
                     <span>제출 완료</span>
-                    <span>평균 총점</span>
+                    <span>평균 심사합계</span>
                     <span></span>
                 </div>
 
                 {displayedTeams.length === 0 ? (
-                    <div className={styles.emptyMsg}>아직 해당 부문의 채점 데이터가 없습니다.</div>
+                    <div className={styles.emptyMsg}>아직 해당 부문의 심사 데이터가 없습니다.</div>
                 ) : (
                     displayedTeams.map((t) => (
                         <div key={t.teamId} className={styles.tableRow}>
@@ -305,7 +305,7 @@ export default function ScoresSummaryClient() {
                                         {COL_LABELS.map((l) => (
                                             <span key={l}>{l}</span>
                                         ))}
-                                        <span>총점</span>
+                                        <span>심사합계</span>
                                     </div>
                                     {t.scores.map((s, idx) => (
                                         <div key={idx} className={styles.judgeScoreRow}>

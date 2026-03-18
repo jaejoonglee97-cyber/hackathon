@@ -143,7 +143,7 @@ export default function ScoreFormClient({
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
-    // 기존 채점 불러오기
+    // 기존 심사 불러오기
     useEffect(() => {
         fetch(`/api/admin/scores?teamId=${teamId}`)
             .then((r) => r.json())
@@ -214,18 +214,18 @@ export default function ScoreFormClient({
     return (
         <div className={styles.pageContainer}>
             <Link href="/admin/judge" className={styles.backLink}>
-                ← 채점 목록으로
+                ← 심사 목록으로
             </Link>
 
             {/* 저장 상태 배너 */}
             {status === 'saved' && (
-                <div className={styles.savedBanner}>📝 임시저장된 채점이 있습니다. 최종 제출 전 수정 가능합니다.</div>
+                <div className={styles.savedBanner}>📝 임시저장된 심사가 있습니다. 최종 제출 전 수정 가능합니다.</div>
             )}
             {status === 'submitted' && (
                 <div className={styles.submittedBanner}>✅ 최종 제출 완료. 수정 후 다시 제출할 수 있습니다.</div>
             )}
 
-            {/* ── 2컬럼 레이아웃: 좌=프로젝트 / 우=채점 ── */}
+            {/* ── 2컬럼 레이아웃: 좌=프로젝트 / 우=심사 ── */}
             <div className={styles.twoCol}>
                 {/* ──────── 좌측: 프로젝트 상세 ──────── */}
                 <div className={styles.leftCol}>
@@ -331,12 +331,12 @@ export default function ScoreFormClient({
                     )}
                 </div>
 
-                {/* ──────── 우측: 채점 폼 ──────── */}
+                {/* ──────── 우측: 심사 폼 ──────── */}
                 <div className={styles.rightCol}>
                     <div className={styles.stickyScore}>
-                        <h2 className={styles.scoreTitle}>📋 채점표</h2>
+                        <h2 className={styles.scoreTitle}>📋 심사표</h2>
 
-                        {/* 채점 섹션 */}
+                        {/* 심사 섹션 */}
                         {RUBRIC.map((item) => {
                             const val = scores[item.key] ?? 0;
                             const pct = (val / item.max) * 100;
@@ -439,7 +439,7 @@ export default function ScoreFormClient({
 
                         {/* 총점 */}
                         <div className={styles.totalRow}>
-                            <span className={styles.totalLabel}>총점</span>
+                            <span className={styles.totalLabel}>심사합계</span>
                             <span className={styles.totalScore}>{total}</span>
                             <span className={styles.totalMax}>/ 100점</span>
                         </div>

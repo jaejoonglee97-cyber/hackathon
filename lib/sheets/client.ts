@@ -517,14 +517,14 @@ export async function checkProfileComplete(userId: string): Promise<{
 }
 
 /**
- * 채점 upsert — team_id + judge_id 조합으로 이미 있으면 update, 없으면 append
+ * 심사 upsert — team_id + judge_id 조합으로 이미 있으면 update, 없으면 append
  */
 export async function upsertScore(
     judgeId: string,
     teamId: string,
     patch: Record<string, string | number>,
 ): Promise<void> {
-    // 기존 채점 행 조회
+    // 기존 심사 행 조회
     const rows = await listRows('scores', { team_id: teamId, judge_id: judgeId });
     const existing = rows[0];
 

@@ -1,5 +1,5 @@
 // app/admin/judge/[teamId]/page.tsx
-// 팀별 루브릭 채점 폼 서버 컴포넌트 (권한 게이트)
+// 팀별 루브릭 심사 폼 서버 컴포넌트 (권한 게이트)
 
 import { notFound } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth';
@@ -8,7 +8,7 @@ import ScoreFormClient from './ScoreFormClient';
 
 export async function generateMetadata({ params }: { params: { teamId: string } }) {
     const team = await getRowBy('teams', 'id', params.teamId);
-    return { title: `채점 | ${team?.name || params.teamId} | 열매똑똑 해커톤` };
+    return { title: `심사 | ${team?.name || params.teamId} | 열매똑똑 해커톤` };
 }
 
 export default async function ScoreFormPage({ params }: { params: { teamId: string } }) {

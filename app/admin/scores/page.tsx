@@ -1,11 +1,11 @@
 // app/admin/scores/page.tsx
-// 운영자 전용 채점 집계 서버 컴포넌트 (admin only)
+// 운영자 전용 심사 집계 서버 컴포넌트 (admin only)
 
 import { notFound } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth';
 import ScoresSummaryClient from './ScoresSummaryClient';
 
-export const metadata = { title: '채점 집계 | 열매똑똑 해커톤' };
+export const metadata = { title: '심사 집계 | 열매똑똑 해커톤' };
 
 export default async function ScoresSummaryPage() {
     const user = await getCurrentUser();

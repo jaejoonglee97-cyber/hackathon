@@ -10,7 +10,7 @@ export async function GET() {
         return NextResponse.json({ error: '권한이 없습니다.' }, { status: 403 });
     }
 
-    // judge이면 본인 채점 통계만, admin이면 전체
+    // judge이면 본인 심사 통계만, admin이면 전체
     const filters: Record<string, string> = user.role === 'judge' ? { judge_id: user.userId } : {};
     const [allScores, rawTeams] = await Promise.all([
         listRows('scores', filters),
