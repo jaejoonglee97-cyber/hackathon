@@ -288,7 +288,6 @@ export default function GuidePage() {
                                             <li><strong>AI 활용의 적절성</strong> — AI를 도구로 잘 활용했는가 (사용 여부와 무관)</li>
                                             <li><strong>확산 가능성</strong> — 타 기관·현장에서 재사용할 수 있는가</li>
                                             <li><strong>안전성</strong> — 개인정보 보호 원칙을 준수했는가</li>
-                                            <li><strong style={{ color: '#10b981' }}>[가산점] 도전적 참신함 (+5점)</strong> — 사회복지 현장에서 시도되지 않았던 새롭고 도전적인 접근인가</li>
                                         </ul>
                                     </div>
                                 </details>
