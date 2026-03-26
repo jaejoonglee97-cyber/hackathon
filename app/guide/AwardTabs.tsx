@@ -49,7 +49,8 @@ export default function AwardTabs() {
                         </div>
                         <ul className={styles.awardList} style={{ color: '#78350f' }}>
                             <li>해당 부문에서 가장 완성도 높은 결과물 <strong>(현장적용 가능 + 실행 가능 + 확산 가능 + 안전)</strong>을 종합적으로 인정하는 상</li>
-                            <li>선정: 해당 부문 심사합계 1위 (100점 만점)</li>
+                            <li><strong style={{ color: '#10b981' }}>💡 특별 가산점(+5점):</strong> 기존 사회복지 현장에서 시도되지 않았던 '도전적 참신함'을 보인 프로젝트에 부여됩니다.</li>
+                            <li>선정: 해당 부문 심사합계 1위 (100점 만점 + 가산점 5점)</li>
                             <li>동점 시: 안전성 → 실행가능성 → 확산성 점수 순으로 우선</li>
                         </ul>
                     </div>

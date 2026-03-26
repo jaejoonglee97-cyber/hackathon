@@ -13,6 +13,7 @@ interface JudgeScore {
     scalability: number;
     safety: number;
     deduction: number;
+    bonus: number;
     total: number;
     isSubmitted: boolean;
     comment: string;
@@ -44,7 +45,7 @@ interface GlobalStats {
     totalScoreEntries: number;
 }
 
-const COL_LABELS = ['현장적합성', '실행가능성', '성과성', '확산성', '안전성', '감점'];
+const COL_LABELS = ['현장적합성', '실행가능성', '성과성', '확산성', '안전성', '감점', '가산점'];
 const TRACKS = ['전체', '사례관리', '행정', '홍보', '자원연계', '기타']; // You may want to fetch this dynamically if possible, but hardcoding common tracks for now based on PRD
 
 export default function ScoresSummaryClient() {
@@ -129,7 +130,7 @@ export default function ScoresSummaryClient() {
     // CSV 내보내기
     const handleCSV = () => {
         const rows = [
-            ['팀ID', '팀명', '분야', '기관', '순위/배지', '심사위원ID', '현장적합성', '실행가능성', '성과성', '확산성', '안전성', '감점', '심사합계', '제출여부', '코멘트', '마지막수정'],
+            ['팀ID', '팀명', '분야', '기관', '순위/배지', '심사위원ID', '현장적합성', '실행가능성', '성과성', '확산성', '안전성', '감점', '가산점', '심사합계', '제출여부', '코멘트', '마지막수정'],
         ];
         for (const t of allTeams) {
             for (const s of t.scores) {
@@ -138,7 +139,7 @@ export default function ScoresSummaryClient() {
                     t.badge ? `[${t.rank}위] ${t.badge}` : `${t.rank}위`,
                     s.judgeId,
                     String(s.fieldRelevance), String(s.feasibility), String(s.outcomes),
-                    String(s.scalability), String(s.safety), String(s.deduction),
+                    String(s.scalability), String(s.safety), String(s.deduction), String(s.bonus),
                     String(s.total),
                     s.isSubmitted ? '제출' : '임시저장',
                     s.comment.replace(/,/g, ' '),
@@ -324,6 +325,9 @@ export default function ScoresSummaryClient() {
                                             <span className={styles.scoreCell}>{s.safety}</span>
                                             <span className={styles.scoreCell} style={{ color: s.deduction < 0 ? '#ef4444' : undefined }}>
                                                 {s.deduction}
+                                            </span>
+                                            <span className={styles.scoreCell} style={{ color: s.bonus > 0 ? '#10b981' : undefined }}>
+                                                {s.bonus > 0 ? `+${s.bonus}` : s.bonus}
                                             </span>
                                             <span className={styles.totalCell}>{s.total}</span>
                                         </div>

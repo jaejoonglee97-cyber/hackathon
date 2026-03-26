@@ -553,6 +553,8 @@ export async function upsertScore(
                 safety: String(patch.safety ?? 0),
                 deduction: String(patch.deduction ?? 0),
                 deduction_reasons: String(patch.deduction_reasons ?? ''),
+                bonus: String(patch.bonus ?? 0),
+                bonus_reasons: String(patch.bonus_reasons ?? ''),
                 comment: String(patch.comment ?? ''),
                 is_submitted: String(patch.is_submitted ?? 'FALSE'),
                 submitted_at: patch.is_submitted === 'TRUE' ? now : '',

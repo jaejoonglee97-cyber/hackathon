@@ -58,6 +58,8 @@ export default function ProjectEditForm({
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
     const [draftSuccess, setDraftSuccess] = useState(false);
+    const [showPublicModal, setShowPublicModal] = useState(false);
+    const [pendingSubmitData, setPendingSubmitData] = useState<any>(null);
 
     // ── 3/9 전 저장 차단 ──
     const isSaveAllowed = new Date() >= new Date('2026-03-09T00:00:00+09:00');
@@ -230,40 +232,49 @@ export default function ProjectEditForm({
 
         setError('');
         setSuccess(false);
-        setLoading(true);
 
         // Check if name changed
         const nameChanged = name.trim() !== teamName;
         if (nameChanged && remainingEdits <= 0) {
             setError('프로젝트 이름 변경 횟수를 초과했습니다. (최대 3회)');
-            setLoading(false);
             return;
         }
 
         // ── 안전성 체크리스트 제출 조건 ──
         if (!allSafetyChecked) {
             setError('안전성(개인정보) 체크리스트를 모두 체크해야 제출할 수 있습니다.');
-            setLoading(false);
             return;
         }
 
         // ── 창작물 공개 동의 제출 조건 ──
         if (formData.consent_award_public !== 'TRUE') {
             setError('수상 시 공개에 동의해야 제출할 수 있습니다.');
-            setLoading(false);
             return;
         }
         if (!formData.consent_nonprize_option) {
             setError('비수상 시 공개 여부를 선택해 주세요.');
-            setLoading(false);
             return;
         }
 
+        const submitPayload = { ...formData, stage, name: name.trim() };
+
+        // ── 전체공개 선택 시 안내 모달 먼저 표시 ──
+        if (formData.consent_nonprize_option === 'public') {
+            setPendingSubmitData(submitPayload);
+            setShowPublicModal(true);
+            return;
+        }
+
+        await doSubmit(submitPayload);
+    };
+
+    const doSubmit = async (payload: any) => {
+        setLoading(true);
         try {
             const response = await fetch(`/api/teams/${teamId}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...formData, stage, name: name.trim() }),
+                body: JSON.stringify(payload),
             });
 
             const data = await response.json();
@@ -282,6 +293,15 @@ export default function ProjectEditForm({
             setError(err.message);
         } finally {
             setLoading(false);
+        }
+    };
+
+    /* ── 모달에서 확인 → 실제 제출 ── */
+    const handleModalConfirm = async () => {
+        setShowPublicModal(false);
+        if (pendingSubmitData) {
+            await doSubmit(pendingSubmitData);
+            setPendingSubmitData(null);
         }
     };
 
@@ -324,6 +344,7 @@ export default function ProjectEditForm({
     };
 
     return (
+        <>
         <form onSubmit={handleSubmit} className={styles.form}>
             {/* 마감일 경고 */}
             {lockType === 'soft' && editReason && (
@@ -810,7 +831,7 @@ export default function ProjectEditForm({
                                 onChange={(e) => handleSafetyChange('safety_restricted_link', e.target.checked)}
                                 className={styles.checkbox}
                             />
-                            <span>결과물 링크는 권한 제한 공유로 설정했습니다(누구나 공개 링크 금지).</span>
+                            <span>개인정보가 포함된 결과물 링크는 권한 제한 공유로 설정했습니다(개인정보 없는 경우 전체공개 가능).</span>
                         </label>
                     </div>
 
@@ -975,5 +996,106 @@ export default function ProjectEditForm({
                 </button>
             </div>
         </form>
+
+        {/* ── 전체공개 안내 모달 ── */}
+        {showPublicModal && (
+            <div style={{
+                position: 'fixed', inset: 0, zIndex: 1000,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                padding: '1rem',
+                overflowY: 'auto',
+            }}>
+                <div style={{
+                    backgroundColor: '#fff',
+                    borderRadius: '1rem',
+                    padding: '2rem',
+                    maxWidth: '500px',
+                    width: '100%',
+                    boxShadow: '0 20px 60px rgba(0,0,0,0.25)',
+                    position: 'relative',
+                    margin: 'auto',
+                }}>
+                    <div style={{ fontSize: '2rem', textAlign: 'center', marginBottom: '0.75rem' }}>🌐</div>
+                    <h2 style={{
+                        fontSize: '1.15rem', fontWeight: 700,
+                        textAlign: 'center', marginBottom: '1rem',
+                        color: '#1e3a8a',
+                    }}>
+                        전체공개 제출 전에 확인해주세요!
+                    </h2>
+
+                    <div style={{ fontSize: '0.93rem', lineHeight: 1.7, color: '#374151', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                        {/* 전체공개 OK 조건 */}
+                        <div style={{ backgroundColor: '#f0fdf4', border: '1px solid #86efac', borderRadius: '0.5rem', padding: '0.75rem 1rem' }}>
+                            ✅ <strong>개인정보가 없거나 가상(샘플) 데이터만 사용한 경우</strong>라면
+                            전체공개로 제출하셔도 괜찮습니다.
+                        </div>
+
+                        {/* 심사위원 안내 */}
+                        <div style={{ backgroundColor: '#eff6ff', border: '1px solid #93c5fd', borderRadius: '0.5rem', padding: '0.75rem 1rem' }}>
+                            🔍 <strong>심사위원은 별도 심사위원 계정으로 접속</strong>합니다.<br />
+                            메일로 초대하거나 링크를 별도 공유하실 필요가 없습니다.
+                        </div>
+
+                        {/* 이미 제출한 경우 */}
+                        <div style={{ backgroundColor: '#faf5ff', border: '1px solid #c4b5fd', borderRadius: '0.5rem', padding: '0.75rem 1rem' }}>
+                            📢 <strong>이미 제출하셨더라도</strong>, 결과물 링크를 <strong>권한 제한</strong>으로
+                            설정해 두셨다면 <strong>전체공개로 변경</strong>해 주세요.<br />
+                            <span style={{ fontSize: '0.85rem', color: '#6b7280' }}>
+                                심사위원이 내용을 열람할 수 있어야 정상 심사가 가능합니다.
+                            </span>
+                        </div>
+
+                        {/* 앱시트 임시계정 안내 */}
+                        <div style={{ backgroundColor: '#fff7ed', border: '1px solid #fdba74', borderRadius: '0.5rem', padding: '0.75rem 1rem' }}>
+                            📱 <strong>앱시트(AppSheet)로 제출하시는 경우</strong>, 계정별로 화면 구성이
+                            다를 수 있습니다 (관리자/작성자 등).<br />
+                            심사를 위한 <strong>임시 계정</strong>이 필요하시면 운영진에게 문의해 주세요.
+                            임시 아이디를 부여해 드립니다.
+                        </div>
+
+                        {/* 주의 */}
+                        <div style={{
+                            backgroundColor: '#fef3c7',
+                            border: '1px solid #fbbf24',
+                            borderRadius: '0.5rem',
+                            padding: '0.75rem 1rem',
+                            fontSize: '0.88rem',
+                            color: '#92400e',
+                        }}>
+                            ⚠️ 링크에 실제 이용자 개인정보나 사례 기록이 포함된 경우에는
+                            <strong> 비공개(권한 제한)</strong> 설정을 유지해 주세요.
+                        </div>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
+                        <button
+                            onClick={() => setShowPublicModal(false)}
+                            style={{
+                                padding: '0.6rem 1.2rem', borderRadius: '0.5rem',
+                                border: '1.5px solid #d1d5db', backgroundColor: 'transparent',
+                                color: '#374151', fontWeight: 600, cursor: 'pointer',
+                                fontSize: '0.93rem',
+                            }}
+                        >
+                            다시 확인할게요
+                        </button>
+                        <button
+                            onClick={handleModalConfirm}
+                            style={{
+                                padding: '0.6rem 1.4rem', borderRadius: '0.5rem',
+                                border: 'none', backgroundColor: '#2563eb',
+                                color: '#fff', fontWeight: 700, cursor: 'pointer',
+                                fontSize: '0.93rem',
+                            }}
+                        >
+                            확인했습니다 — 제출하기 💾
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
+        </>
     );
 }

@@ -13,6 +13,7 @@ interface CategoryAvg {
     scalability: number;
     safety: number;
     deduction: number;
+    bonus: number;
 }
 
 interface MyStats {
@@ -40,6 +41,7 @@ const CATEGORY_LABELS: { key: keyof CategoryAvg; label: string; max: number }[] 
     { key: 'scalability', label: '확산성', max: 20 },
     { key: 'safety', label: '안전성(개인정보)', max: 20 },
     { key: 'deduction', label: '감점', max: 0 },
+    { key: 'bonus', label: '가산점(참신함)', max: 5 },
 ];
 
 export default function JudgeDashboardClient() {
@@ -81,7 +83,8 @@ export default function JudgeDashboardClient() {
                                 parseFloat(s.outcomes || '0') +
                                 parseFloat(s.scalability || '0') +
                                 parseFloat(s.safety || '0') +
-                                parseFloat(s.deduction || '0');
+                                parseFloat(s.deduction || '0') +
+                                parseFloat(s.bonus || '0');
                         }
                         return { teamId: t.id, teamName: t.name, org: t.org, status, total };
                     });

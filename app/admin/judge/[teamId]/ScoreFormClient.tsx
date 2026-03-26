@@ -71,6 +71,10 @@ const DEDUCTION_ITEMS = [
     { key: 'internal_leak', label: '공개 링크에서 내부자료 노출 — 제출물 외 기관 내부 문서/폴더/다른 파일까지 접근 가능' },
 ];
 
+const BONUS_ITEMS = [
+    { key: 'creativity', label: '도전적 참신함 — 사회복지 현장에서 시도되지 않았던 새롭고 도전적인 접근 (+5점)' },
+];
+
 interface ProjectData {
     track: string;
     problemStatement: string;
@@ -137,6 +141,7 @@ export default function ScoreFormClient({
         safety: 0,
     });
     const [deductionReasons, setDeductionReasons] = useState<string[]>([]);
+    const [bonusReasons, setBonusReasons] = useState<string[]>([]);
     const [comment, setComment] = useState('');
     const [openCriteria, setOpenCriteria] = useState<Record<string, boolean>>({});
     const [status, setStatus] = useState<'none' | 'saved' | 'submitted'>('none');
@@ -158,6 +163,7 @@ export default function ScoreFormClient({
                     safety: parseFloat(s.safety || '0'),
                 });
                 setDeductionReasons(s.deduction_reasons ? s.deduction_reasons.split(',').filter(Boolean) : []);
+                setBonusReasons(s.bonus_reasons ? s.bonus_reasons.split(',').filter(Boolean) : []);
                 setComment(s.comment || '');
                 setStatus(s.is_submitted === 'TRUE' ? 'submitted' : 'saved');
             })
@@ -166,7 +172,8 @@ export default function ScoreFormClient({
 
     const total =
         Object.values(scores).reduce((a, b) => a + b, 0) +
-        (deductionReasons.length > 0 ? -10 : 0);
+        (deductionReasons.length > 0 ? -10 : 0) +
+        (bonusReasons.length > 0 ? 5 : 0);
 
     const handleScoreChange = (key: string, val: number) => {
         const item = RUBRIC.find((r) => r.key === key);
@@ -176,6 +183,12 @@ export default function ScoreFormClient({
 
     const toggleDeduction = (key: string) => {
         setDeductionReasons((prev) =>
+            prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key],
+        );
+    };
+
+    const toggleBonus = (key: string) => {
+        setBonusReasons((prev) =>
             prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key],
         );
     };
@@ -192,6 +205,7 @@ export default function ScoreFormClient({
                         teamId,
                         ...scores,
                         deductionReasons,
+                        bonusReasons,
                         comment,
                         isSubmitted: isSubmit,
                     }),
@@ -206,7 +220,7 @@ export default function ScoreFormClient({
                 setSaving(false);
             }
         },
-        [teamId, scores, deductionReasons, comment],
+        [teamId, scores, deductionReasons, bonusReasons, comment],
     );
 
     const p = projectData;
@@ -422,6 +436,34 @@ export default function ScoreFormClient({
                                 }`}
                             >
                                 {deductionReasons.length > 0 ? '-10점 적용' : '감점 없음'}
+                            </div>
+                        </div>
+
+                        {/* 가산점 */}
+                        <div className={styles.deductSection} style={{ marginTop: '1rem', borderRightColor: '#10b981' }}>
+                            <div className={styles.deductTitle} style={{ color: '#10b981' }}>
+                                <span>* 가산점 항목</span>
+                                <span className={styles.deductNote} style={{ color: '#059669', background: '#d1fae5' }}>+5점</span>
+                            </div>
+                            {BONUS_ITEMS.map((b) => (
+                                <label key={b.key} className={styles.checkItem}>
+                                    <input
+                                        type="checkbox"
+                                        checked={bonusReasons.includes(b.key)}
+                                        disabled={isReadOnly}
+                                        onChange={() => toggleBonus(b.key)}
+                                    />
+                                    <span className={styles.checkLabel}>{b.label}</span>
+                                </label>
+                            ))}
+                            <div
+                                className={`${styles.deductResult}`}
+                                style={{
+                                    backgroundColor: bonusReasons.length > 0 ? '#10b981' : '#f3f4f6',
+                                    color: bonusReasons.length > 0 ? '#fff' : '#9ca3af',
+                                }}
+                            >
+                                {bonusReasons.length > 0 ? '+5점 적용' : '가산점 없음'}
                             </div>
                         </div>
 

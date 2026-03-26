@@ -259,11 +259,15 @@ export default function GuidePage() {
                                     </div>
                                 </details>
                                 <details className={styles.faqItem}>
-                                    <summary className={styles.faqQuestion}>Q. 제출물에 어떤 링크를 넣어야 하나요?</summary>
+                                    <summary className={styles.faqQuestion}>Q. 제출물에 어떤 링크를 넣어야 하나요? 공개로 해도 되나요?</summary>
                                     <div className={styles.faqAnswer}>
                                         A. 프로토타입·결과물 링크(구글 시트, 앱시트, 노션, 웹앱, GitHub 등)를 자유롭게 첨부하면 됩니다.<br />
-                                        단, <strong>링크는 권한 제한 공유(특정 인원에게만 공개)</strong>로 설정해 주세요.<br />
-                                        &lsquo;전체 공개&rsquo; 링크에 개인정보가 포함된 경우 심사에서 불이익이 있을 수 있습니다.
+                                        <br />
+                                        ✅ <strong>개인정보가 없거나 가상(샘플) 데이터만 사용한 경우</strong>에는 <strong>전체 공개 링크</strong>로 제출하셔도 괜찮습니다.<br />
+                                        ⚠️ <strong>실제 이용자 개인정보(실명·연락처·사례기록 등)가 포함된 경우</strong>에는 반드시 <strong>권한 제한(특정 인원만 공개)</strong> 설정을 유지해 주세요.<br />
+                                        <br />
+                                        📢 <strong>이미 제출하셨더라도</strong>, 결과물 링크가 '권한 제한'으로 설정되어 있다면 <strong>전체 공개로 변경</strong>해 주시기 바랍니다.<br />
+                                        <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>심사위원이 링크를 열람할 수 있어야 정상 심사가 진행됩니다.</span>
                                     </div>
                                 </details>
                                 <details className={styles.faqItem}>
@@ -284,7 +288,28 @@ export default function GuidePage() {
                                             <li><strong>AI 활용의 적절성</strong> — AI를 도구로 잘 활용했는가 (사용 여부와 무관)</li>
                                             <li><strong>확산 가능성</strong> — 타 기관·현장에서 재사용할 수 있는가</li>
                                             <li><strong>안전성</strong> — 개인정보 보호 원칙을 준수했는가</li>
+                                            <li><strong style={{ color: '#10b981' }}>[가산점] 도전적 참신함 (+5점)</strong> — 사회복지 현장에서 시도되지 않았던 새롭고 도전적인 접근인가</li>
                                         </ul>
+                                    </div>
+                                </details>
+                                <details className={styles.faqItem}>
+                                    <summary className={styles.faqQuestion}>Q. 심사위원은 제출물을 어떻게 열람하나요? 메일로 초대해야 하나요?</summary>
+                                    <div className={styles.faqAnswer}>
+                                        A. <strong>심사위원은 별도의 심사위원 계정으로 직접 접속</strong>합니다.<br />
+                                        메일로 초대하거나 링크를 별도로 공유하실 필요가 없습니다.<br />
+                                        심사위원 이메일 주소를 따로 문의하실 필요도 없습니다. 😊<br />
+                                        <br />
+                                        단, 결과물 링크(구글 시트·앱시트 등)를 <strong>&lsquo;권한 제한&rsquo;으로 설정해 두신 경우</strong>에는<br />
+                                        심사위원이 열람할 수 없으니, <strong>개인정보가 없다면 전체공개로 변경</strong>해 주세요.
+                                    </div>
+                                </details>
+                                <details className={styles.faqItem}>
+                                    <summary className={styles.faqQuestion}>Q. 앱시트(AppSheet)로 만들었는데, 로그인 계정에 따라 화면이 달라요. 어떻게 해야 하나요?</summary>
+                                    <div className={styles.faqAnswer}>
+                                        A. 앱시트는 계정별로 화면 구성이 다를 수 있습니다 (관리자/작성자 역할 등).<br />
+                                        심사위원이 제출물을 제대로 확인할 수 있도록 <strong>임시 심사용 계정</strong>이 필요하신 경우,<br />
+                                        <strong>운영진에게 문의</strong>해 주시면 임시 아이디를 부여해 드립니다.<br />
+                                        <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>문의 게시판 또는 담당자에게 연락 주시면 빠르게 안내해 드리겠습니다.</span>
                                     </div>
                                 </details>
                                 <details className={styles.faqItem}>

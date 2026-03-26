@@ -77,6 +77,7 @@ export async function POST(req: NextRequest) {
         scalability = 0,
         safety = 0,
         deductionReasons = [],
+        bonusReasons = [],
         comment = '',
         isSubmitted = false,
     } = body;
@@ -97,6 +98,7 @@ export async function POST(req: NextRequest) {
     }
 
     const deduction = deductionReasons.length > 0 ? -10 : 0;
+    const bonus = bonusReasons.length > 0 ? 5 : 0;
     const now = new Date().toISOString();
 
     await upsertScore(user.userId, teamId, {
@@ -107,6 +109,8 @@ export async function POST(req: NextRequest) {
         safety,
         deduction,
         deduction_reasons: deductionReasons.join(','),
+        bonus,
+        bonus_reasons: bonusReasons.join(','),
         comment,
         is_submitted: isSubmitted ? 'TRUE' : 'FALSE',
         submitted_at: isSubmitted ? now : '',

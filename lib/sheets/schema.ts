@@ -202,6 +202,8 @@ export const sheets = {
         'safety',             // 안전성(개인정보) (0~20)
         'deduction',          // 감점 (0 or -10)
         'deduction_reasons',  // 감점 사유 쉼표 구분 (pii|open_edit|internal_leak)
+        'bonus',              // 가산점 (0 or +5)
+        'bonus_reasons',      // 가산점 사유 쉼표 구분 (creativity)
         'comment',            // 심사 코멘트
         'is_submitted',       // 최종 제출 여부 TRUE/FALSE
         'submitted_at',       // 최종 제출 일시

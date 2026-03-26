@@ -45,11 +45,12 @@ export async function GET() {
             scalability: avg(myScores, 'scalability'),
             safety: avg(myScores, 'safety'),
             deduction: avg(myScores, 'deduction'),
+            bonus: avg(myScores, 'bonus'),
         },
         avgTotal: avg(
             myScores.map((s) => ({
                 total: String(
-                    ['field_relevance', 'feasibility', 'outcomes', 'scalability', 'safety', 'deduction']
+                    ['field_relevance', 'feasibility', 'outcomes', 'scalability', 'safety', 'deduction', 'bonus']
                         .reduce((sum, col) => sum + parseFloat(s[col] || '0'), 0),
                 ),
             })),
@@ -71,7 +72,7 @@ export async function GET() {
             const teamScores = byTeam[team.id] ?? [];
             const submittedScores = teamScores.filter((s) => s.is_submitted === 'TRUE');
             const calcTotal = (s: Record<string, string>) =>
-                ['field_relevance', 'feasibility', 'outcomes', 'scalability', 'safety', 'deduction']
+                ['field_relevance', 'feasibility', 'outcomes', 'scalability', 'safety', 'deduction', 'bonus']
                     .reduce((sum, col) => sum + parseFloat(s[col] || '0'), 0);
 
             let avgTotal = null;
@@ -108,6 +109,7 @@ export async function GET() {
                     scalability: parseFloat(s.scalability || '0'),
                     safety: parseFloat(s.safety || '0'),
                     deduction: parseFloat(s.deduction || '0'),
+                    bonus: parseFloat(s.bonus || '0'),
                     total: calcTotal(s),
                     isSubmitted: s.is_submitted === 'TRUE',
                     comment: s.comment || '',
