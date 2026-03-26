@@ -266,7 +266,7 @@ export default function GuidePage() {
                                         ✅ <strong>개인정보가 없거나 가상(샘플) 데이터만 사용한 경우</strong>에는 <strong>전체 공개 링크</strong>로 제출하셔도 괜찮습니다.<br />
                                         ⚠️ <strong>실제 이용자 개인정보(실명·연락처·사례기록 등)가 포함된 경우</strong>에는 반드시 <strong>권한 제한(특정 인원만 공개)</strong> 설정을 유지해 주세요.<br />
                                         <br />
-                                        📢 <strong>이미 제출하셨더라도</strong>, 결과물 링크가 '권한 제한'으로 설정되어 있다면 <strong>전체 공개로 변경</strong>해 주시기 바랍니다.<br />
+                                        📢 <strong>이미 제출하셨더라도</strong>, 결과물 링크가 &apos;권한 제한&apos;으로 설정되어 있다면 <strong>전체 공개로 변경</strong>해 주시기 바랍니다.<br />
                                         <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>심사위원이 링크를 열람할 수 있어야 정상 심사가 진행됩니다.</span>
                                     </div>
                                 </details>
