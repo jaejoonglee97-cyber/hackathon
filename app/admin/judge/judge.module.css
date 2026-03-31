@@ -291,3 +291,36 @@
     color: var(--text-secondary, #aaa);
     font-size: 0.9rem;
 }
+
+/* ── 사전 탈락 드롭다운 (details) ────────────────────────────── */
+.screenedOutWrapper {
+    margin-top: 2rem;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.screenedOutSummary {
+    padding: 1rem 1.2rem;
+    font-weight: 700;
+    color: #991b1b;
+    cursor: pointer;
+    user-select: none;
+    list-style: none; /* Hide default arrow in some browsers */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.screenedOutSummary::-webkit-details-marker {
+    display: none; /* Hide default arrow in Chrome/Safari */
+}
+
+.screenedOutSummary:hover {
+    background: #fee2e2;
+}
+
+.screenedOutContent {
+    border-top: 1px solid #fecaca;
+}

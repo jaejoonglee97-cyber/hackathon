@@ -115,6 +115,9 @@ export default function JudgeDashboardClient() {
         return { text: '미심사', cls: styles.statusNone };
     };
 
+    const activeTeams = teams.filter(t => !t.isScreenedOut);
+    const screenedOutTeams = teams.filter(t => t.isScreenedOut);
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
@@ -217,27 +220,25 @@ export default function JudgeDashboardClient() {
                     <span>심사합계</span>
                     <span>심사</span>
                 </div>
-                {teams.length === 0 ? (
-                    <div className={styles.emptyMessage}>등록된 팀이 없습니다.</div>
+                {activeTeams.length === 0 ? (
+                    <div className={styles.emptyMessage}>등록된 전체 심사대상 팀이 없습니다.</div>
                 ) : (
-                    teams.map((t) => {
-                        const { text, cls } = t.isScreenedOut 
-                            ? { text: '사전 탈락', cls: styles.statusRejected } 
-                            : statusLabel(t.status);
+                    activeTeams.map((t) => {
+                        const { text, cls } = statusLabel(t.status);
                         
                         return (
-                            <div key={t.teamId} className={styles.tableRow} style={t.isScreenedOut ? { opacity: 0.6 } : {}}>
+                            <div key={t.teamId} className={styles.tableRow}>
                                 <div>
-                                    <div className={styles.teamName} style={t.isScreenedOut ? { textDecoration: 'line-through', color: '#ef4444' } : {}}>
+                                    <div className={styles.teamName}>
                                         {t.teamName}
                                     </div>
                                 </div>
-                                <div className={styles.orgText} style={t.isScreenedOut ? { textDecoration: 'line-through' } : {}}>{t.org || '-'}</div>
+                                <div className={styles.orgText}>{t.org || '-'}</div>
                                 <div>
                                     <span className={`${styles.statusBadge} ${cls}`}>{text}</span>
                                 </div>
                                 <div>
-                                    {t.total !== null && !t.isScreenedOut ? (
+                                    {t.total !== null ? (
                                         <span className={styles.totalScore}>{t.total}점</span>
                                     ) : (
                                         <span className={styles.scoreEmpty}>-</span>
@@ -246,10 +247,9 @@ export default function JudgeDashboardClient() {
                                 <div>
                                     <Link
                                         href={`/admin/judge/${t.teamId}`}
-                                        className={`${styles.actionBtn} ${t.status !== 'none' || t.isScreenedOut ? styles.actionBtnEdit : ''}`}
-                                        style={t.isScreenedOut ? { color: '#ef4444', backgroundColor: '#fee2e2' } : {}}
+                                        className={`${styles.actionBtn} ${t.status !== 'none' ? styles.actionBtnEdit : ''}`}
                                     >
-                                        {t.isScreenedOut ? '사유 보기' : (t.status === 'none' ? '심사하기' : '수정하기')}
+                                        {t.status === 'none' ? '심사하기' : '수정하기'}
                                     </Link>
                                 </div>
                             </div>
@@ -257,6 +257,43 @@ export default function JudgeDashboardClient() {
                     })
                 )}
             </div>
+
+            {/* 사전 탈락 팀 드롭다운 */}
+            {screenedOutTeams.length > 0 && (
+                <details className={styles.screenedOutWrapper}>
+                    <summary className={styles.screenedOutSummary}>
+                        <span>🚨 사전 탈락 팀 목록 ({screenedOutTeams.length}팀)</span>
+                        <span style={{ fontSize: '0.8rem', fontWeight: 500, color: '#ef4444' }}>펼쳐보기 ▼</span>
+                    </summary>
+                    <div className={styles.screenedOutContent}>
+                        {screenedOutTeams.map((t) => (
+                            <div key={t.teamId} className={styles.tableRow} style={{ opacity: 0.7, gridTemplateColumns: '1fr 1fr 100px 80px 120px', borderBottomColor: '#fecaca' }}>
+                                <div>
+                                    <div className={styles.teamName} style={{ textDecoration: 'line-through', color: '#b91c1c' }}>
+                                        {t.teamName}
+                                    </div>
+                                </div>
+                                <div className={styles.orgText} style={{ textDecoration: 'line-through' }}>{t.org || '-'}</div>
+                                <div>
+                                    <span className={`${styles.statusBadge} ${styles.statusRejected}`}>사전 탈락</span>
+                                </div>
+                                <div>
+                                    <span className={styles.scoreEmpty}>-</span>
+                                </div>
+                                <div>
+                                    <Link
+                                        href={`/admin/judge/${t.teamId}`}
+                                        className={styles.actionBtn}
+                                        style={{ color: '#b91c1c', backgroundColor: '#fecaca', fontWeight: 'bold' }}
+                                    >
+                                        사유 보기
+                                    </Link>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </details>
+            )}
         </div>
     );
 }
