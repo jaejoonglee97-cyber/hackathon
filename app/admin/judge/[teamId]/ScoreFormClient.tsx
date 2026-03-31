@@ -3,6 +3,7 @@
 // 좌: 프로젝트 상세정보 / 우: 루브릭 채점 폼
 
 import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import styles from './score-form.module.css';
@@ -135,6 +136,7 @@ export default function ScoreFormClient({
     userRole,
     initialScreeningMemo,
 }: ScoreFormClientProps) {
+    const router = useRouter();
     const isReadOnly = userRole === 'admin';
     const [scores, setScores] = useState<Record<string, number>>({
         fieldRelevance: 0,
@@ -154,6 +156,10 @@ export default function ScoreFormClient({
     // Screening Memo State
     const [screeningMemo, setScreeningMemo] = useState(initialScreeningMemo);
     const [isSavingMemo, setIsSavingMemo] = useState(false);
+
+    useEffect(() => {
+        setScreeningMemo(initialScreeningMemo);
+    }, [initialScreeningMemo]);
 
     // AI Analysis State
     const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -228,6 +234,7 @@ export default function ScoreFormClient({
                 if (!res.ok) throw new Error(data.error || '저장 실패');
                 setStatus(isSubmit ? 'submitted' : 'saved');
                 setMessage({ type: 'success', text: data.message });
+                router.refresh(); // 최신 데이터로 새로고침
             } catch (e: any) {
                 setMessage({ type: 'error', text: e.message || '저장 중 오류가 발생했습니다.' });
             } finally {
@@ -249,6 +256,7 @@ export default function ScoreFormClient({
             const data = await res.json();
             if (!res.ok) throw new Error(data.error || '메모 저장 실패');
             setMessage({ type: 'success', text: '1차 스크리닝 메모가 저장되었습니다.' });
+            router.refresh(); // 최신 데이터로 새로고침
         } catch (e: any) {
             setMessage({ type: 'error', text: e.message || '스크리닝 메모 저장 중 오류가 발생했습니다.' });
         } finally {

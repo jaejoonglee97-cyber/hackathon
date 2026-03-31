@@ -1,5 +1,7 @@
 // app/admin/judge/[teamId]/page.tsx
 // 팀별 루브릭 심사 폼 서버 컴포넌트 (권한 게이트)
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 import { notFound } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth';
