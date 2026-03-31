@@ -235,6 +235,11 @@
     color: #166534;
 }
 
+.statusRejected {
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
 .totalScore {
     font-size: 0.9rem;
     font-weight: 700;

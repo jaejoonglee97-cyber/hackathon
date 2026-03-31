@@ -32,6 +32,7 @@ interface TeamScore {
     org: string;
     status: 'none' | 'saved' | 'submitted';
     total: number | null;
+    isScreenedOut: boolean;
 }
 
 const CATEGORY_LABELS: { key: keyof CategoryAvg; label: string; max: number }[] = [
@@ -86,7 +87,8 @@ export default function JudgeDashboardClient() {
                                 parseFloat(s.deduction || '0') +
                                 parseFloat(s.bonus || '0');
                         }
-                        return { teamId: t.id, teamName: t.name, org: t.org, status, total };
+                        const isScreenedOut = !!(t.screening_memo && String(t.screening_memo).trim().length > 0);
+                        return { teamId: t.id, teamName: t.name, org: t.org, status, total, isScreenedOut };
                     });
 
                 setTeams(teamList);
@@ -219,18 +221,23 @@ export default function JudgeDashboardClient() {
                     <div className={styles.emptyMessage}>등록된 팀이 없습니다.</div>
                 ) : (
                     teams.map((t) => {
-                        const { text, cls } = statusLabel(t.status);
+                        const { text, cls } = t.isScreenedOut 
+                            ? { text: '사전 탈락', cls: styles.statusRejected } 
+                            : statusLabel(t.status);
+                        
                         return (
-                            <div key={t.teamId} className={styles.tableRow}>
+                            <div key={t.teamId} className={styles.tableRow} style={t.isScreenedOut ? { opacity: 0.6 } : {}}>
                                 <div>
-                                    <div className={styles.teamName}>{t.teamName}</div>
+                                    <div className={styles.teamName} style={t.isScreenedOut ? { textDecoration: 'line-through', color: '#ef4444' } : {}}>
+                                        {t.teamName}
+                                    </div>
                                 </div>
-                                <div className={styles.orgText}>{t.org || '-'}</div>
+                                <div className={styles.orgText} style={t.isScreenedOut ? { textDecoration: 'line-through' } : {}}>{t.org || '-'}</div>
                                 <div>
                                     <span className={`${styles.statusBadge} ${cls}`}>{text}</span>
                                 </div>
                                 <div>
-                                    {t.total !== null ? (
+                                    {t.total !== null && !t.isScreenedOut ? (
                                         <span className={styles.totalScore}>{t.total}점</span>
                                     ) : (
                                         <span className={styles.scoreEmpty}>-</span>
@@ -239,9 +246,10 @@ export default function JudgeDashboardClient() {
                                 <div>
                                     <Link
                                         href={`/admin/judge/${t.teamId}`}
-                                        className={`${styles.actionBtn} ${t.status !== 'none' ? styles.actionBtnEdit : ''}`}
+                                        className={`${styles.actionBtn} ${t.status !== 'none' || t.isScreenedOut ? styles.actionBtnEdit : ''}`}
+                                        style={t.isScreenedOut ? { color: '#ef4444', backgroundColor: '#fee2e2' } : {}}
                                     >
-                                        {t.status === 'none' ? '심사하기' : '수정하기'}
+                                        {t.isScreenedOut ? '사유 보기' : (t.status === 'none' ? '심사하기' : '수정하기')}
                                     </Link>
                                 </div>
                             </div>
