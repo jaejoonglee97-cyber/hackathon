@@ -17,12 +17,19 @@ export async function GET() {
         listRows('teams'),
     ]);
 
-    // "완성" 단계(complete)인 팀만 필터링
-    const allTeams = rawTeams.filter((t) => t.stage === 'complete');
+    // "완성" 단계(complete)인 팀이면서 사전 탈락(screening_memo)이 없는 팀만 유효한 평가 대상으로 필터링
+    const allTeams = rawTeams.filter((t) => {
+        const isComplete = t.stage === 'complete';
+        const isScreenedOut = !!(t.screening_memo && String(t.screening_memo).trim().length > 0);
+        return isComplete && !isScreenedOut;
+    });
     const totalTeams = allTeams.length;
 
+    const validTeamIds = new Set(allTeams.map(t => t.id));
+    const validAllScores = allScores.filter(s => validTeamIds.has(s.team_id));
+
     // ── judge 본인 통계 ──────────────────────────
-    const myScores = allScores.filter((s) => s.judge_id === user.userId);
+    const myScores = validAllScores.filter((s) => s.judge_id === user.userId);
     const submitted = myScores.filter((s) => s.is_submitted === 'TRUE');
     const saved = myScores.filter((s) => s.is_submitted === 'FALSE');
 
