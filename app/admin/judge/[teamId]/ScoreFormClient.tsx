@@ -112,6 +112,7 @@ interface ScoreFormClientProps {
     stage: string;
     projectData: ProjectData | null;
     userRole: string;
+    initialScreeningMemo: string;
 }
 
 /* ── 프로젝트 상세 카드 컴포넌트 ── */
@@ -132,6 +133,7 @@ export default function ScoreFormClient({
     stage,
     projectData,
     userRole,
+    initialScreeningMemo,
 }: ScoreFormClientProps) {
     const isReadOnly = userRole === 'admin';
     const [scores, setScores] = useState<Record<string, number>>({
@@ -148,6 +150,10 @@ export default function ScoreFormClient({
     const [status, setStatus] = useState<'none' | 'saved' | 'submitted'>('none');
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+    // Screening Memo State
+    const [screeningMemo, setScreeningMemo] = useState(initialScreeningMemo);
+    const [isSavingMemo, setIsSavingMemo] = useState(false);
 
     // AI Analysis State
     const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -230,6 +236,25 @@ export default function ScoreFormClient({
         },
         [teamId, scores, deductionReasons, bonusReasons, comment],
     );
+
+    const handleSaveScreeningMemo = useCallback(async () => {
+        setIsSavingMemo(true);
+        setMessage(null);
+        try {
+            const res = await fetch('/api/admin/judge/screening-memo', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ teamId, screeningMemo }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || '메모 저장 실패');
+            setMessage({ type: 'success', text: '1차 스크리닝 메모가 저장되었습니다.' });
+        } catch (e: any) {
+            setMessage({ type: 'error', text: e.message || '스크리닝 메모 저장 중 오류가 발생했습니다.' });
+        } finally {
+            setIsSavingMemo(false);
+        }
+    }, [teamId, screeningMemo]);
 
     const handleAnalyzeAI = useCallback(async () => {
         setIsAnalyzing(true);
@@ -453,6 +478,31 @@ export default function ScoreFormClient({
                 {/* ──────── 우측: 심사 폼 ──────── */}
                 <div className={styles.rightCol}>
                     <div className={styles.stickyScore}>
+                        
+                        {/* 🚨 1차 스크리닝 메모 (가장 상단 배치) */}
+                        <div className={styles.projectSection} style={{ borderLeft: '4px solid #ef4444', background: '#fef2f2', padding: '1rem', marginBottom: '1.5rem', borderRadius: '0.375rem' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <h2 style={{ fontSize: '1.125rem', color: '#b91c1c', margin: 0, fontWeight: 'bold' }}>🚨 1차 스크리닝 (사전 탈락 사유)</h2>
+                                <button
+                                    onClick={handleSaveScreeningMemo}
+                                    disabled={isSavingMemo}
+                                    style={{ padding: '0.3rem 0.8rem', background: '#dc2626', color: '#fff', border: 'none', borderRadius: '0.25rem', cursor: 'pointer', fontSize: '0.875rem' }}
+                                >
+                                    {isSavingMemo ? '저장 중...' : '메모 저장'}
+                                </button>
+                            </div>
+                            <p style={{ fontSize: '0.875rem', color: '#991b1b', marginTop: '0.5rem', marginBottom: '0.5rem' }}>
+                                프로토타입 실행 불가, 심각한 권한 문제 등 사전 탈락 사유가 있다면 여기에 적어주세요.<br/>
+                                <strong style={{ color: '#7f1d1d' }}>※ 이곳에 1글자라도 작성되어 있으면 모든 심사위원의 최종 제출 버튼이 잠깁니다.</strong>
+                            </p>
+                            <textarea
+                                value={screeningMemo}
+                                onChange={(e) => setScreeningMemo(e.target.value)}
+                                placeholder="탈락 사유가 없으면 비워두세요."
+                                style={{ width: '100%', minHeight: '60px', padding: '0.75rem', borderRadius: '0.25rem', border: '1px solid #fca5a5', marginTop: '0.5rem', resize: 'vertical' }}
+                            />
+                        </div>
+
                         <h2 className={styles.scoreTitle}>📋 심사표</h2>
 
                         {/* 심사 섹션 */}
@@ -603,10 +653,15 @@ export default function ScoreFormClient({
                                 </button>
                                 <button
                                     className={styles.btnSubmit}
-                                    disabled={saving}
+                                    disabled={saving || screeningMemo.trim().length > 0}
                                     onClick={() => handleSave(true)}
+                                    title={screeningMemo.trim().length > 0 ? '사전 탈락 사유가 있어 심사할 수 없습니다.' : ''}
+                                    style={{
+                                        opacity: screeningMemo.trim().length > 0 ? 0.5 : 1,
+                                        cursor: screeningMemo.trim().length > 0 ? 'not-allowed' : 'pointer'
+                                    }}
                                 >
-                                    {saving ? '제출 중…' : '최종 제출'}
+                                    {saving ? '제출 중…' : (screeningMemo.trim().length > 0 ? '사전 탈락 처리됨' : '최종 제출')}
                                 </button>
                             </div>
                         )}

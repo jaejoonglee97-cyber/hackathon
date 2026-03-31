@@ -21,7 +21,7 @@ export async function POST(req: Request) {
         if (!process.env.GEMINI_API_KEY) {
             return NextResponse.json({ error: '서버에 GEMINI_API_KEY 가 설정되지 않았습니다.' }, { status: 500 });
         }
-        const model = genAI.getGenerativeModel({ model: 'gemini-3.1-flash' });
+        const model = genAI.getGenerativeModel({ model: 'gemini-3.1-flash-lite-preview' });
 
         const prompt = `
 당신은 해커톤 프로젝트를 평가하는 사회복지 현장 전문가이자 심사위원입니다.

@@ -208,6 +208,7 @@ export const sheets = {
         'is_submitted',       // 최종 제출 여부 TRUE/FALSE
         'submitted_at',       // 최종 제출 일시
         'updated_at',
+        'screening_memo',     // 1차 스크리닝 메모 (사전 탈락 사유)
     ] as const),
 } as const;
 
