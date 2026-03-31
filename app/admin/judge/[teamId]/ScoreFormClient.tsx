@@ -2,8 +2,9 @@
 // app/admin/judge/[teamId]/ScoreFormClient.tsx
 // 좌: 프로젝트 상세정보 / 우: 루브릭 채점 폼
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import Link from 'next/link';
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import styles from './score-form.module.css';
 
 interface RubricItem {
@@ -148,6 +149,13 @@ export default function ScoreFormClient({
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
+    // AI Analysis State
+    const [isAnalyzing, setIsAnalyzing] = useState(false);
+    const [aiAnalysis, setAiAnalysis] = useState<{
+        scores: Record<string, number>;
+        reasons: Record<string, string>;
+    } | null>(null);
+
     // 기존 심사 불러오기
     useEffect(() => {
         fetch(`/api/admin/scores?teamId=${teamId}`)
@@ -223,7 +231,38 @@ export default function ScoreFormClient({
         [teamId, scores, deductionReasons, bonusReasons, comment],
     );
 
+    const handleAnalyzeAI = useCallback(async () => {
+        setIsAnalyzing(true);
+        setMessage(null);
+        try {
+            const res = await fetch('/api/admin/judge/analyze', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ teamId, projectData }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'AI 분석 실패');
+            setAiAnalysis(data.analysis);
+            setMessage({ type: 'success', text: 'AI 분석이 완료되었습니다. 제공된 초안을 참고하세요.' });
+        } catch (e: any) {
+            setMessage({ type: 'error', text: e.message || 'AI 분석 중 오류가 발생했습니다. (API 키 오류일 수 있습니다.)' });
+        } finally {
+            setIsAnalyzing(false);
+        }
+    }, [teamId, projectData]);
+
     const p = projectData;
+
+    // AI Data for RadarChart
+    const radarData = useMemo(() => {
+        if (!aiAnalysis) return [];
+        return RUBRIC.map(category => ({
+            category: category.label,
+            AiScore: aiAnalysis.scores[category.key] || 0,
+            HumanScore: scores[category.key] || 0,
+            fullMark: category.max
+        }));
+    }, [aiAnalysis, scores]);
 
     return (
         <div className={styles.pageContainer}>
@@ -341,6 +380,72 @@ export default function ScoreFormClient({
                     ) : (
                         <div className={styles.emptyProject}>
                             아직 프로젝트가 등록되지 않았습니다.
+                        </div>
+                    )}
+
+                    {/* AI 심사 보조 및 방사형 차트 영역 */}
+                    {p && !isReadOnly && (
+                        <div className={styles.projectSection} style={{ marginTop: '2rem', borderTop: '2px dashed #e5e7eb', paddingTop: '1.5rem' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                                <h2 className={styles.projectSectionTitle} style={{ margin: 0 }}>🤖 AI 심사 보조 (초안 분석)</h2>
+                                <button
+                                    className={styles.btnSave}
+                                    style={{ background: '#6366f1', color: '#fff', border: 'none' }}
+                                    disabled={isAnalyzing}
+                                    onClick={handleAnalyzeAI}
+                                >
+                                    {isAnalyzing ? '분석 중...' : '분석 시작 (Gemini)'}
+                                </button>
+                            </div>
+                            <p style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '1rem' }}>
+                                참가자가 작성한 텍스트 기반으로 루브릭 기준 5개 항목을 AI가 1차 평가합니다. <br/>
+                                <strong>주의:</strong> 프로토타입의 실제 구동 및 디자인 완성도는 심사위원이 직접 확인해야 합니다.
+                            </p>
+                            
+                            {isAnalyzing && (
+                                <div style={{ padding: '2rem', textAlign: 'center', color: '#6366f1', fontWeight: 600 }}>
+                                    프로젝트 데이터를 분석하고 있습니다... (약 5~10초 소요)
+                                </div>
+                            )}
+
+                            {aiAnalysis && !isAnalyzing && (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', background: '#f9fafb', padding: '1.5rem', borderRadius: '0.5rem' }}>
+                                    
+                                    {/* 방사형 차트 */}
+                                    <div style={{ width: '100%', height: 300, background: '#fff', borderRadius: '0.5rem', border: '1px solid #e5e7eb', padding: '1rem' }}>
+                                        <ResponsiveContainer width="100%" height="100%">
+                                            <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
+                                                <PolarGrid />
+                                                <PolarAngleAxis dataKey="category" tick={{ fill: '#4b5563', fontSize: 12 }} />
+                                                <PolarRadiusAxis angle={30} domain={[0, 20]} stroke="#9ca3af" />
+                                                <Radar name="AI 초안 점수" dataKey="AiScore" stroke="#6366f1" fill="#6366f1" fillOpacity={0.4} />
+                                                <Tooltip />
+                                            </RadarChart>
+                                        </ResponsiveContainer>
+                                    </div>
+
+                                    {/* 항목별 이유 명시 */}
+                                    <div>
+                                        <h3 style={{ fontSize: '1rem', fontWeight: 600, color: '#111827', marginBottom: '0.75rem' }}>💡 AI 파트별 분석 코멘트</h3>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                            {RUBRIC.map((item) => (
+                                                <div key={item.key} style={{ fontSize: '0.875rem', background: '#fff', padding: '0.75rem', borderRadius: '0.375rem', border: '1px solid #e5e7eb' }}>
+                                                    <span style={{ fontWeight: 600, color: '#6366f1' }}>{item.label} ({aiAnalysis.scores[item.key]}점): </span>
+                                                    <span style={{ color: '#374151' }}>{aiAnalysis.reasons[item.key] || '분석 내용 없음'}</span>
+                                                    <br/>
+                                                    <button 
+                                                        style={{ marginTop: '0.5rem', fontSize: '0.75rem', padding: '0.2rem 0.5rem', background: '#e0e7ff', color: '#4338ca', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}
+                                                        onClick={() => handleScoreChange(item.key, aiAnalysis.scores[item.key])}
+                                                    >
+                                                        이 점수 반영하기
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
