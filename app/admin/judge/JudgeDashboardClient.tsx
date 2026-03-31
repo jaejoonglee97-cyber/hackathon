@@ -33,6 +33,7 @@ interface TeamScore {
     status: 'none' | 'saved' | 'submitted';
     total: number | null;
     isScreenedOut: boolean;
+    entryNumber: number;
 }
 
 const CATEGORY_LABELS: { key: keyof CategoryAvg; label: string; max: number }[] = [
@@ -72,7 +73,7 @@ export default function JudgeDashboardClient() {
 
                 const teamList: TeamScore[] = (teamsData.teams ?? [])
                     .filter((t: any) => t.stage === 'complete')
-                    .map((t: any) => {
+                    .map((t: any, index: number) => {
                         const s = scoresByTeam[t.id];
                         let status: 'none' | 'saved' | 'submitted' = 'none';
                         let total: number | null = null;
@@ -88,7 +89,7 @@ export default function JudgeDashboardClient() {
                                 parseFloat(s.bonus || '0');
                         }
                         const isScreenedOut = !!(t.screening_memo && String(t.screening_memo).trim().length > 0);
-                        return { teamId: t.id, teamName: t.name, org: t.org, status, total, isScreenedOut };
+                        return { teamId: t.id, teamName: t.name, org: t.org, status, total, isScreenedOut, entryNumber: index + 1 };
                     });
 
                 setTeams(teamList);
@@ -214,6 +215,7 @@ export default function JudgeDashboardClient() {
             {/* 팀 목록 */}
             <div className={styles.teamSection}>
                 <div className={styles.tableHeader}>
+                    <span>#</span>
                     <span>팀명</span>
                     <span>기관</span>
                     <span>상태</span>
@@ -228,6 +230,7 @@ export default function JudgeDashboardClient() {
                         
                         return (
                             <div key={t.teamId} className={styles.tableRow}>
+                                <div className={styles.entryNumber}>{t.entryNumber}</div>
                                 <div>
                                     <div className={styles.teamName}>
                                         {t.teamName}
@@ -267,7 +270,8 @@ export default function JudgeDashboardClient() {
                     </summary>
                     <div className={styles.screenedOutContent}>
                         {screenedOutTeams.map((t) => (
-                            <div key={t.teamId} className={styles.tableRow} style={{ opacity: 0.7, gridTemplateColumns: '1fr 1fr 100px 80px 120px', borderBottomColor: '#fecaca' }}>
+                            <div key={t.teamId} className={styles.tableRow} style={{ opacity: 0.7, gridTemplateColumns: '40px 1fr 1fr 100px 80px 120px', borderBottomColor: '#fecaca' }}>
+                                <div className={styles.entryNumber} style={{ color: '#b91c1c' }}>{t.entryNumber}</div>
                                 <div>
                                     <div className={styles.teamName} style={{ textDecoration: 'line-through', color: '#b91c1c' }}>
                                         {t.teamName}

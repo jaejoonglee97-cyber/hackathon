@@ -114,6 +114,7 @@ interface ScoreFormClientProps {
     projectData: ProjectData | null;
     userRole: string;
     initialScreeningMemo: string;
+    entryNumber?: number;
 }
 
 /* ── 프로젝트 상세 카드 컴포넌트 ── */
@@ -135,6 +136,7 @@ export default function ScoreFormClient({
     projectData,
     userRole,
     initialScreeningMemo,
+    entryNumber,
 }: ScoreFormClientProps) {
     const router = useRouter();
     const isReadOnly = userRole === 'admin';
@@ -317,7 +319,10 @@ export default function ScoreFormClient({
                 <div className={styles.leftCol}>
                     {/* 팀 헤더 */}
                     <div className={styles.teamCard}>
-                        <h1 className={styles.teamTitle}>{teamName}</h1>
+                        <h1 className={styles.teamTitle}>
+                            {entryNumber && <span className={styles.entryNumberBadge}>No. {entryNumber}</span>}
+                            {teamName}
+                        </h1>
                         <p className={styles.teamMeta}>{org}{stage ? ` · ${stage}` : ''}</p>
                         <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
                             {p?.prototypeLink && (

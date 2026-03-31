@@ -5,7 +5,7 @@ export const revalidate = 0;
 
 import { notFound } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth';
-import { getRowBy } from '@/lib/sheets';
+import { getRowBy, listRows } from '@/lib/sheets';
 import ScoreFormClient from './ScoreFormClient';
 
 export async function generateMetadata({ params }: { params: { teamId: string } }) {
@@ -57,6 +57,12 @@ export default async function ScoreFormPage({ params }: { params: { teamId: stri
         safetyRestrictedLink: project.safety_restricted_link || '',
     } : null;
 
+    // 참가 번호 계산 (전체 'complete' 팀 중 순서)
+    const allTeams = await listRows('teams');
+    const completeTeams = allTeams.filter((t: any) => t.stage === 'complete');
+    const teamIndex = completeTeams.findIndex((t: any) => t.id === params.teamId);
+    const entryNumber = teamIndex !== -1 ? teamIndex + 1 : undefined;
+ 
     return (
         <ScoreFormClient
             teamId={params.teamId}
@@ -66,6 +72,7 @@ export default async function ScoreFormPage({ params }: { params: { teamId: stri
             projectData={projectData}
             userRole={user.role}
             initialScreeningMemo={team.screening_memo || ''}
+            entryNumber={entryNumber}
         />
     );
 }

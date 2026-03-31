@@ -167,7 +167,7 @@
 
 .tableHeader {
     display: grid;
-    grid-template-columns: 1fr 1fr 100px 80px 120px;
+    grid-template-columns: 40px 1.2fr 1fr 100px 80px 120px;
     padding: 0.75rem 1.2rem;
     background: var(--bg-secondary, #f9fafb);
     border-bottom: 1px solid var(--border-color, #e5e7eb);
@@ -179,7 +179,7 @@
 
 .tableRow {
     display: grid;
-    grid-template-columns: 1fr 1fr 100px 80px 120px;
+    grid-template-columns: 40px 1.2fr 1fr 100px 80px 120px;
     padding: 0.85rem 1.2rem;
     border-bottom: 1px solid var(--border-color, #e5e7eb);
     align-items: center;
@@ -199,6 +199,19 @@
     font-size: 0.9rem;
     font-weight: 600;
     color: var(--text-primary, #111);
+}
+
+.entryNumber {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-secondary, #888);
+    background: #f3f4f6;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .teamOrg {
