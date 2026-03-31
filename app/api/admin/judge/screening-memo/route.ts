@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth';
-import { upsertScore } from '@/lib/sheets';
+import { updateRow } from '@/lib/sheets';
 
 export async function POST(req: Request) {
     try {
@@ -17,9 +17,18 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'teamId가 필요합니다.' }, { status: 400 });
         }
 
-        await upsertScore(user.userId, teamId, {
-            screening_memo: screeningMemo || ''
-        });
+        await updateRow(
+            'teams',
+            'id',
+            teamId,
+            { screening_memo: screeningMemo || '' },
+            {
+                actorUserId: user.userId,
+                action: 'screening_memo_update',
+                targetType: 'teams',
+                targetId: teamId,
+            }
+        );
 
         return NextResponse.json({ success: true, message: '1차 스크리닝 메모가 저장되었습니다.' });
     } catch (error: any) {

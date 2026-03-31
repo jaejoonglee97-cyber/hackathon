@@ -3,7 +3,7 @@
 
 import { notFound } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth';
-import { getRowBy, listRows } from '@/lib/sheets';
+import { getRowBy } from '@/lib/sheets';
 import ScoreFormClient from './ScoreFormClient';
 
 export async function generateMetadata({ params }: { params: { teamId: string } }) {
@@ -55,11 +55,6 @@ export default async function ScoreFormPage({ params }: { params: { teamId: stri
         safetyRestrictedLink: project.safety_restricted_link || '',
     } : null;
 
-    // Fetch all scores for this team to find if there's any global screening memo
-    const teamScores = await listRows('scores', { team_id: params.teamId });
-    const memoScore = teamScores.find(s => s.screening_memo && s.screening_memo.trim() !== '');
-    const globalScreeningMemo = memoScore ? memoScore.screening_memo : '';
-
     return (
         <ScoreFormClient
             teamId={params.teamId}
@@ -68,7 +63,7 @@ export default async function ScoreFormPage({ params }: { params: { teamId: stri
             stage={team.stage || ''}
             projectData={projectData}
             userRole={user.role}
-            initialScreeningMemo={globalScreeningMemo}
+            initialScreeningMemo={team.screening_memo || ''}
         />
     );
 }

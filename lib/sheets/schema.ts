@@ -77,6 +77,7 @@ export const sheets = {
         'name_edit_count', // 프로젝트 이름 변경 횟수 (최대 3회)
         'created_at',
         'updated_at',
+        'screening_memo', // 1차 스크리닝(사전 탈락) 사유
     ] as const),
 
     team_members: def('team_members', 'data', [
@@ -208,7 +209,6 @@ export const sheets = {
         'is_submitted',       // 최종 제출 여부 TRUE/FALSE
         'submitted_at',       // 최종 제출 일시
         'updated_at',
-        'screening_memo',     // 1차 스크리닝 메모 (사전 탈락 사유)
     ] as const),
 } as const;
 

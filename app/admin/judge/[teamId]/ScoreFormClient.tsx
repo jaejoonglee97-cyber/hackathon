@@ -283,7 +283,7 @@ export default function ScoreFormClient({
         if (!aiAnalysis) return [];
         return RUBRIC.map(category => ({
             category: category.label,
-            AiScore: aiAnalysis.scores[category.key] || 0,
+            AiScore: category.key === 'feasibility' ? scores.feasibility : (aiAnalysis.scores[category.key] || 0),
             HumanScore: scores[category.key] || 0,
             fullMark: category.max
         }));
@@ -455,15 +455,17 @@ export default function ScoreFormClient({
                                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                                             {RUBRIC.map((item) => (
                                                 <div key={item.key} style={{ fontSize: '0.875rem', background: '#fff', padding: '0.75rem', borderRadius: '0.375rem', border: '1px solid #e5e7eb' }}>
-                                                    <span style={{ fontWeight: 600, color: '#6366f1' }}>{item.label} ({aiAnalysis.scores[item.key]}점): </span>
+                                                    <span style={{ fontWeight: 600, color: '#6366f1' }}>{item.label} ({item.key === 'feasibility' ? '-' : aiAnalysis.scores[item.key]}점): </span>
                                                     <span style={{ color: '#374151' }}>{aiAnalysis.reasons[item.key] || '분석 내용 없음'}</span>
                                                     <br/>
-                                                    <button 
-                                                        style={{ marginTop: '0.5rem', fontSize: '0.75rem', padding: '0.2rem 0.5rem', background: '#e0e7ff', color: '#4338ca', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}
-                                                        onClick={() => handleScoreChange(item.key, aiAnalysis.scores[item.key])}
-                                                    >
-                                                        이 점수 반영하기
-                                                    </button>
+                                                    {item.key !== 'feasibility' && (
+                                                        <button 
+                                                            style={{ marginTop: '0.5rem', fontSize: '0.75rem', padding: '0.2rem 0.5rem', background: '#e0e7ff', color: '#4338ca', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}
+                                                            onClick={() => handleScoreChange(item.key, aiAnalysis.scores[item.key])}
+                                                        >
+                                                            이 점수 반영하기
+                                                        </button>
+                                                    )}
                                                 </div>
                                             ))}
                                         </div>
