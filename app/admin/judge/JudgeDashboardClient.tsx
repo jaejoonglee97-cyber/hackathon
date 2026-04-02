@@ -50,6 +50,7 @@ export default function JudgeDashboardClient() {
     const [stats, setStats] = useState<MyStats | null>(null);
     const [teams, setTeams] = useState<TeamScore[]>([]);
     const [loading, setLoading] = useState(true);
+    const [showRank, setShowRank] = useState(false);
 
     useEffect(() => {
         async function load() {
@@ -119,13 +120,49 @@ export default function JudgeDashboardClient() {
     const activeTeams = teams.filter(t => !t.isScreenedOut);
     const screenedOutTeams = teams.filter(t => t.isScreenedOut);
 
+    // 내 점수 기준 순위 계산 (점수 있는 팀만, 높은 순)
+    const rankedActiveTeams = [...activeTeams]
+        .map((t, _, arr) => {
+            if (!showRank || t.total === null) return { ...t, myRank: null };
+            const scoredTeams = arr.filter(x => x.total !== null);
+            const sorted = [...scoredTeams].sort((a, b) => (b.total ?? 0) - (a.total ?? 0));
+            const rank = sorted.findIndex(x => x.teamId === t.teamId) + 1;
+            return { ...t, myRank: rank };
+        });
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <h1 className={styles.title}>📋 내 심사 현황</h1>
-                <p className={styles.subtitle}>
-                    언제든 들어와서 미리 심사하고 임시저장할 수 있습니다.
-                </p>
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem' }}>
+                    <div>
+                        <h1 className={styles.title}>📋 내 심사 현황</h1>
+                        <p className={styles.subtitle}>
+                            언제든 들어와서 미리 심사하고 임시저장할 수 있습니다.
+                        </p>
+                    </div>
+                    <button
+                        onClick={() => setShowRank(r => !r)}
+                        style={{
+                            padding: '0.5rem 1.1rem',
+                            borderRadius: '8px',
+                            border: 'none',
+                            background: showRank ? '#7c3aed' : '#f3f4f6',
+                            color: showRank ? '#fff' : '#374151',
+                            fontWeight: 700,
+                            fontSize: '0.85rem',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                            whiteSpace: 'nowrap',
+                        }}
+                    >
+                        {showRank ? '🏅 내 순위 보기 ON' : '🏅 내 순위 보기'}
+                    </button>
+                </div>
+                {showRank && (
+                    <p style={{ marginTop: '0.5rem', fontSize: '0.8rem', color: '#7c3aed', background: '#f5f3ff', padding: '0.5rem 0.75rem', borderRadius: '8px', border: '1px solid #ede9fe' }}>
+                        🔒 내 점수 기준 순위입니다. 다른 심사위원의 점수는 표시되지 않습니다.
+                    </p>
+                )}
             </div>
 
             {/* 통계 카드 */}
@@ -214,23 +251,37 @@ export default function JudgeDashboardClient() {
 
             {/* 팀 목록 */}
             <div className={styles.teamSection}>
-                <div className={styles.tableHeader}>
+                <div className={styles.tableHeader} style={showRank ? { gridTemplateColumns: '40px 60px 1.2fr 1fr 100px 80px 120px' } : undefined}>
                     <span>#</span>
+                    {showRank && <span style={{ color: '#7c3aed' }}>내 순위</span>}
                     <span>팀명</span>
                     <span>기관</span>
                     <span>상태</span>
                     <span>심사합계</span>
                     <span>심사</span>
                 </div>
-                {activeTeams.length === 0 ? (
+                {rankedActiveTeams.length === 0 ? (
                     <div className={styles.emptyMessage}>등록된 전체 심사대상 팀이 없습니다.</div>
                 ) : (
-                    activeTeams.map((t) => {
+                    rankedActiveTeams.map((t) => {
                         const { text, cls } = statusLabel(t.status);
+                        const rankColor = t.myRank === 1 ? '#b45309' : t.myRank === 2 ? '#6b7280' : t.myRank === 3 ? '#92400e' : '#7c3aed';
+                        const rankEmoji = t.myRank === 1 ? '🥇' : t.myRank === 2 ? '🥈' : t.myRank === 3 ? '🥉' : null;
                         
                         return (
-                            <div key={t.teamId} className={styles.tableRow}>
+                            <div key={t.teamId} className={styles.tableRow} style={showRank ? { gridTemplateColumns: '40px 60px 1.2fr 1fr 100px 80px 120px' } : undefined}>
                                 <div className={styles.entryNumber}>{t.entryNumber}</div>
+                                {showRank && (
+                                    <div style={{ fontWeight: 700, fontSize: '0.85rem', textAlign: 'center' }}>
+                                        {t.myRank !== null ? (
+                                            <span style={{ color: rankColor }}>
+                                                {rankEmoji ?? `${t.myRank}위`}
+                                            </span>
+                                        ) : (
+                                            <span style={{ color: '#ccc' }}>-</span>
+                                        )}
+                                    </div>
+                                )}
                                 <div>
                                     <div className={styles.teamName}>
                                         {t.teamName}

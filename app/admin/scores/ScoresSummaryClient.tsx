@@ -55,6 +55,9 @@ export default function ScoresSummaryClient() {
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('전체');
     const [participationWinners, setParticipationWinners] = useState<string[]>([]);
+    // 심사위원별 순위 뷰
+    const [viewMode, setViewMode] = useState<'aggregate' | 'per-judge'>('aggregate');
+    const [selectedJudgeIdx, setSelectedJudgeIdx] = useState<number>(0);
 
     useEffect(() => {
         fetch('/api/admin/scores/summary')
@@ -127,6 +130,28 @@ export default function ScoresSummaryClient() {
             .finally(() => setLoading(false));
     }, []);
 
+    // ── 심사위원 목록 추출 (index 기반 익명화) ──────────────────
+    // 모든 팀에 걸쳐 등장하는 judgeId를 순서대로 수집
+    const allJudgeIds: string[] = [];
+    for (const t of allTeams) {
+        for (const s of t.scores) {
+            if (!allJudgeIds.includes(s.judgeId)) allJudgeIds.push(s.judgeId);
+        }
+    }
+
+    // 특정 심사위원 기준 순위 계산
+    const getJudgeRanking = (judgeId: string) => {
+        const rows = allTeams
+            .filter(t => t.scores.some(s => s.judgeId === judgeId))
+            .map(t => {
+                const s = t.scores.find(sc => sc.judgeId === judgeId)!;
+                return { ...t, judgeScore: s.total, judgeSubmitted: s.isSubmitted };
+            })
+            .sort((a, b) => b.judgeScore - a.judgeScore)
+            .map((t, i) => ({ ...t, judgeRank: i + 1 }));
+        return rows;
+    };
+
     // CSV 내보내기
     const handleCSV = () => {
         const rows = [
@@ -184,6 +209,8 @@ export default function ScoresSummaryClient() {
     const displayedTeams = activeTab === '전체' ? allTeams : allTeams.filter(t => t.track === activeTab);
     const availableTracks = ['전체', ...Array.from(new Set(allTeams.map(t => t.track)))];
 
+    const judgeRankingRows = allJudgeIds.length > 0 ? getJudgeRanking(allJudgeIds[selectedJudgeIdx]) : [];
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
@@ -193,7 +220,7 @@ export default function ScoresSummaryClient() {
                         admin 전용 — 점수는 외부에 공개되지 않습니다.
                     </p>
                 </div>
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                     <button className={styles.csvBtn} onClick={drawParticipationAwards} style={{ backgroundColor: '#10b981' }}>
                         🎁 참여상 40명 추첨
                     </button>
@@ -203,6 +230,43 @@ export default function ScoresSummaryClient() {
                 </div>
             </div>
 
+            {/* 뷰 전환 탭 */}
+            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem' }}>
+                <button
+                    onClick={() => setViewMode('aggregate')}
+                    style={{
+                        padding: '0.55rem 1.2rem',
+                        borderRadius: '8px',
+                        border: 'none',
+                        background: viewMode === 'aggregate' ? '#4f46e5' : '#f3f4f6',
+                        color: viewMode === 'aggregate' ? '#fff' : '#374151',
+                        fontWeight: 700,
+                        fontSize: '0.85rem',
+                        cursor: 'pointer',
+                    }}
+                >
+                    📊 전체 집계 순위
+                </button>
+                <button
+                    onClick={() => setViewMode('per-judge')}
+                    style={{
+                        padding: '0.55rem 1.2rem',
+                        borderRadius: '8px',
+                        border: 'none',
+                        background: viewMode === 'per-judge' ? '#7c3aed' : '#f3f4f6',
+                        color: viewMode === 'per-judge' ? '#fff' : '#374151',
+                        fontWeight: 700,
+                        fontSize: '0.85rem',
+                        cursor: 'pointer',
+                    }}
+                >
+                    🧑‍⚖️ 심사위원별 순위
+                </button>
+            </div>
+
+            {/* 전체 통계 + 집계 뷰 */}
+            {viewMode === 'aggregate' && (
+            <>
             {/* 전체 통계 */}
             {globalStats && (
                 <div className={styles.summaryGrid}>
@@ -341,6 +405,114 @@ export default function ScoresSummaryClient() {
             <p style={{ fontSize: '0.75rem', color: '#aaa', marginTop: '0.75rem' }}>
                 🟢 제출완료 &nbsp; 🟡 임시저장
             </p>
+            </>
+            )}
+            {/* ── 심사위원별 순위 뷰 ── */}
+            {viewMode === 'per-judge' && (
+                <div>
+                    {allJudgeIds.length === 0 ? (
+                        <div className={styles.emptyMsg}>아직 심사 데이터가 없습니다.</div>
+                    ) : (
+                        <>
+                            {/* 심사위원 선택 */}
+                            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1.5rem', alignItems: 'center' }}>
+                                <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#374151' }}>심사위원 선택:</span>
+                                {allJudgeIds.map((jid, idx) => (
+                                    <button
+                                        key={jid}
+                                        onClick={() => setSelectedJudgeIdx(idx)}
+                                        style={{
+                                            padding: '0.4rem 0.9rem',
+                                            borderRadius: '8px',
+                                            border: '1px solid #e5e7eb',
+                                            background: selectedJudgeIdx === idx ? '#7c3aed' : '#fff',
+                                            color: selectedJudgeIdx === idx ? '#fff' : '#374151',
+                                            fontWeight: selectedJudgeIdx === idx ? 700 : 500,
+                                            fontSize: '0.82rem',
+                                            cursor: 'pointer',
+                                        }}
+                                    >
+                                        심사위원 {idx + 1}
+                                    </button>
+                                ))}
+                            </div>
+
+                            {/* 선택 심사위원 순위 테이블 */}
+                            <div className={styles.tableWrap}>
+                                <div style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: '60px 2fr 1fr 80px 80px 80px 80px 80px 80px 80px 100px',
+                                    padding: '0.6rem 1.2rem',
+                                    background: '#f5f3ff',
+                                    borderBottom: '1px solid #ede9fe',
+                                    fontSize: '0.72rem',
+                                    fontWeight: 700,
+                                    color: '#6d28d9',
+                                    gap: '0.4rem',
+                                }}>
+                                    <span>순위</span>
+                                    <span>팀명</span>
+                                    <span>기관</span>
+                                    <span>현장적합성</span>
+                                    <span>실행가능성</span>
+                                    <span>성과성</span>
+                                    <span>확산성</span>
+                                    <span>안전성</span>
+                                    <span>감점</span>
+                                    <span>가산점</span>
+                                    <span>심사합계</span>
+                                </div>
+                                {judgeRankingRows.length === 0 ? (
+                                    <div className={styles.emptyMsg}>해당 심사위원의 점수가 없습니다.</div>
+                                ) : (
+                                    judgeRankingRows.map((t) => {
+                                        const s = t.scores.find(sc => sc.judgeId === allJudgeIds[selectedJudgeIdx])!;
+                                        const rankEmoji = t.judgeRank === 1 ? '🥇' : t.judgeRank === 2 ? '🥈' : t.judgeRank === 3 ? '🥉' : null;
+                                        const rankColor = t.judgeRank <= 3 ? '#b45309' : '#374151';
+                                        return (
+                                            <div
+                                                key={t.teamId}
+                                                style={{
+                                                    display: 'grid',
+                                                    gridTemplateColumns: '60px 2fr 1fr 80px 80px 80px 80px 80px 80px 80px 100px',
+                                                    padding: '0.8rem 1.2rem',
+                                                    borderBottom: '1px solid #f3f4f6',
+                                                    alignItems: 'center',
+                                                    gap: '0.4rem',
+                                                    background: t.judgeRank <= 3 ? '#fffbeb' : 'transparent',
+                                                }}
+                                            >
+                                                <div style={{ fontWeight: 800, fontSize: '1rem', color: rankColor, textAlign: 'center' }}>
+                                                    {rankEmoji ?? `${t.judgeRank}위`}
+                                                </div>
+                                                <div>
+                                                    <div style={{ fontWeight: 600, fontSize: '0.88rem', color: '#111' }}>{t.teamName}</div>
+                                                    <div style={{ fontSize: '0.72rem', color: '#888' }}>[{t.track}]</div>
+                                                </div>
+                                                <div style={{ fontSize: '0.82rem', color: '#666' }}>{t.org || '-'}</div>
+                                                <div style={{ textAlign: 'center', fontSize: '0.85rem' }}>{s.fieldRelevance}</div>
+                                                <div style={{ textAlign: 'center', fontSize: '0.85rem' }}>{s.feasibility}</div>
+                                                <div style={{ textAlign: 'center', fontSize: '0.85rem' }}>{s.outcomes}</div>
+                                                <div style={{ textAlign: 'center', fontSize: '0.85rem' }}>{s.scalability}</div>
+                                                <div style={{ textAlign: 'center', fontSize: '0.85rem' }}>{s.safety}</div>
+                                                <div style={{ textAlign: 'center', fontSize: '0.85rem', color: s.deduction < 0 ? '#ef4444' : '#374151' }}>{s.deduction}</div>
+                                                <div style={{ textAlign: 'center', fontSize: '0.85rem', color: s.bonus > 0 ? '#10b981' : '#374151' }}>{s.bonus > 0 ? `+${s.bonus}` : s.bonus}</div>
+                                                <div style={{ textAlign: 'center', fontWeight: 800, fontSize: '1rem', color: '#7c3aed' }}>
+                                                    {t.judgeScore}점
+                                                    {!t.judgeSubmitted && <span style={{ fontSize: '0.65rem', color: '#f59e0b', marginLeft: '4px' }}>임시</span>}
+                                                </div>
+                                            </div>
+                                        );
+                                    })
+                                )}
+                            </div>
+                            <p style={{ fontSize: '0.75rem', color: '#aaa', marginTop: '0.5rem' }}>
+                                ※ 해당 심사위원이 입력한 점수 기준 순위입니다. 합산 평균 순위와 다를 수 있습니다.
+                            </p>
+                        </>
+                    )}
+                </div>
+            )}
         </div>
     );
 }
