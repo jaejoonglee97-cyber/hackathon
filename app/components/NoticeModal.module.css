@@ -81,19 +81,21 @@
 
 /* 제목 */
 .title {
-    font-size: 1.3rem;
+    font-size: 1.15rem;
     font-weight: 800;
     color: var(--color-text-primary, #111827);
     margin: 0 0 1.2rem;
-    line-height: 1.4;
+    line-height: 1.5;
+    word-break: keep-all;
 }
 
 /* 본문 */
 .body {
-    font-size: 0.97rem;
+    font-size: 0.92rem;
     color: var(--color-text-secondary, #374151);
-    line-height: 1.75;
+    line-height: 1.8;
     margin: 0 0 0.8rem;
+    word-break: keep-all;
 }
 .body strong {
     color: #008e90;
@@ -102,10 +104,11 @@
 
 /* 서브 본문 */
 .subBody {
-    font-size: 0.88rem;
+    font-size: 0.85rem;
     color: var(--color-text-tertiary, #6b7280);
-    line-height: 1.7;
+    line-height: 1.75;
     margin: 0.4rem 0 0;
+    word-break: keep-all;
 }
 
 /* 날짜 */

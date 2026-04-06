@@ -57,19 +57,20 @@ export default function NoticeModal({ storageKey = 'notice_modal_dismissed' }: N
 
                 {/* 본문 */}
                 <h2 id="notice-title" className={styles.title}>
-                    서류심사 결과 발표가 조금 늦어지고 있습니다
+                    발표가 조금 늦어지고 있습니다
                 </h2>
                 <p className={styles.body}>
-                    이번 해커톤에 정말 많은 분들이 열정적으로 참여해 주셨습니다.<br />
-                    예상을 훨씬 웃도는 제출물이 접수되어,<br />
-                    심사위원단이 한 팀 한 팀 꼼꼼히 검토하고 있습니다.
+                    이번 해커톤에 정말 많은 분들이<br />
+                    열정적으로 참여해 주셨습니다.<br />
+                    예상을 훨씬 웃도는 제출물이 접수되어<br />
+                    심사위원단이 한 팀 한 팀 꼼꼼히 검토 중입니다.
                 </p>
                 <p className={styles.body}>
-                    당초 <strong>4월 3일</strong>로 안내드렸던 발표일을 지키지 못한 점,<br />
-                    기다려 주신 참가자 여러분께 진심으로 사과드립니다.
+                    당초 <strong>4월 6일</strong>로 안내드렸던 발표일을<br />
+                    지키지 못한 점 진심으로 사과드립니다.
                 </p>
                 <p className={styles.subBody}>
-                    심사가 마무리되는 즉시 개별 연락을 드리겠습니다.<br />
+                    심사가 마무리되는 즉시 개별 연락드리겠습니다.<br />
                     조금만 더 기다려 주시면 감사하겠습니다. 🙏
                 </p>
 
