@@ -12,6 +12,7 @@ import CountdownWidget from './components/CountdownWidget';
 import TeamGrid from './components/TeamGrid';
 import type { Team } from './components/TeamCard';
 import InfoBannerTabs from './components/InfoBannerTabs';
+import NoticeModal from './components/NoticeModal';
 
 export const dynamic = 'force-dynamic';
 
@@ -124,6 +125,8 @@ export default async function DashboardPage() {
 
     return (
         <div className={styles.page}>
+            {/* 서류심사 지연 공지 팝업 */}
+            <NoticeModal storageKey="notice_review_delay_0406" />
             <div className={styles.container}>
                 {/* 1. 상단: 프리미엄 Hero 영역 (스마트워크 & DX 컨셉) */}
                 <section className={styles.heroSection}>
