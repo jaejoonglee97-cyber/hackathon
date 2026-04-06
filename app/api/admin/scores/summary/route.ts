@@ -12,10 +12,17 @@ export async function GET() {
 
     // judge이면 본인 심사 통계만, admin이면 전체
     const filters: Record<string, string> = user.role === 'judge' ? { judge_id: user.userId } : {};
-    const [allScores, rawTeams] = await Promise.all([
+    const [allScores, rawTeams, allProjects] = await Promise.all([
         listRows('scores', filters),
         listRows('teams'),
+        listRows('projects'),
     ]);
+
+    // team_id → track 매핑 (track은 projects 시트에 저장됨)
+    const trackByTeam: Record<string, string> = {};
+    for (const p of allProjects) {
+        if (p.team_id && p.track) trackByTeam[p.team_id] = p.track;
+    }
 
     // "완성" 단계(complete)인 팀이면서 사전 탈락(screening_memo)이 없는 팀만 유효한 평가 대상으로 필터링
     const allTeams = rawTeams.filter((t) => {
@@ -100,7 +107,7 @@ export async function GET() {
                 teamId: team.id,
                 teamName: team.name,
                 org: team.org,
-                track: team.track || '미지정', // Add track reference
+                track: trackByTeam[team.id] || '미지정', // projects 시트에서 track 매핑
                 judgeCount: teamScores.length,
                 submittedCount: submittedScores.length,
                 avgTotal,

@@ -46,7 +46,7 @@ interface GlobalStats {
 }
 
 const COL_LABELS = ['현장적합성', '실행가능성', '성과성', '확산성', '안전성', '감점', '가산점'];
-const TRACKS = ['전체', '사례관리', '행정', '홍보', '자원연계', '기타']; // You may want to fetch this dynamically if possible, but hardcoding common tracks for now based on PRD
+const TRACKS = ['전체', '현장 업무경감 자동화', '이용자 지원 및 접근성 개선', '협업·지식관리·성과지표']; // 3개 분야 × 상위 3팀 = 본선 9팀
 
 export default function ScoresSummaryClient() {
     const [allTeams, setAllTeams] = useState<TeamSummary[]>([]);
