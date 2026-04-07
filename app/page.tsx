@@ -221,9 +221,16 @@ export default async function DashboardPage() {
                             marginLeft: '0.25rem',
                         }}>2026. 4. 7.</span>
                     </div>
-                    <p style={{ fontSize: '0.95rem', color: 'var(--color-text-secondary)', marginBottom: '1.5rem', marginTop: '0.25rem' }}>
-                        심사위원단의 엄정한 평가를 거쳐 아래 팀이 본선에 진출하였습니다. 진심으로 축하드립니다! 🎉
-                    </p>
+                    <div style={{ paddingBottom: '1rem', marginBottom: '1.5rem', borderBottom: '1px dashed rgba(0,142,144,0.2)' }}>
+                        <p style={{ fontSize: '0.95rem', color: 'var(--color-text-secondary)', marginBottom: '0.75rem', marginTop: '0.25rem', lineHeight: '1.6' }}>
+                            이번 해커톤에 귀중한 시간을 내어 참여해 주신 모든 분들께 진심으로 감사드립니다.<br />
+                            여러분의 열정과 훌륭한 아이디어 덕분에 사회복지 현장의 더 나은 내일을 엿볼 수 있었습니다.<br />
+                            심사위원단의 엄정한 평가를 거쳐 아래 팀이 본선에 진출하였습니다. 진심으로 축하드립니다! 🎉
+                        </p>
+                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', color: 'var(--color-primary)', fontWeight: '600', padding: '0.5rem 0.8rem', background: 'rgba(0,142,144,0.08)', borderRadius: '0.5rem' }}>
+                            <span>📢</span> 본선 진출팀 및 특별상 수상팀 대상 향후 일정은 개별적으로 안내해 드릴 예정입니다.
+                        </div>
+                    </div>
 
                     {/* 부문별 테이블 */}
                     {[
@@ -231,38 +238,38 @@ export default async function DashboardPage() {
                             label: '이용자 지원 및 접근성 개선',
                             icon: '♿',
                             teams: [
-                                { project: '행동지원 나침반 AI', org: '서울장애인종합복지관' },
-                                { project: '당사자를 위한 개인에이션체 관리 앱', org: '이레디지털콤퍼니' },
-                                { project: "노케어워 반찬 배달 및 안부확인 스마트 시스템 '똑똑(Knock-Knock) 기록지'", org: '북서울종합사회복지관' },
+                                { project: '행동지원 나침반 AI', org: '서울장애인종합복지관 김진래' },
+                                { project: '당사자를 위한 개인예산제 관리 앱', org: '아름드리꿈터 최중호' },
+                                { project: "노노케어 반찬 배달 및 안부확인 스마트 시스템 '똑똑(Knock-Knock) 기록지'", org: '북서울종합사회복지관 이동규' },
                             ],
                         },
                         {
                             label: '현장 업무경감 자동화',
                             icon: '⚙️',
                             teams: [
-                                { project: 'Dawith 복지 허브', org: '방배2종합사회복지관' },
-                                { project: '수기 취합 ZERO! 원스톱 회원록 실적 자동화 시스템', org: '서울특별시도봉노인보호전문기관' },
-                                { project: '사회복지시설 후원품 입출고 관리시스템', org: '성동구청 송정동노인복지관' },
+                                { project: 'Dawith 복지 허브', org: '방화2종합사회복지관 박민준' },
+                                { project: '수기 취합 ZEROI 원스톱 회의록·실적 자동화 시스템', org: '서울특별시동부노인보호전문기관 서경은' },
+                                { project: '사회복지시설 후원품 입출고 관리시스템', org: '성동구립 송정동노인복지관 박성목' },
                             ],
                         },
                         {
                             label: '협업·지식관리·성과지표',
                             icon: '📊',
                             teams: [
-                                { project: '스마트 예산 관제센터', org: '서부장애인종합복지관' },
-                                { project: '개인정보 및 인공지능 윤리 점검표', org: '반포종합사회복지관' },
-                                { project: '핌스(FIMS) Familynet Instructor Management System', org: '동대문구가족센터' },
+                                { project: '스마트 예산 관제센터', org: '서부장애인종합복지관 천우진' },
+                                { project: '개인정보 및 인공지능 윤리 점검표', org: '반포종합사회복지관 이방미' },
+                                { project: '핌스(FIMS) Familynet Instructor Management System', org: '동대문구가족센터 한미영' },
                             ],
                         },
                         {
                             label: '특별상',
                             icon: '⭐',
                             teams: [
-                                { project: '공문섭수 자동화 및 전자결재 시스템', org: '서대문노인종합복지관' },
-                                { project: '시설물 민원 센터', org: '반포종합사회복지관' },
-                                { project: '복지홍보 나침반 AI', org: '서울장애인종합복지관' },
-                                { project: 'AI기반 상담/사례관리 가게도 제작 및 분석 (온가족 가게도)', org: '동대문구가족센터' },
-                                { project: '함께하는 후원물품 입출고 기록과 실시간 현황 파악', org: '동백꽃인종합복지관' },
+                                { project: '복지홍보 나침반 AI', org: '서울장애인종합복지관 박재훈' },
+                                { project: '공문접수 자동화 및 전자결재 시스템', org: '서대문노인종합복지관 김민경' },
+                                { project: '시설물 민원 센터', org: '반포종합사회복지관 김경완' },
+                                { project: '온가족 가계도 (AI기반 상담/사례관리 가계도 제작 및 분석)', org: '동대문구가족센터 이진선' },
+                                { project: '함께하는 후원물품 입출고 기록과 실시간 현황 파악', org: '동백꽃노인종합복지관 이은' },
                             ],
                         },
                     ].map((section) => (
