@@ -209,7 +209,7 @@ export default async function DashboardPage() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
                         <span style={{ fontSize: '1.6rem' }}>🏆</span>
                         <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--color-primary)', margin: 0 }}>
-                            열매똑똑 해커톤 수살작 발표
+                            열매똑똑 해커톤 서류심사 결과 발표
                         </h2>
                         <span style={{
                             fontSize: '0.75rem',
