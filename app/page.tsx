@@ -12,7 +12,7 @@ import CountdownWidget from './components/CountdownWidget';
 import TeamGrid from './components/TeamGrid';
 import type { Team } from './components/TeamCard';
 import InfoBannerTabs from './components/InfoBannerTabs';
-import NoticeModal from './components/NoticeModal';
+
 
 export const dynamic = 'force-dynamic';
 
@@ -125,8 +125,7 @@ export default async function DashboardPage() {
 
     return (
         <div className={styles.page}>
-            {/* 서류심사 지연 공지 팝업 */}
-            <NoticeModal storageKey="notice_review_delay_0406" />
+
             <div className={styles.container}>
                 {/* 1. 상단: 프리미엄 Hero 영역 (스마트워크 & DX 컨셉) */}
                 <section className={styles.heroSection}>
@@ -196,6 +195,120 @@ export default async function DashboardPage() {
 
                 {/* 이용가이드 + 참여상 탭 배너 */}
                 <InfoBannerTabs />
+
+                {/* 수살작 발표 안내 */}
+                <section style={{
+                    marginTop: '2rem',
+                    marginBottom: '2.5rem',
+                    background: 'linear-gradient(135deg, rgba(0,142,144,0.08) 0%, rgba(0,142,144,0.03) 100%)',
+                    border: '1.5px solid var(--color-primary)',
+                    borderRadius: '1.25rem',
+                    padding: '2rem 2rem 1.5rem',
+                    boxShadow: '0 4px 24px rgba(0,142,144,0.10)',
+                }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
+                        <span style={{ fontSize: '1.6rem' }}>🏆</span>
+                        <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--color-primary)', margin: 0 }}>
+                            열매똑똑 해커톤 수살작 발표
+                        </h2>
+                        <span style={{
+                            fontSize: '0.75rem',
+                            fontWeight: 600,
+                            background: 'var(--color-primary)',
+                            color: '#fff',
+                            borderRadius: '999px',
+                            padding: '0.15rem 0.7rem',
+                            marginLeft: '0.25rem',
+                        }}>2026. 4. 7.</span>
+                    </div>
+                    <p style={{ fontSize: '0.95rem', color: 'var(--color-text-secondary)', marginBottom: '1.5rem', marginTop: '0.25rem' }}>
+                        심사위원단의 엄정한 평가를 거쳐 아래 팀이 본선에 진출하였습니다. 진심으로 축하드립니다! 🎉
+                    </p>
+
+                    {/* 부문별 테이블 */}
+                    {[
+                        {
+                            label: '이용자 지원 및 접근성 개선',
+                            icon: '♿',
+                            teams: [
+                                { project: '행동지원 나침반 AI', org: '서울장애인종합복지관' },
+                                { project: '당사자를 위한 개인에이션체 관리 앱', org: '이레디지털콤퍼니' },
+                                { project: "노케어워 반찬 배달 및 안부확인 스마트 시스템 '똑똑(Knock-Knock) 기록지'", org: '북서울종합사회복지관' },
+                            ],
+                        },
+                        {
+                            label: '현장 업무경감 자동화',
+                            icon: '⚙️',
+                            teams: [
+                                { project: 'Dawith 복지 허브', org: '방배2종합사회복지관' },
+                                { project: '수기 취합 ZERO! 원스톱 회원록 실적 자동화 시스템', org: '서울특별시도봉노인보호전문기관' },
+                                { project: '사회복지시설 후원품 입출고 관리시스템', org: '성동구청 송정동노인복지관' },
+                            ],
+                        },
+                        {
+                            label: '협업·지식관리·성과지표',
+                            icon: '📊',
+                            teams: [
+                                { project: '스마트 예산 관제센터', org: '서부장애인종합복지관' },
+                                { project: '개인정보 및 인공지능 윤리 점검표', org: '반포종합사회복지관' },
+                                { project: '핌스(FIMS) Familynet Instructor Management System', org: '동대문구가족센터' },
+                            ],
+                        },
+                        {
+                            label: '특별상',
+                            icon: '⭐',
+                            teams: [
+                                { project: '공문섭수 자동화 및 전자결재 시스템', org: '서대문노인종합복지관' },
+                                { project: '시설물 민원 센터', org: '반포종합사회복지관' },
+                                { project: '복지홍보 나침반 AI', org: '서울장애인종합복지관' },
+                                { project: 'AI기반 상담/사례관리 가게도 제작 및 분석 (온가족 가게도)', org: '동대문구가족센터' },
+                                { project: '함께하는 후원물품 입출고 기록과 실시간 현황 파악', org: '동백꽃인종합복지관' },
+                            ],
+                        },
+                    ].map((section) => (
+                        <div key={section.label} style={{ marginBottom: '1.5rem' }}>
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.5rem',
+                                marginBottom: '0.6rem',
+                                paddingBottom: '0.4rem',
+                                borderBottom: '1px solid rgba(0,142,144,0.2)',
+                            }}>
+                                <span style={{ fontSize: '1.1rem' }}>{section.icon}</span>
+                                <span style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--color-primary)' }}>
+                                    {section.label}
+                                </span>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+                                {section.teams.map((team, i) => (
+                                    <div key={i} style={{
+                                        display: 'grid',
+                                        gridTemplateColumns: '1fr auto',
+                                        alignItems: 'center',
+                                        gap: '0.75rem',
+                                        padding: '0.55rem 0.85rem',
+                                        borderRadius: '0.6rem',
+                                        background: 'rgba(255,255,255,0.6)',
+                                        backdropFilter: 'blur(4px)',
+                                    }}>
+                                        <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--color-text-primary)' }}>
+                                            {team.project}
+                                        </span>
+                                        <span style={{
+                                            fontSize: '0.8rem',
+                                            color: 'var(--color-text-tertiary)',
+                                            whiteSpace: 'nowrap',
+                                            fontWeight: 500,
+                                        }}>
+                                            {team.org}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </section>
 
                 {/* 3. 부문별 접수 현황 대시보드 */}
                 <section style={{ marginBottom: '3rem', marginTop: '0.5rem' }}>
