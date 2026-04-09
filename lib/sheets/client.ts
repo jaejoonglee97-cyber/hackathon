@@ -205,7 +205,7 @@ export async function listRows(
 
     if (filters && Object.keys(filters).length > 0) {
         result = result.filter((row) =>
-            Object.entries(filters).every(([col, val]) => (row[col] ?? '').trim() === val.trim()),
+            Object.entries(filters).every(([col, val]) => row[col] === val),
         );
     }
 
