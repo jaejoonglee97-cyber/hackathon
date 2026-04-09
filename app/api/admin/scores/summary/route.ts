@@ -133,5 +133,5 @@ export async function GET() {
         });
     }
 
-    return NextResponse.json({ myStats, teamSummary });
+    return NextResponse.json({ myStats, teamSummary, _debug: { rawScoreCount: allScores.length, validScoreCount: validAllScores.length, rawTeamCount: rawTeams.length, completeTeamCount: allTeams.length } });
 }
