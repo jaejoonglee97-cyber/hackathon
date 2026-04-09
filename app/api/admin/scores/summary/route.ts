@@ -26,7 +26,8 @@ export async function GET() {
 
     // "완성" 단계(complete)인 팀이면서 사전 탈락(screening_memo)이 없는 팀만 유효한 평가 대상으로 필터링
     const allTeams = rawTeams.filter((t) => {
-        const isComplete = t.stage === 'complete';
+        const stageStr = (t.stage || '').trim();
+        const isComplete = stageStr === 'complete';
         const isScreenedOut = !!(t.screening_memo && String(t.screening_memo).trim().length > 0);
         return isComplete && !isScreenedOut;
     });

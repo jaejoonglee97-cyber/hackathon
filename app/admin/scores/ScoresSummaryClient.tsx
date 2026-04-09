@@ -183,10 +183,11 @@ export default function ScoresSummaryClient() {
     };
 
     const drawParticipationAwards = () => {
-        // Find teams with at least 1 judge (proxy for being in 'complete' stage & having submitted something valid)
-        const eligibleTeams = allTeams.filter(t => t.judgeCount > 0).map(t => t.teamId);
+        // 완성 단계로 제출된 팀 중 수상작(badge 할당된 14건) 제외하고 추첨
+        const eligibleTeams = allTeams.filter(t => !t.badge).map(t => t.teamId);
+        
         if (eligibleTeams.length === 0) {
-            alert('추첨 가능한 팀이 없습니다.');
+            alert('추첨 가능한 대상(수상팀 제외)이 없습니다.');
             return;
         }
         
