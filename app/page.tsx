@@ -16,7 +16,7 @@ import InfoBannerTabs from './components/InfoBannerTabs';
 
 export const dynamic = 'force-dynamic';
 
-export default async function DashboardPage() {
+export default async function DashboardPage({ searchParams }: { searchParams: { previewTeamId?: string } }) {
     // 1) 로그인 여부 확인 (비로그인도 허용)
     const currentUser = await getCurrentUser();
 
@@ -24,15 +24,25 @@ export default async function DashboardPage() {
     let profile: any = null;
     let myTeam: any = null;
     const isAdmin = currentUser && ['admin', 'judge'].includes(currentUser.role);
+    const isPreviewMode = isAdmin && !!searchParams?.previewTeamId;
 
     if (currentUser) {
         const profileResult = await checkProfileComplete(currentUser.userId);
         profile = profileResult.profile;
 
         const teamsForUser = await listRows('teams');
-        const teamMember = await getRowBy('team_members', 'user_id', currentUser.userId);
-        if (teamMember?.team_id) {
-            const targetTeamId = teamMember.team_id.trim();
+        
+        let targetTeamId = '';
+        if (isPreviewMode) {
+            targetTeamId = searchParams.previewTeamId!.trim();
+        } else {
+            const teamMember = await getRowBy('team_members', 'user_id', currentUser.userId);
+            if (teamMember?.team_id) {
+                targetTeamId = teamMember.team_id.trim();
+            }
+        }
+        
+        if (targetTeamId) {
             myTeam = teamsForUser.find((t) => (t.id ?? '').trim() === targetTeamId);
         }
     }
@@ -126,7 +136,11 @@ export default async function DashboardPage() {
 
     return (
         <div className={styles.page}>
-
+            {isPreviewMode && (
+                <div style={{ backgroundColor: '#ef4444', color: 'white', textAlign: 'center', padding: '0.75rem', fontWeight: 'bold' }}>
+                    ⚠️ 관리자 미리보기 모드입니다. 팀 ID: {searchParams.previewTeamId}
+                </div>
+            )}
             <div className={styles.container}>
                 {/* 1. 상단: 프리미엄 Hero 영역 (스마트워크 & DX 컨셉) */}
                 <section className={styles.heroSection}>

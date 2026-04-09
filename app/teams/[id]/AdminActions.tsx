@@ -37,19 +37,34 @@ export default function AdminActions({ teamId, isAdmin }: { teamId: string, isAd
     return (
         <div style={{ marginTop: '20px', padding: '10px', border: '1px solid red', borderRadius: '4px', backgroundColor: '#fff0f0' }}>
             <h4 style={{ color: 'red', margin: '0 0 10px 0' }}>⚠️ 관리자 영역</h4>
-            <button
-                onClick={handleDelete}
-                disabled={deleting}
-                style={{
-                    backgroundColor: 'red',
-                    color: 'white',
-                    padding: '8px 16px',
-                    border: 'none',
-                    borderRadius: '4px',
-                    cursor: 'pointer'
-                }}
-            >
-                {deleting ? '삭제 중...' : '이 프로젝트 삭제 (복구 불가)'}
+                <button
+                    onClick={() => router.push(`/?previewTeamId=${teamId}`)}
+                    style={{
+                        backgroundColor: '#4f46e5',
+                        color: 'white',
+                        padding: '8px 16px',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        marginRight: '10px'
+                    }}
+                >
+                    대시보드 미리보기 (참여자 관점)
+                </button>
+
+                <button
+                    onClick={handleDelete}
+                    disabled={deleting}
+                    style={{
+                        backgroundColor: 'red',
+                        color: 'white',
+                        padding: '8px 16px',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer'
+                    }}
+                >
+                    {deleting ? '삭제 중...' : '이 프로젝트 삭제 (복구 불가)'}
             </button>
         </div>
     );
