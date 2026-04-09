@@ -32,7 +32,8 @@ export default async function DashboardPage() {
         const teamsForUser = await listRows('teams');
         const teamMember = await getRowBy('team_members', 'user_id', currentUser.userId);
         if (teamMember?.team_id) {
-            myTeam = teamsForUser.find((t) => t.id === teamMember.team_id);
+            const targetTeamId = teamMember.team_id.trim();
+            myTeam = teamsForUser.find((t) => (t.id ?? '').trim() === targetTeamId);
         }
     }
 
