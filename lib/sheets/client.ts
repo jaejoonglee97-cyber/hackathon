@@ -180,8 +180,9 @@ export async function getRowBy(
         return null;
     }
 
+    const trimmedValue = value.trim();
     for (const row of dataRows) {
-        if (row[colIdx] === value) {
+        if ((row[colIdx] ?? '').trim() === trimmedValue) {
             return rowToObject(headers, row);
         }
     }
@@ -204,7 +205,7 @@ export async function listRows(
 
     if (filters && Object.keys(filters).length > 0) {
         result = result.filter((row) =>
-            Object.entries(filters).every(([col, val]) => row[col] === val),
+            Object.entries(filters).every(([col, val]) => (row[col] ?? '').trim() === val.trim()),
         );
     }
 
