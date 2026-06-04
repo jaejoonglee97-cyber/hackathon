@@ -115,14 +115,12 @@ export default function AppsPage() {
                         </div>
                     ) : (
                         filteredApps.map(app => (
-                            <Link href={`/apps/${app.id}`} key={app.id} className={styles.card}>
-                                {app.imageUrl ? (
-                                    <img src={app.imageUrl} alt={app.name} className={styles.thumbnail} loading="lazy" />
-                                ) : (
-                                    <div className={styles.placeholderThumb} style={{ backgroundColor: TRACK_COLORS[app.track]?.accent || '#ccc' }}>
-                                        {app.name.charAt(0)}
-                                    </div>
-                                )}
+                            <Link
+                                href={`/apps/${app.id}`}
+                                key={app.id}
+                                className={styles.card}
+                                style={{ borderLeft: `4px solid ${TRACK_COLORS[app.track]?.accent || 'var(--color-primary)'}` }}
+                            >
                                 <div className={styles.cardContent}>
                                     <div className={styles.cardHeader}>
                                         <h2 className={styles.appName}>{app.name}</h2>
