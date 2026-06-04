@@ -62,7 +62,7 @@ export default function EbookModal() {
                 <button className={styles.closeBtn} onMouseDown={e => e.stopPropagation()} onClick={close} aria-label="닫기">✕</button>
             </div>
 
-            <img src="/intro/posters/poster1.png" alt="열매똑똑 스마트워크" className={styles.posterImg} />
+            <img src="/intro/posters/poster15.png" alt="열매똑똑 스마트워크" className={styles.posterImg} />
 
             <div className={styles.body}>
                 <span className={styles.label}>📚 무료 E-Book 배포</span>
