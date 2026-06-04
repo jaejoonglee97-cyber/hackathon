@@ -206,6 +206,40 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
                 {/* 이용가이드 + 참여상 탭 배너 */}
                 <InfoBannerTabs />
 
+                {/* 디지털 전환 매뉴얼 광고 배너 */}
+                <a
+                    href="/intro"
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1.25rem',
+                        marginTop: '1.5rem',
+                        marginBottom: '0.5rem',
+                        padding: '1.25rem 1.75rem',
+                        background: 'linear-gradient(135deg, #005f60 0%, #008e90 100%)',
+                        borderRadius: '1rem',
+                        textDecoration: 'none',
+                        boxShadow: '0 4px 20px rgba(0,142,144,0.25)',
+                        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                    }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 28px rgba(0,142,144,0.35)'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = ''; (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 20px rgba(0,142,144,0.25)'; }}
+                >
+                    <span style={{ fontSize: '2.2rem', flexShrink: 0 }}>📘</span>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'rgba(255,255,255,0.75)', marginBottom: '0.2rem', letterSpacing: '0.05em' }}>
+                            NEW · 무료 배포
+                        </div>
+                        <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#fff', lineHeight: 1.3 }}>
+                            사회복지 현장 디지털 전환 매뉴얼
+                        </div>
+                        <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.8)', marginTop: '0.2rem' }}>
+                            열매똑똑 스마트워크 페이지에서 PDF로 바로 받아보세요 →
+                        </div>
+                    </div>
+                    <span style={{ fontSize: '1.5rem', flexShrink: 0, color: 'rgba(255,255,255,0.7)' }}>›</span>
+                </a>
+
                 {/* 3. 부문별 접수 현황 대시보드 */}
                 <section style={{ marginBottom: '3rem', marginTop: '0.5rem' }}>
                     <h2 style={{

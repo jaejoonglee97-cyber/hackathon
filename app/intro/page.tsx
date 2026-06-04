@@ -117,6 +117,17 @@ export default function IntroPage() {
                                     PDF 다운로드
                                 </a>
                             </div>
+                            <div className={styles.pdfCard} style={{ marginTop: '1rem' }}>
+                                <div className={styles.pdfInfo}>
+                                    <span className={styles.pdfBadge}>디지털 전환 매뉴얼</span>
+                                    <h3 className={styles.pdfTitle}>사회복지 현장 디지털 전환 매뉴얼</h3>
+                                    <p className={styles.pdfDescription}>현장에서 바로 활용할 수 있는 디지털 전환 실천 가이드를 확인해 보세요.</p>
+                                </div>
+                                <a href="/files/[서사협] 열매똑똑_사회복지현장 디지털 전환 매뉴얼(E-book).pdf" className={styles.downloadButton} download>
+                                    <span className={styles.downloadIcon}>📥</span>
+                                    PDF 다운로드
+                                </a>
+                            </div>
                         </section>
                     </ScrollReveal>
 
