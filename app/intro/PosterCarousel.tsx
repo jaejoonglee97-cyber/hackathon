@@ -17,6 +17,8 @@ const posters = [
     { src: '/intro/posters/poster11.png', title: '사업 활동 11' },
     { src: '/intro/posters/poster12.jpg', title: '사업 활동 12' },
     { src: '/intro/posters/poster13.png', title: '사업 활동 13' },
+    { src: '/intro/posters/poster14.jpg', title: '사업 활동 14' },
+    { src: '/intro/posters/poster15.png', title: '사업 활동 15' },
 ];
 
 export default function PosterCarousel() {
