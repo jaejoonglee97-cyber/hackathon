@@ -100,6 +100,8 @@ const SAMPLE_DATA: Record<string, Record<string, string>[]> = {
     audit_events: [],
     visitors: [],
     scores: [],
+    Apps: [],
+    Comments: [],
 };
 
 // ─────────────────────────────────────────────
@@ -120,17 +122,22 @@ async function readRawRows(
     const spreadsheetId = getSpreadsheetId(def.sheetId);
     const range = `${def.tab}!A1:ZZ`;
 
-    const response = await client!.spreadsheets.values.get({
-        spreadsheetId,
-        range,
-    });
+    try {
+        const response = await client!.spreadsheets.values.get({
+            spreadsheetId,
+            range,
+        });
 
-    const raw = response.data.values ?? [];
-    if (raw.length === 0) return { headers: [...def.columns], dataRows: [] };
+        const raw = response.data.values ?? [];
+        if (raw.length === 0) return { headers: [...def.columns], dataRows: [] };
 
-    const headers = raw[0] as string[];
-    const dataRows = raw.slice(1) as string[][];
-    return { headers, dataRows };
+        const headers = raw[0] as string[];
+        const dataRows = raw.slice(1) as string[][];
+        return { headers, dataRows };
+    } catch (error: any) {
+        console.warn(`[readRawRows] Failed to read sheet '${def.tab}'. It may not exist yet. Error: ${error.message}`);
+        return { headers: [...def.columns], dataRows: [] };
+    }
 }
 
 /** 헤더 → 인덱스 맵 생성 */
@@ -576,25 +583,25 @@ export async function upsertScore(
 // ─────────────────────────────────────────────
 import type { AppEntry, Comment } from '@/types/archive';
 
-/** Row → AppEntry 변환 */
-function rowToAppEntry(row: Record<string, string>): AppEntry {
+/** projects + teams 행을 AppEntry로 변환 */
+function projectAndTeamToAppEntry(project: Record<string, string>, team: Record<string, string>): AppEntry {
     return {
-        id: row.id,
-        name: row.name,
-        orgName: row.orgName,
-        track: row.track as AppEntry['track'],
-        award: (row.award || null) as AppEntry['award'],
-        score: Number(row.score) || 0,
-        description: row.description,
-        problem: row.problem,
-        solution: row.solution,
-        tags: row.tags ? row.tags.split(',').map((t: string) => t.trim()).filter(Boolean) : [],
-        appUrl: row.appUrl || undefined,
-        videoUrl: row.videoUrl || undefined,
-        slideUrl: row.slideUrl || undefined,
-        imageUrl: row.imageUrl || undefined,
-        isPublished: row.isPublished === 'TRUE',
-        createdAt: row.createdAt,
+        id: team.id,
+        name: team.name,
+        orgName: team.org,
+        track: project.track as AppEntry['track'],
+        award: (team.award || null) as AppEntry['award'],
+        score: 0,
+        description: project.problem_statement || '',
+        problem: project.problem_statement || '',
+        solution: project.solution || '',
+        tags: project.track ? [project.track] : [],
+        appUrl: project.prototype_link || undefined,
+        videoUrl: undefined,
+        slideUrl: undefined,
+        imageUrl: undefined,
+        isPublished: team.stage === 'complete',
+        createdAt: team.created_at,
     };
 }
 
@@ -614,22 +621,33 @@ function rowToComment(row: Record<string, string>): Comment {
 }
 
 /**
- * Apps 시트에서 isPublished=TRUE인 앱 목록 반환
+ * projects + teams 시트를 조인하여 공개(stage=complete) 앱 목록 반환
  */
 export async function getAllApps(): Promise<AppEntry[]> {
-    const rows = await listRows('apps');
-    return rows
-        .map(rowToAppEntry)
-        .filter((app) => app.isPublished);
+    const [projects, teams] = await Promise.all([
+        listRows('projects'),
+        listRows('teams'),
+    ]);
+    const teamMap = new Map(teams.map((t) => [t.id, t]));
+    return projects
+        .map((project) => {
+            const team = teamMap.get(project.team_id);
+            if (!team) return null;
+            return projectAndTeamToAppEntry(project, team);
+        })
+        .filter((app): app is AppEntry => app !== null && app.isPublished);
 }
 
 /**
- * 특정 slug의 앱 반환
+ * 특정 team_id의 앱 반환
  */
 export async function getAppBySlug(slug: string): Promise<AppEntry | null> {
-    const row = await getRowBy('apps', 'id', slug);
-    if (!row) return null;
-    const app = rowToAppEntry(row);
+    const [project, team] = await Promise.all([
+        getRowBy('projects', 'team_id', slug),
+        getRowBy('teams', 'id', slug),
+    ]);
+    if (!project || !team) return null;
+    const app = projectAndTeamToAppEntry(project, team);
     return app.isPublished ? app : null;
 }
 

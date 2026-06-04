@@ -3,7 +3,7 @@
  * PRD §4.1 대중(Public Viewer) 열람, §6.4 FR-30 제출물 공개
  */
 
-export type Track = 'A' | 'B' | 'C';
+export type Track = '현장 업무경감 자동화' | '이용자 지원 및 접근성 개선' | '협업·지식관리·성과지표';
 export type Award = '대상' | '최우수' | '우수' | '장려' | null;
 
 export interface AppEntry {
@@ -49,12 +49,11 @@ export const AWARD_ORDER: Record<string, number> = {
     '장려': 3,
 };
 
-/** 트랙 라벨 */
-export const TRACK_LABELS: Record<Track, string> = {
-    A: '트랙 A',
-    B: '트랙 B',
-    C: '트랙 C',
-};
+export const TRACKS: Track[] = [
+    '현장 업무경감 자동화',
+    '이용자 지원 및 접근성 개선',
+    '협업·지식관리·성과지표',
+];
 
 /** 수상 배지 스타일 */
 export const AWARD_STYLES: Record<string, { bg: string; color: string }> = {
@@ -66,7 +65,7 @@ export const AWARD_STYLES: Record<string, { bg: string; color: string }> = {
 
 /** 트랙별 색상 */
 export const TRACK_COLORS: Record<Track, { bg: string; color: string; accent: string }> = {
-    A: { bg: 'hsl(215, 70%, 95%)', color: 'hsl(215, 70%, 35%)', accent: 'hsl(215, 70%, 50%)' },
-    B: { bg: 'hsl(150, 60%, 95%)', color: 'hsl(150, 60%, 30%)', accent: 'hsl(150, 60%, 45%)' },
-    C: { bg: 'hsl(270, 55%, 95%)', color: 'hsl(270, 55%, 35%)', accent: 'hsl(270, 55%, 55%)' },
+    '현장 업무경감 자동화': { bg: 'hsl(215, 70%, 95%)', color: 'hsl(215, 70%, 35%)', accent: 'hsl(215, 70%, 50%)' },
+    '이용자 지원 및 접근성 개선': { bg: 'hsl(150, 60%, 95%)', color: 'hsl(150, 60%, 30%)', accent: 'hsl(150, 60%, 45%)' },
+    '협업·지식관리·성과지표': { bg: 'hsl(270, 55%, 95%)', color: 'hsl(270, 55%, 35%)', accent: 'hsl(270, 55%, 55%)' },
 };

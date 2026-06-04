@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import type { AppEntry, Track } from '@/types/archive';
-import { AWARD_ORDER, AWARD_STYLES, TRACK_COLORS } from '@/types/archive';
+import { AWARD_ORDER, AWARD_STYLES, TRACK_COLORS, TRACKS } from '@/types/archive';
 import styles from './page.module.css';
 
 export default function AppsPage() {
@@ -107,22 +107,17 @@ export default function AppsPage() {
                 <div className={styles.filterBar}>
                     <div className={styles.filterRow}>
                         <span className={styles.filterLabel}>트랙</span>
-                        <button 
+                        <button
                             className={`${styles.chip} ${selectedTrack === '전체' ? styles.chipActive : ''}`}
                             onClick={() => setSelectedTrack('전체')}
                         >전체</button>
-                        <button 
-                            className={`${styles.chip} ${selectedTrack === 'A' ? styles.chipActiveTrackA : ''}`}
-                            onClick={() => setSelectedTrack('A')}
-                        >트랙 A</button>
-                        <button 
-                            className={`${styles.chip} ${selectedTrack === 'B' ? styles.chipActiveTrackB : ''}`}
-                            onClick={() => setSelectedTrack('B')}
-                        >트랙 B</button>
-                        <button 
-                            className={`${styles.chip} ${selectedTrack === 'C' ? styles.chipActiveTrackC : ''}`}
-                            onClick={() => setSelectedTrack('C')}
-                        >트랙 C</button>
+                        {TRACKS.map((track) => (
+                            <button
+                                key={track}
+                                className={`${styles.chip} ${selectedTrack === track ? styles.chipActive : ''}`}
+                                onClick={() => setSelectedTrack(track)}
+                            >{track}</button>
+                        ))}
                     </div>
                     
                     <div className={styles.filterRow}>
@@ -149,7 +144,7 @@ export default function AppsPage() {
                         </div>
                     ) : (
                         filteredApps.map(app => (
-                            <Link href={`/apps/${app.id}`} key={app.id} className={`${styles.card} ${styles[`cardTrack${app.track}`]}`}>
+                            <Link href={`/apps/${app.id}`} key={app.id} className={styles.card}>
                                 {app.imageUrl ? (
                                     <img src={app.imageUrl} alt={app.name} className={styles.thumbnail} loading="lazy" />
                                 ) : (

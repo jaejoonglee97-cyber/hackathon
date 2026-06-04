@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import CommentSection from '@/app/components/CommentSection';
-import { AWARD_STYLES, TRACK_COLORS, TRACK_LABELS } from '@/types/archive';
+import { AWARD_STYLES, TRACK_COLORS } from '@/types/archive';
 import styles from './page.module.css';
 
 export const revalidate = 60; // ISR 60 seconds
@@ -62,7 +62,7 @@ export default async function AppDetailPage({ params }: { params: { slug: string
                                 color: TRACK_COLORS[app.track]?.color
                             }}
                         >
-                            {TRACK_LABELS[app.track]}
+                            {app.track}
                         </span>
                         
                         {app.award && (
@@ -135,7 +135,7 @@ export default async function AppDetailPage({ params }: { params: { slug: string
                     <div className={styles.sidebarCard}>
                         <div className={styles.sidebarItem}>
                             <span className={styles.sidebarLabel}>트랙</span>
-                            <span className={styles.sidebarValue}>{TRACK_LABELS[app.track]}</span>
+                            <span className={styles.sidebarValue}>{app.track}</span>
                         </div>
                         <div className={styles.sidebarItem}>
                             <span className={styles.sidebarLabel}>기관명</span>
