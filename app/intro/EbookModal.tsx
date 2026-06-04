@@ -1,13 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from './EbookModal.module.css';
 
 export default function EbookModal() {
     const [open, setOpen] = useState(false);
+    const [pos, setPos] = useState({ x: 0, y: 0 });
+    const [dragging, setDragging] = useState(false);
+    const dragStart = useRef({ mx: 0, my: 0, px: 0, py: 0 });
+    const modalRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        // 이미 닫은 적 있으면 띄우지 않음 (세션 기준)
         if (!sessionStorage.getItem('ebookModalDismissed')) {
             setOpen(true);
         }
@@ -18,55 +21,65 @@ export default function EbookModal() {
         setOpen(false);
     };
 
+    const onMouseDown = (e: React.MouseEvent) => {
+        e.preventDefault();
+        setDragging(true);
+        dragStart.current = { mx: e.clientX, my: e.clientY, px: pos.x, py: pos.y };
+    };
+
+    useEffect(() => {
+        if (!dragging) return;
+        const onMove = (e: MouseEvent) => {
+            setPos({
+                x: dragStart.current.px + e.clientX - dragStart.current.mx,
+                y: dragStart.current.py + e.clientY - dragStart.current.my,
+            });
+        };
+        const onUp = () => setDragging(false);
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', onUp);
+        return () => {
+            window.removeEventListener('mousemove', onMove);
+            window.removeEventListener('mouseup', onUp);
+        };
+    }, [dragging]);
+
     if (!open) return null;
 
     return (
-        <div className={styles.overlay} onClick={close}>
-            <div className={styles.modal} onClick={e => e.stopPropagation()}>
-                <button className={styles.closeBtn} onClick={close} aria-label="닫기">✕</button>
+        <div
+            ref={modalRef}
+            className={styles.modal}
+            style={{ transform: `translate(calc(-50% + ${pos.x}px), calc(-50% + ${pos.y}px))` }}
+        >
+            {/* 드래그 핸들 */}
+            <div
+                className={styles.dragHandle}
+                onMouseDown={onMouseDown}
+                title="드래그해서 이동"
+            >
+                <span className={styles.dragDots}>⠿ 이동</span>
+                <button className={styles.closeBtn} onMouseDown={e => e.stopPropagation()} onClick={close} aria-label="닫기">✕</button>
+            </div>
 
-                <div className={styles.header}>
-                    <span className={styles.label}>📚 무료 E-Book</span>
-                    <h2 className={styles.title}>열매똑똑의 기록을 지금 바로 받아보세요</h2>
-                    <p className={styles.subtitle}>사회복지 현장의 디지털 전환 여정을 담은 자료를 무료로 제공합니다.</p>
-                </div>
+            <img src="/intro/posters/poster1.png" alt="열매똑똑 스마트워크" className={styles.posterImg} />
 
-                <div className={styles.cards}>
-                    <a
-                        href="/files/똑똑Smart work 1차년도 성과사례집_디지털전환, 우리도 할 수 있어(E-book).pdf"
-                        className={styles.card}
-                        download
-                        onClick={close}
-                    >
-                        <div className={styles.cover} style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)' }}>
-                            <span style={{ fontSize: '2.5rem' }}>📖</span>
-                        </div>
-                        <div className={styles.info}>
-                            <span className={styles.tag}>성과사례집</span>
-                            <p className={styles.name}>&ldquo;디지털 전환, 우리도 할 수 있어.&rdquo;</p>
-                            <span className={styles.dl}>📥 다운로드</span>
-                        </div>
-                    </a>
+            <div className={styles.body}>
+                <span className={styles.label}>📚 무료 E-Book 배포</span>
+                <h2 className={styles.title}>사회복지 현장<br />디지털 전환 매뉴얼</h2>
+                <p className={styles.subtitle}>현장에서 바로 활용할 수 있는 디지털 전환 실천 가이드를 무료로 제공합니다.</p>
 
-                    <a
-                        href="/files/[서사협] 열매똑똑_사회복지현장 디지털 전환 매뉴얼(E-book).pdf"
-                        className={styles.card}
-                        download
-                        onClick={close}
-                    >
-                        <div className={styles.cover} style={{ background: 'linear-gradient(135deg, #065f46 0%, #10b981 100%)' }}>
-                            <span style={{ fontSize: '2.5rem' }}>📘</span>
-                        </div>
-                        <div className={styles.info}>
-                            <span className={styles.tag} style={{ background: '#d1fae5', color: '#065f46' }}>디지털 전환 매뉴얼</span>
-                            <p className={styles.name}>사회복지 현장 디지털 전환 매뉴얼</p>
-                            <span className={styles.dl}>📥 다운로드</span>
-                        </div>
-                    </a>
-                </div>
+                <a
+                    href="/files/[서사협] 열매똑똑_사회복지현장 디지털 전환 매뉴얼(E-book).pdf"
+                    className={styles.downloadBtn}
+                    download
+                    onClick={close}
+                >
+                    📥 PDF 무료 다운로드
+                </a>
 
                 <button className={styles.skipBtn} onClick={close}>
-                    괜찮아요, 나중에 볼게요
+                    나중에 볼게요
                 </button>
             </div>
         </div>
