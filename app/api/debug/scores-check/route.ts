@@ -36,14 +36,14 @@ export async function GET() {
         judge_id: s.judge_id,
         is_submitted_raw: s.is_submitted,
         is_submitted_length: s.is_submitted?.length,
-        is_submitted_charCodes: [...(s.is_submitted || '')].map(c => c.charCodeAt(0)),
+        is_submitted_charCodes: (s.is_submitted || '').split('').map(c => c.charCodeAt(0)),
     }));
 
     // teams 샘플 (id, stage, screening_memo)
     const teamSamples = rawTeams.slice(0, 5).map(t => ({
         id: t.id,
         stage: t.stage,
-        stage_raw_chars: [...(t.stage || '')].map(c => c.charCodeAt(0)),
+        stage_raw_chars: (t.stage || '').split('').map(c => c.charCodeAt(0)),
         screening_memo: t.screening_memo?.slice(0, 30) || '',
         is_complete: (t.stage || '').trim() === 'complete',
     }));
@@ -55,7 +55,7 @@ export async function GET() {
     }));
 
     // team_id 매칭 확인 (scores vs validTeamIds)
-    const scoreTeamIds = [...new Set(allScores.map(s => s.team_id))];
+    const scoreTeamIds = Array.from(new Set(allScores.map(s => s.team_id)));
     const matchedTeamIds = scoreTeamIds.filter(id => validTeamIds.has(id));
     const unmatchedTeamIds = scoreTeamIds.filter(id => !validTeamIds.has(id));
 
@@ -74,6 +74,6 @@ export async function GET() {
         matchedTeamIds_count: matchedTeamIds.length,
         unmatchedTeamIds_count: unmatchedTeamIds.length,
         unmatchedTeamIds_sample: unmatchedTeamIds.slice(0, 5),
-        validTeamIds_sample: [...validTeamIds].slice(0, 5),
+        validTeamIds_sample: Array.from(validTeamIds).slice(0, 5),
     });
 }

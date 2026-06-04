@@ -143,8 +143,8 @@ export async function GET() {
         rawTeamCount: rawTeams.length,
         completeTeamCount: allTeams.length,
         // ID 매칭 진단
-        scoreTeamIds_sample: [...scoreTeamIdSet].slice(0, 5),
-        validTeamIds_sample: [...validTeamIds].slice(0, 5),
+        scoreTeamIds_sample: Array.from(scoreTeamIdSet).slice(0, 5),
+        validTeamIds_sample: Array.from(validTeamIds).slice(0, 5),
         matchedScoreCount,
         // is_submitted 값 확인
         isSubmitted_sample: allScores.slice(0, 5).map(s => ({
