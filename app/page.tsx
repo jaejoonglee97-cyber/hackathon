@@ -155,26 +155,21 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
                         </p>
 
                         <div className={styles.heroActions}>
+                            <Link href="/apps" className={styles.heroPrimaryButton}>
+                                🏆 결과물 아카이브 보러가기
+                            </Link>
                             {currentUser ? (
-                                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginTop: '0.75rem' }}>
                                     {myTeam ? (
-                                        <Link href={`/teams/${myTeam.id}`} className={styles.heroPrimaryButton}>
+                                        <Link href={`/teams/${myTeam.id}`} className={styles.heroSecondaryButton}>
                                             🏠 내 프로젝트 대시보드
                                         </Link>
-                                    ) : (
-                                        <Link href="/teams/new" className={styles.heroPrimaryButton}>
-                                            🚀 프로젝트 등록하기
-                                        </Link>
-                                    )}
+                                    ) : null}
                                     <div className={styles.heroWelcomeBadge}>
                                         <span className={styles.userName}>{profile?.name || currentUser.name}</span>님, 환영합니다!
                                     </div>
                                 </div>
-                            ) : (
-                                <Link href="/auth/signin" className={styles.heroPrimaryButton}>
-                                    지금 도전하기 (로그인)
-                                </Link>
-                            )}
+                            ) : null}
                         </div>
                     </div>
 

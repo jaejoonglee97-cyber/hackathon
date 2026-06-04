@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import type { AppEntry, Track } from '@/types/archive';
-import { AWARD_ORDER, AWARD_STYLES, TRACK_COLORS, TRACKS } from '@/types/archive';
+import { TRACK_COLORS, TRACKS } from '@/types/archive';
 import styles from './page.module.css';
 
 export default function AppsPage() {
@@ -12,7 +12,6 @@ export default function AppsPage() {
     const [error, setError] = useState('');
     
     const [selectedTrack, setSelectedTrack] = useState<Track | '전체'>('전체');
-    const [selectedAward, setSelectedAward] = useState<string>('전체');
 
     useEffect(() => {
         const fetchApps = async () => {
@@ -41,25 +40,11 @@ export default function AppsPage() {
         };
     }, [apps]);
 
-    // Filtering and sorting
+    // Filtering
     const filteredApps = useMemo(() => {
-        let result = [...apps];
-        if (selectedTrack !== '전체') {
-            result = result.filter(a => a.track === selectedTrack);
-        }
-        if (selectedAward !== '전체') {
-            result = result.filter(a => a.award === selectedAward);
-        }
-        
-        // Sort by award order (대상 -> 최우수 -> 우수 -> 장려 -> 없음)
-        result.sort((a, b) => {
-            const orderA = a.award ? AWARD_ORDER[a.award] : 99;
-            const orderB = b.award ? AWARD_ORDER[b.award] : 99;
-            return orderA - orderB;
-        });
-        
-        return result;
-    }, [apps, selectedTrack, selectedAward]);
+        if (selectedTrack === '전체') return apps;
+        return apps.filter(a => a.track === selectedTrack);
+    }, [apps, selectedTrack]);
 
     if (loading) {
         return (
@@ -120,20 +105,6 @@ export default function AppsPage() {
                         ))}
                     </div>
                     
-                    <div className={styles.filterRow}>
-                        <span className={styles.filterLabel}>수상</span>
-                        <button 
-                            className={`${styles.chip} ${selectedAward === '전체' ? styles.chipActive : ''}`}
-                            onClick={() => setSelectedAward('전체')}
-                        >전체</button>
-                        {Object.keys(AWARD_ORDER).map(award => (
-                            <button 
-                                key={award}
-                                className={`${styles.chip} ${selectedAward === award ? styles.chipActive : ''}`}
-                                onClick={() => setSelectedAward(award)}
-                            >{award}</button>
-                        ))}
-                    </div>
                 </div>
 
                 {/* Grid */}
@@ -155,17 +126,6 @@ export default function AppsPage() {
                                 <div className={styles.cardContent}>
                                     <div className={styles.cardHeader}>
                                         <h2 className={styles.appName}>{app.name}</h2>
-                                        {app.award && (
-                                            <span 
-                                                className={styles.badge}
-                                                style={{
-                                                    backgroundColor: AWARD_STYLES[app.award]?.bg,
-                                                    color: AWARD_STYLES[app.award]?.color
-                                                }}
-                                            >
-                                                {app.award}
-                                            </span>
-                                        )}
                                     </div>
                                     <p className={styles.orgName}>{app.orgName}</p>
                                     
