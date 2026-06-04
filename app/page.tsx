@@ -207,24 +207,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
                 <InfoBannerTabs />
 
                 {/* 디지털 전환 매뉴얼 광고 배너 */}
-                <a
-                    href="/intro"
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '1.25rem',
-                        marginTop: '1.5rem',
-                        marginBottom: '0.5rem',
-                        padding: '1.25rem 1.75rem',
-                        background: 'linear-gradient(135deg, #005f60 0%, #008e90 100%)',
-                        borderRadius: '1rem',
-                        textDecoration: 'none',
-                        boxShadow: '0 4px 20px rgba(0,142,144,0.25)',
-                        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                    }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 28px rgba(0,142,144,0.35)'; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = ''; (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 20px rgba(0,142,144,0.25)'; }}
-                >
+                <a href="/intro" className={styles.manualBanner}>
                     <span style={{ fontSize: '2.2rem', flexShrink: 0 }}>📘</span>
                     <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'rgba(255,255,255,0.75)', marginBottom: '0.2rem', letterSpacing: '0.05em' }}>

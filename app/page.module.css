@@ -109,6 +109,25 @@
     background-color: #fff;
 }
 
+.manualBanner {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    padding: 1.25rem 1.75rem;
+    background: linear-gradient(135deg, #005f60 0%, #008e90 100%);
+    border-radius: 1rem;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(0, 142, 144, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.manualBanner:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0, 142, 144, 0.35);
+}
+
 .heroSecondaryButton {
     display: inline-flex;
     align-items: center;
