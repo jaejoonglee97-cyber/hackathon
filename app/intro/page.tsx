@@ -2,6 +2,7 @@ import styles from './intro.module.css';
 import ScrollReveal from '@/app/components/ScrollReveal';
 import Carousel from './Carousel';
 import PosterCarousel from './PosterCarousel';
+import EbookModal from './EbookModal';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 export default function IntroPage() {
     return (
         <div className={styles.page}>
+            <EbookModal />
             <header className={styles.header}>
                 <div className="container">
                     <h1 className={styles.title}>열매똑똑 스마트워크란?</h1>
