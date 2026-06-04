@@ -317,68 +317,159 @@
     text-align: center;
 }
 
-/* PDF 섹션 스타일 */
-.pdfCard {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: linear-gradient(to right, #ffffff, #f9fafb);
-    padding: 3rem;
-    border-radius: 2rem;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-    border-left: 8px solid hsl(230, 80%, 40%);
+/* E-Book 섹션 */
+.ebookSection {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    border-radius: 2.5rem;
+    padding: 4rem 3rem;
+    color: white;
 }
 
-.pdfInfo {
+.ebookHeader {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.ebookLabel {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.25rem;
+}
+
+.ebookTitle {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: white;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+}
+
+.ebookSubtitle {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+.ebookGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.75rem;
+}
+
+.ebookCard {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 1.75rem;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ebookCard:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.ebookCardInner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.ebookCover {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 2.5rem;
+    min-height: 180px;
+}
+
+.ebookYear {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+}
+
+.ebookInfo {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
     flex: 1;
 }
 
-.pdfBadge {
+.ebookTag {
     display: inline-block;
-    padding: 0.4rem 0.8rem;
     background: #e0e7ff;
-    color: #4338ca;
-    font-size: 0.85rem;
+    color: #3730a3;
+    font-size: 0.78rem;
     font-weight: 700;
-    border-radius: 0.5rem;
-    margin-bottom: 1rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: 0.4rem;
+    align-self: flex-start;
 }
 
-.pdfTitle {
-    font-size: 1.75rem;
+.ebookName {
+    font-size: 1.3rem;
     font-weight: 800;
-    color: #111827;
-    margin-bottom: 0.75rem;
+    color: white;
+    line-height: 1.4;
+    margin: 0;
 }
 
-.pdfDescription {
-    font-size: 1.1rem;
-    color: #6b7280;
+.ebookDesc {
+    font-size: 0.92rem;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.65;
+    margin: 0;
 }
 
-.downloadButton {
-    display: flex;
+.ebookBtn {
+    display: inline-flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 1.25rem 2.5rem;
-    background: #111827;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding: 0.9rem 1.5rem;
+    background: #1e3a8a;
     color: white;
     text-decoration: none;
     font-weight: 700;
-    border-radius: 1rem;
-    transition: all 0.2s;
-    white-space: nowrap;
-    margin-left: 2rem;
+    font-size: 0.95rem;
+    border-radius: 0.9rem;
+    transition: all 0.2s ease;
+    align-self: flex-start;
 }
 
-.downloadButton:hover {
-    background: #000000;
+.ebookBtn:hover {
+    filter: brightness(1.2);
     transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
 }
 
-.downloadIcon {
-    font-size: 1.4rem;
+@media (max-width: 700px) {
+    .ebookSection {
+        padding: 2.5rem 1.5rem;
+    }
+    .ebookTitle {
+        font-size: 1.75rem;
+    }
+    .ebookGrid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 1024px) {

@@ -1,0 +1,358 @@
+// 대시보드 (서버 컴포넌트) — 비로그인도 접근 가능, 로그인 시 개인 영역 표시
+import Link from 'next/link';
+import { getCurrentUser } from '@/lib/auth';
+import {
+    checkProfileComplete,
+    getRowBy,
+    listRows,
+    getActiveDeadlines,
+} from '@/lib/sheets';
+import styles from './page.module.css';
+import CountdownWidget from '@/app/components/CountdownWidget';
+import TeamGrid from '@/app/components/TeamGrid';
+import type { Team } from '@/app/components/TeamCard';
+import InfoBannerTabs from '@/app/components/InfoBannerTabs';
+
+
+export const dynamic = 'force-dynamic';
+
+export default async function DashboardPage({ searchParams }: { searchParams: { previewTeamId?: string } }) {
+    // 1) 로그인 여부 확인 (비로그인도 허용)
+    const currentUser = await getCurrentUser();
+
+    // 2) 로그인 상태라면 프로필 정보 가져오기
+    let profile: any = null;
+    let myTeam: any = null;
+    const isAdmin = currentUser && ['admin', 'judge'].includes(currentUser.role);
+    const isPreviewMode = isAdmin && !!searchParams?.previewTeamId;
+
+    if (currentUser) {
+        const profileResult = await checkProfileComplete(currentUser.userId);
+        profile = profileResult.profile;
+
+        const teamsForUser = await listRows('teams');
+        
+        let targetTeamId = '';
+        if (isPreviewMode) {
+            targetTeamId = searchParams.previewTeamId!.trim();
+        } else {
+            const teamMember = await getRowBy('team_members', 'user_id', currentUser.userId);
+            if (teamMember?.team_id) {
+                targetTeamId = teamMember.team_id.trim();
+            }
+        }
+        
+        if (targetTeamId) {
+            myTeam = teamsForUser.find((t) => (t.id ?? '').trim() === targetTeamId);
+        }
+    }
+
+    // 3) 통계용 데이터 (모든 방문자에게 보여줄 부문별 접수 현황)
+    const [allTeams, allProjects, deadlines, allTeamMembers, allProfiles] = await Promise.all([
+        listRows('teams'),
+        listRows('projects'),
+        getActiveDeadlines().catch(err => {
+            console.warn('Failed to fetch deadlines:', err);
+            return [];
+        }),
+        isAdmin ? listRows('team_members') : Promise.resolve([]),
+        isAdmin ? listRows('users_profile') : Promise.resolve([]),
+    ]);
+
+    // 관리자용 팀 카드 데이터
+    let teamsData: Team[] = [];
+    if (isAdmin) {
+        teamsData = allTeams.map((team) => {
+            const project = allProjects.find((p) => p.team_id === team.id);
+            const members = allTeamMembers.filter((m: any) => m.team_id === team.id);
+            const leader = members.find((m: any) => m.role === 'leader') || members[0];
+            const leaderProfile = allProfiles.find((p: any) => p.user_id === leader?.user_id);
+            return {
+                id: team.id,
+                name: team.name,
+                org: team.org,
+                track: project?.track || '',
+                participantType: leaderProfile?.participant_type,
+                stage: (team.stage as Team['stage']) || 'intro',
+                recentUpdate: new Date(team.created_at).toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' }),
+                createdAt: team.created_at,
+                updatedAt: project?.updated_at || team.created_at,
+                helpCount: 0,
+                insightCount: 0,
+                badges: [],
+            };
+        });
+    }
+
+    // 4) 부문별 접수 현황 집계
+    const trackCounts: Record<string, number> = {
+        '현장 업무경감 자동화': 0,
+        '이용자 지원 및 접근성 개선': 0,
+        '협업·지식관리·성과지표': 0,
+    };
+    const trackIcons: Record<string, string> = {
+        '현장 업무경감 자동화': '⚙️',
+        '이용자 지원 및 접근성 개선': '♿',
+        '협업·지식관리·성과지표': '📊',
+    };
+
+    let uncategorized = 0;
+
+    // 단계별 현황 집계
+    const stageCounts: Record<string, number> = {
+        'intro': 0,
+        'validate': 0,
+        'complete': 0,
+    };
+    const stageLabels: Record<string, string> = {
+        'intro': '1단계(도입)',
+        'validate': '2단계(검증)',
+        'complete': '3단계(완성)',
+    };
+    const stageIcons: Record<string, string> = {
+        'intro': '💡',
+        'validate': '🔬',
+        'complete': '🏆',
+    };
+
+    allProjects.forEach((project) => {
+        const track = project.track?.trim();
+        if (track && trackCounts[track] !== undefined) {
+            trackCounts[track]++;
+        } else {
+            uncategorized++;
+        }
+    });
+
+    allTeams.forEach((team) => {
+        const s = team.stage?.trim() || 'intro';
+        if (stageCounts[s] !== undefined) {
+            stageCounts[s]++;
+        }
+    });
+
+    const totalCount = allTeams.length;
+    const now = new Date();
+
+    return (
+        <div className={styles.page}>
+            {isPreviewMode && (
+                <div style={{ backgroundColor: '#ef4444', color: 'white', textAlign: 'center', padding: '0.75rem', fontWeight: 'bold' }}>
+                    ⚠️ 관리자 미리보기 모드입니다. 팀 ID: {searchParams.previewTeamId}
+                </div>
+            )}
+            <div className={styles.container}>
+                {/* 1. 상단: 프리미엄 Hero 영역 (스마트워크 & DX 컨셉) */}
+                <section className={styles.heroSection}>
+                    <div className={styles.heroContent}>
+                        <h1 className={styles.heroTitle}>
+                            열매똑똑 스마트워크와 서울 사회복지사가 함께 만드는<br />
+                            <strong>사회복지 현장의 디지털 전환, 열매똑똑 해커톤</strong>
+                        </h1>
+                        <p className={styles.heroSubtitle}>
+                            기술은 도구일 뿐입니다. 사회복지사의 진심 어린 아이디어가 AI와 만날 때,<br />
+                            현장의 가능성은 더 넓어지고 나눔의 가치는 더 멀리 닿습니다.
+                        </p>
+
+                        <div className={styles.heroActions}>
+                            <Link href="/apps" className={styles.heroPrimaryButton}>
+                                🏆 결과물 아카이브 보러가기
+                            </Link>
+                            {currentUser ? (
+                                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginTop: '0.75rem' }}>
+                                    {myTeam ? (
+                                        <Link href={`/teams/${myTeam.id}`} className={styles.heroSecondaryButton}>
+                                            🏠 내 프로젝트 대시보드
+                                        </Link>
+                                    ) : null}
+                                    <div className={styles.heroWelcomeBadge}>
+                                        <span className={styles.userName}>{profile?.name || currentUser.name}</span>님, 환영합니다!
+                                    </div>
+                                </div>
+                            ) : null}
+                        </div>
+                    </div>
+
+                    {/* D-Day Counter Widget - Hero 섹션 내부 또는 바로 아래 배치 */}
+                    <div className={styles.heroWidgetWrapper}>
+                        <CountdownWidget
+                            targetDate="2026-03-27T18:00:00+09:00"
+                            title="🔥 아이디어 접수 마감까지"
+                            period="📅 접수 기간: 3/9 00시 ~ 3/27 18시"
+                        />
+                    </div>
+                </section>
+
+                {/* 2. 공지/마감일 배너 */}
+                {deadlines.length > 0 && (
+                    <section className={styles.deadlineBanner}>
+                        {deadlines.map((dl) => {
+                            const dueDate = new Date(dl.due_at);
+                            const diffMs = dueDate.getTime() - now.getTime();
+                            const dDay = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+                            const isPast = dDay < 0;
+                            return (
+                                <div key={dl.phase} className={`${styles.deadlineItem} ${isPast ? styles.deadlinePast : ''}`}>
+                                    <span className={styles.deadlinePhase}>📢 {dl.message}</span>
+                                    <span className={styles.deadlineDday}>
+                                        {isPast ? `마감됨` : dDay === 0 ? '오늘 마감!' : `D-${dDay}`}
+                                    </span>
+                                </div>
+                            );
+                        })}
+                    </section>
+                )}
+
+                {/* 이용가이드 + 참여상 탭 배너 */}
+                <InfoBannerTabs />
+
+                {/* 디지털 전환 매뉴얼 광고 배너 */}
+                <a href="/intro" className={styles.manualBanner}>
+                    <span style={{ fontSize: '2.2rem', flexShrink: 0 }}>📘</span>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'rgba(255,255,255,0.75)', marginBottom: '0.2rem', letterSpacing: '0.05em' }}>
+                            NEW · 무료 배포
+                        </div>
+                        <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#fff', lineHeight: 1.3 }}>
+                            사회복지 현장 디지털 전환 매뉴얼
+                        </div>
+                        <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.8)', marginTop: '0.2rem' }}>
+                            열매똑똑 스마트워크 페이지에서 PDF로 바로 받아보세요 →
+                        </div>
+                    </div>
+                    <span style={{ fontSize: '1.5rem', flexShrink: 0, color: 'rgba(255,255,255,0.7)' }}>›</span>
+                </a>
+
+                {/* 3. 부문별 접수 현황 대시보드 */}
+                <section style={{ marginBottom: '3rem', marginTop: '0.5rem' }}>
+                    <h2 style={{
+                        fontSize: '1.3rem',
+                        fontWeight: 700,
+                        color: 'var(--color-text-primary)',
+                        marginBottom: '1rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                    }}>
+                        📈 실시간 접수 현황
+                        <span style={{
+                            fontSize: '0.8rem',
+                            fontWeight: 500,
+                            color: 'var(--color-text-tertiary)',
+                            marginLeft: '0.5rem',
+                        }}>
+                            총 {totalCount}건 등록
+                        </span>
+                    </h2>
+
+                    <div className={styles.trackGrid}>
+                        {Object.entries(trackCounts).map(([track, count]) => (
+                            <div
+                                key={track}
+                                className={styles.trackCard}
+                            >
+                                <span style={{ fontSize: '2rem', lineHeight: 1 }}>{trackIcons[track]}</span>
+                                <span className={styles.trackName}>
+                                    {track}
+                                </span>
+                                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.3rem', marginTop: '0.25rem' }}>
+                                    <span style={{
+                                        fontSize: '3.5rem',
+                                        fontWeight: 900,
+                                        color: 'var(--color-primary)',
+                                        lineHeight: 1,
+                                        letterSpacing: '-0.02em',
+                                    }}>
+                                        {count}
+                                    </span>
+                                    <span style={{
+                                        fontSize: '0.95rem',
+                                        fontWeight: 500,
+                                        color: 'var(--color-text-tertiary)',
+                                    }}>건</span>
+                                </div>
+                                {/* 비율 바 */}
+                                <div style={{
+                                    width: '100%',
+                                    height: '6px',
+                                    borderRadius: '3px',
+                                    backgroundColor: 'var(--color-bg-secondary)',
+                                    overflow: 'hidden',
+                                    marginTop: '0.3rem',
+                                }}>
+                                    <div style={{
+                                        width: totalCount > 0 ? `${Math.round((count / totalCount) * 100)}%` : '0%',
+                                        height: '100%',
+                                        borderRadius: '3px',
+                                        background: 'var(--gradient-primary)',
+                                        transition: 'width 0.6s ease',
+                                    }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {uncategorized > 0 && (
+                        <p style={{ marginTop: '0.75rem', fontSize: '0.85rem', color: 'var(--color-text-tertiary)' }}>
+                            * 분야 미선택 프로젝트 {uncategorized}건은 위 통계에 포함되지 않았습니다.
+                        </p>
+                    )}
+
+                    {/* 단계별 진행 현황 */}
+                    <h3 style={{
+                        fontSize: '1.1rem',
+                        fontWeight: 700,
+                        color: 'var(--color-text-primary)',
+                        marginTop: '3rem',
+                        marginBottom: '0.75rem',
+                    }}>
+                        🚦 단계별 진행 현황
+                    </h3>
+                    <div className={styles.stageGrid}>
+                        {Object.entries(stageCounts).map(([key, count]) => (
+                            <div
+                                key={key}
+                                className={styles.stageCard}
+                            >
+                                <span style={{ fontSize: '1.5rem' }}>{stageIcons[key]}</span>
+                                <p className={styles.stageLabel}>
+                                    {stageLabels[key]}
+                                </p>
+                                <span style={{
+                                    fontSize: '1.8rem',
+                                    fontWeight: 800,
+                                    color: 'var(--color-primary)',
+                                    lineHeight: 1,
+                                }}>
+                                    {count}
+                                </span>
+                                <span style={{ fontSize: '0.85rem', color: 'var(--color-text-tertiary)', marginLeft: '2px' }}>건</span>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                {/* 관리자용: 전체 프로젝트 카드 목록 */}
+                {isAdmin && teamsData.length > 0 && (
+                    <section style={{ marginTop: '2rem' }}>
+                        <h2 style={{
+                            fontSize: '1.3rem',
+                            fontWeight: 700,
+                            color: 'var(--color-text-primary)',
+                            marginBottom: '1rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                        }}>
+                            🔒 관리자 전용 — 전체 프로젝트
+                            <span style={{ fontSize: '0.8rem', fontWeight: 500, color: 'var(--color-text-tertiary)' }}>
+                                ({teamsData.length}건)
+                            </span>
+                        </h2>
+                        <TeamGrid teams={teamsData} />
+                    </section>
+                )}
+            </div>
+        </div>
+    );
+}

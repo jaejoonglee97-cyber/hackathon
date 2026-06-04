@@ -84,16 +84,16 @@ export default function Navigation({ initialUser }: NavigationProps) {
                     {/* 메뉴 링크 (중앙/좌측) */}
                     <div className={styles.navLinks}>
                         <Link
-                            href="/"
-                            className={pathname === '/' ? styles.navLinkActive : styles.navLink}
+                            href="/intro"
+                            className={pathname === '/' || pathname?.startsWith('/intro') ? styles.navLinkActive : styles.navLink}
                         >
-                            대시보드
+                            홈
                         </Link>
                         <Link
-                            href="/intro"
-                            className={pathname?.startsWith('/intro') ? styles.navLinkActive : styles.navLink}
+                            href="/dashboard"
+                            className={pathname?.startsWith('/dashboard') ? styles.navLinkActive : styles.navLink}
                         >
-                            열매똑똑 스마트워크란?
+                            해커톤 대시보드
                         </Link>
                         <Link
                             href="/guide"

@@ -14,7 +14,6 @@ export default function IntroPage() {
         <div className={styles.page}>
             <header className={styles.header}>
                 <div className="container">
-                    <a href="/" className={styles.backLink}>← 대시보드로 돌아가기</a>
                     <h1 className={styles.title}>열매똑똑 스마트워크란?</h1>
                     <p className={styles.subtitle}>더 많이 만나기 위해, 더 스마트하게 일합니다.</p>
                 </div>
@@ -106,27 +105,55 @@ export default function IntroPage() {
                     {/* PDF 다운로드 섹션 */}
                     <ScrollReveal delay={200}>
                         <section className={styles.section}>
-                            <div className={styles.pdfCard}>
-                                <div className={styles.pdfInfo}>
-                                    <span className={styles.pdfBadge}>성과사례집</span>
-                                    <h3 className={styles.pdfTitle}>&ldquo;디지털 전환, 우리도 할 수 있어.&rdquo;</h3>
-                                    <p className={styles.pdfDescription}>사회복지 현장의 생생한 디지털 전환 기록을 확인해 보세요.</p>
+                            <div className={styles.ebookSection}>
+                                <div className={styles.ebookHeader}>
+                                    <span className={styles.ebookLabel}>📚 무료 E-Book</span>
+                                    <h2 className={styles.ebookTitle}>열매똑똑의 기록을 담다</h2>
+                                    <p className={styles.ebookSubtitle}>사회복지 현장의 디지털 전환 여정을 PDF로 만나보세요. 무료로 다운로드하실 수 있습니다.</p>
                                 </div>
-                                <a href="/files/똑똑Smart work 1차년도 성과사례집_디지털전환, 우리도 할 수 있어(E-book).pdf" className={styles.downloadButton} download>
-                                    <span className={styles.downloadIcon}>📥</span>
-                                    PDF 다운로드
-                                </a>
-                            </div>
-                            <div className={styles.pdfCard} style={{ marginTop: '1rem' }}>
-                                <div className={styles.pdfInfo}>
-                                    <span className={styles.pdfBadge}>디지털 전환 매뉴얼</span>
-                                    <h3 className={styles.pdfTitle}>사회복지 현장 디지털 전환 매뉴얼</h3>
-                                    <p className={styles.pdfDescription}>현장에서 바로 활용할 수 있는 디지털 전환 실천 가이드를 확인해 보세요.</p>
+                                <div className={styles.ebookGrid}>
+                                    <div className={styles.ebookCard}>
+                                        <div className={styles.ebookCardInner}>
+                                            <div className={styles.ebookCover} style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)' }}>
+                                                <span style={{ fontSize: '3.5rem' }}>📖</span>
+                                                <span className={styles.ebookYear}>1차년도</span>
+                                            </div>
+                                            <div className={styles.ebookInfo}>
+                                                <span className={styles.ebookTag}>성과사례집</span>
+                                                <h3 className={styles.ebookName}>&ldquo;디지털 전환,<br />우리도 할 수 있어.&rdquo;</h3>
+                                                <p className={styles.ebookDesc}>사회복지 현장의 생생한 디지털 전환 기록. 열매똑똑 스마트워크 1차년도 성과를 담았습니다.</p>
+                                                <a
+                                                    href="/files/똑똑Smart work 1차년도 성과사례집_디지털전환, 우리도 할 수 있어(E-book).pdf"
+                                                    className={styles.ebookBtn}
+                                                    download
+                                                >
+                                                    📥 PDF 무료 다운로드
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className={styles.ebookCard}>
+                                        <div className={styles.ebookCardInner}>
+                                            <div className={styles.ebookCover} style={{ background: 'linear-gradient(135deg, #065f46 0%, #10b981 100%)' }}>
+                                                <span style={{ fontSize: '3.5rem' }}>📘</span>
+                                                <span className={styles.ebookYear}>실천 가이드</span>
+                                            </div>
+                                            <div className={styles.ebookInfo}>
+                                                <span className={styles.ebookTag} style={{ background: '#d1fae5', color: '#065f46' }}>디지털 전환 매뉴얼</span>
+                                                <h3 className={styles.ebookName}>사회복지 현장<br />디지털 전환 매뉴얼</h3>
+                                                <p className={styles.ebookDesc}>현장에서 바로 활용 가능한 디지털 전환 실천 가이드. 단계별 실행 방법을 담았습니다.</p>
+                                                <a
+                                                    href="/files/[서사협] 열매똑똑_사회복지현장 디지털 전환 매뉴얼(E-book).pdf"
+                                                    className={styles.ebookBtn}
+                                                    style={{ background: '#065f46' }}
+                                                    download
+                                                >
+                                                    📥 PDF 무료 다운로드
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <a href="/files/[서사협] 열매똑똑_사회복지현장 디지털 전환 매뉴얼(E-book).pdf" className={styles.downloadButton} download>
-                                    <span className={styles.downloadIcon}>📥</span>
-                                    PDF 다운로드
-                                </a>
                             </div>
                         </section>
                     </ScrollReveal>
