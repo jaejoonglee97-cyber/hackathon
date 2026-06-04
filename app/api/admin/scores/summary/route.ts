@@ -76,9 +76,9 @@ export async function GET() {
     // ── admin 전체 집계 (admin만) ──────────────────
     let teamSummary: Record<string, any>[] | null = null;
     if (user.role === 'admin') {
-        // 팀별 그룹핑
+        // 팀별 그룹핑 (validAllScores: 완성 단계이고 스크리닝 메모 없는 팀만)
         const byTeam: Record<string, Record<string, string>[]> = {};
-        for (const score of allScores) {
+        for (const score of validAllScores) {
             if (!byTeam[score.team_id]) byTeam[score.team_id] = [];
             byTeam[score.team_id].push(score);
         }
@@ -134,5 +134,36 @@ export async function GET() {
         });
     }
 
-    return NextResponse.json({ myStats, teamSummary, _debug: { rawScoreCount: allScores.length, validScoreCount: validAllScores.length, rawTeamCount: rawTeams.length, completeTeamCount: allTeams.length } });
+    // 디버그 정보 (ID 매핑, is_submitted 값, track 샘플 확인용)
+    const scoreTeamIdSet = new Set(allScores.map(s => s.team_id));
+    const matchedScoreCount = allScores.filter(s => validTeamIds.has(s.team_id)).length;
+    const debug = {
+        rawScoreCount: allScores.length,
+        validScoreCount: validAllScores.length,
+        rawTeamCount: rawTeams.length,
+        completeTeamCount: allTeams.length,
+        // ID 매칭 진단
+        scoreTeamIds_sample: [...scoreTeamIdSet].slice(0, 5),
+        validTeamIds_sample: [...validTeamIds].slice(0, 5),
+        matchedScoreCount,
+        // is_submitted 값 확인
+        isSubmitted_sample: allScores.slice(0, 5).map(s => ({
+            team_id: s.team_id,
+            judge_id: s.judge_id,
+            is_submitted: s.is_submitted,
+            is_submitted_repr: JSON.stringify(s.is_submitted),
+        })),
+        // track 매핑 확인
+        trackByTeam_sample: Object.entries(trackByTeam).slice(0, 5),
+        projects_sample: allProjects.slice(0, 3).map(p => ({ team_id: p.team_id, track: p.track })),
+        // teams stage 확인
+        teams_stage_sample: rawTeams.slice(0, 5).map(t => ({
+            id: t.id,
+            stage: t.stage,
+            stage_repr: JSON.stringify(t.stage),
+            screening_memo: t.screening_memo ? 'EXISTS' : 'EMPTY',
+        })),
+    };
+
+    return NextResponse.json({ myStats, teamSummary, _debug: debug });
 }

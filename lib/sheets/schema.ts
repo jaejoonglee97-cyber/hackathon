@@ -189,6 +189,45 @@ export const sheets = {
     ] as const),
 
     /**
+     * 결과물 아카이브 — 앱 목록
+     * PRD §4.1 대중 열람, §6.4 FR-30 제출물 공개
+     */
+    apps: def('Apps', 'data', [
+        'id',           // URL slug (예: dawith-welfare-hub)
+        'name',         // 앱 이름
+        'orgName',      // 기관명
+        'track',        // A / B / C
+        'award',        // 대상 / 최우수 / 우수 / 장려 / 빈칸
+        'score',        // 심사 점수 (프론트엔드에서 노출하지 않음)
+        'description',  // 한 줄 소개
+        'problem',      // 해결하려는 문제
+        'solution',     // 솔루션 설명
+        'tags',         // 쉼표 구분 태그
+        'appUrl',       // 앱 접속 링크
+        'videoUrl',     // 시연 영상 링크
+        'slideUrl',     // 발표자료 링크
+        'imageUrl',     // 썸네일 이미지 URL
+        'isPublished',  // TRUE / FALSE
+        'createdAt',    // ISO 날짜
+    ] as const),
+
+    /**
+     * 결과물 아카이브 — 댓글/Q&A
+     */
+    comments: def('Comments', 'data', [
+        'id',           // UUID
+        'appId',        // Apps.id (slug)
+        'parentId',     // 답글인 경우 부모 댓글 id
+        'authorName',   // 작성자 이름
+        'authorRole',   // visitor / manager / admin
+        'content',      // 댓글 내용
+        'passwordHash', // bcrypt 해시 (삭제 인증용)
+        'isDeleted',    // TRUE / FALSE
+        'createdAt',    // ISO 날짜
+        'reserved',     // 예비
+    ] as const),
+
+    /**
      * 심사 — FR-32 심사(비공개)
      * team_id + judge_id 조합으로 1행 (upsert 방식)
      */

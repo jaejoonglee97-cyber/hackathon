@@ -107,6 +107,12 @@ export default function Navigation({ initialUser }: NavigationProps) {
                         >
                             문의게시판
                         </Link>
+                        <Link
+                            href="/apps"
+                            className={pathname?.startsWith('/apps') ? styles.navLinkActive : styles.navLink}
+                        >
+                            🏆 결과물 아카이브
+                        </Link>
                         {/* 심사위원/관리자만 보이는 심사 메뉴 */}
                         {user && ['admin', 'judge'].includes(user.role) && (
                             <Link

@@ -25,4 +25,11 @@ export {
     isProfileComplete,
     checkProfileComplete,
     upsertScore,
+    // 결과물 아카이브
+    getAllApps,
+    getAppBySlug,
+    getCommentsByAppId,
+    appendCommentRow,
+    softDeleteComment,
+    getCommentById,
 } from './client';

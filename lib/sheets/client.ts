@@ -570,3 +570,110 @@ export async function upsertScore(
         );
     }
 }
+
+// ─────────────────────────────────────────────
+// 결과물 아카이브 헬퍼 (Apps / Comments)
+// ─────────────────────────────────────────────
+import type { AppEntry, Comment } from '@/types/archive';
+
+/** Row → AppEntry 변환 */
+function rowToAppEntry(row: Record<string, string>): AppEntry {
+    return {
+        id: row.id,
+        name: row.name,
+        orgName: row.orgName,
+        track: row.track as AppEntry['track'],
+        award: (row.award || null) as AppEntry['award'],
+        score: Number(row.score) || 0,
+        description: row.description,
+        problem: row.problem,
+        solution: row.solution,
+        tags: row.tags ? row.tags.split(',').map((t: string) => t.trim()).filter(Boolean) : [],
+        appUrl: row.appUrl || undefined,
+        videoUrl: row.videoUrl || undefined,
+        slideUrl: row.slideUrl || undefined,
+        imageUrl: row.imageUrl || undefined,
+        isPublished: row.isPublished === 'TRUE',
+        createdAt: row.createdAt,
+    };
+}
+
+/** Row → Comment 변환 */
+function rowToComment(row: Record<string, string>): Comment {
+    return {
+        id: row.id,
+        appId: row.appId,
+        parentId: row.parentId || undefined,
+        authorName: row.authorName,
+        authorRole: (row.authorRole as Comment['authorRole']) || 'visitor',
+        content: row.content,
+        passwordHash: row.passwordHash,
+        isDeleted: row.isDeleted === 'TRUE',
+        createdAt: row.createdAt,
+    };
+}
+
+/**
+ * Apps 시트에서 isPublished=TRUE인 앱 목록 반환
+ */
+export async function getAllApps(): Promise<AppEntry[]> {
+    const rows = await listRows('apps');
+    return rows
+        .map(rowToAppEntry)
+        .filter((app) => app.isPublished);
+}
+
+/**
+ * 특정 slug의 앱 반환
+ */
+export async function getAppBySlug(slug: string): Promise<AppEntry | null> {
+    const row = await getRowBy('apps', 'id', slug);
+    if (!row) return null;
+    const app = rowToAppEntry(row);
+    return app.isPublished ? app : null;
+}
+
+/**
+ * 특정 appId의 댓글 목록 반환 (isDeleted=FALSE만)
+ */
+export async function getCommentsByAppId(appId: string): Promise<Comment[]> {
+    const rows = await listRows('comments', { appId });
+    return rows
+        .map(rowToComment)
+        .filter((c) => !c.isDeleted);
+}
+
+/**
+ * Comments 시트에 새 댓글 행 추가
+ */
+export async function appendCommentRow(comment: Comment): Promise<void> {
+    await appendRow('comments', {
+        id: comment.id,
+        appId: comment.appId,
+        parentId: comment.parentId || '',
+        authorName: comment.authorName,
+        authorRole: comment.authorRole,
+        content: comment.content,
+        passwordHash: comment.passwordHash,
+        isDeleted: 'FALSE',
+        createdAt: comment.createdAt,
+        reserved: '',
+    });
+}
+
+/**
+ * 댓글 소프트 삭제 (isDeleted를 TRUE로 업데이트)
+ */
+export async function softDeleteComment(commentId: string): Promise<void> {
+    await updateRow('comments', 'id', commentId, { isDeleted: 'TRUE' });
+}
+
+/**
+ * 댓글 ID로 해당 댓글의 raw row 반환 (비밀번호 해시 확인용)
+ */
+export async function getCommentById(commentId: string): Promise<Comment | null> {
+    const row = await getRowBy('comments', 'id', commentId);
+    if (!row) return null;
+    return rowToComment(row);
+}
+
