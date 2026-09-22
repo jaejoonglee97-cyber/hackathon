@@ -4,7 +4,7 @@
  */
 
 export type Track = '현장 업무경감 자동화' | '이용자 지원 및 접근성 개선' | '협업·지식관리·성과지표';
-export type Award = '대상' | '최우수' | '우수' | '장려' | null;
+export type Award = '대상' | '최우수상' | '우수상' | '장려상' | null;
 
 export interface AppEntry {
     id: string;          // URL slug (예: dawith-welfare-hub)
@@ -44,9 +44,9 @@ export type CommentPublic = Omit<Comment, 'passwordHash'>;
 /** 수상 등급 정렬 순서 */
 export const AWARD_ORDER: Record<string, number> = {
     '대상': 0,
-    '최우수': 1,
-    '우수': 2,
-    '장려': 3,
+    '최우수상': 1,
+    '우수상': 2,
+    '장려상': 3,
 };
 
 export const TRACKS: Track[] = [
@@ -58,9 +58,9 @@ export const TRACKS: Track[] = [
 /** 수상 배지 스타일 */
 export const AWARD_STYLES: Record<string, { bg: string; color: string }> = {
     '대상': { bg: '#FAEEDA', color: '#633806' },
-    '최우수': { bg: '#D3D1C7', color: '#2C2C2A' },
-    '우수': { bg: '#F5C4B3', color: '#4A1B0C' },
-    '장려': { bg: '#F1EFE8', color: '#5F5E5A' },
+    '최우수상': { bg: '#D3D1C7', color: '#2C2C2A' },
+    '우수상': { bg: '#F5C4B3', color: '#4A1B0C' },
+    '장려상': { bg: '#F1EFE8', color: '#5F5E5A' },
 };
 
 /** 트랙별 색상 */
