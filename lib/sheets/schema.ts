@@ -78,6 +78,7 @@ export const sheets = {
         'created_at',
         'updated_at',
         'screening_memo', // 1차 스크리닝(사전 탈락) 사유
+        'award', // 결과물 아카이브 수상 등급 (대상/최우수/우수/장려, 빈칸 가능)
     ] as const),
 
     team_members: def('team_members', 'data', [
