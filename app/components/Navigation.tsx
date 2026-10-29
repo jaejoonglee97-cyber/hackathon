@@ -61,10 +61,37 @@ export default function Navigation({ initialUser }: NavigationProps) {
         }
     };
 
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    useEffect(() => {
+        setMenuOpen(false);
+    }, [pathname]);
+
+    useEffect(() => {
+        if (!menuOpen) return;
+        const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setMenuOpen(false);
+        window.addEventListener('keydown', onKey);
+        return () => window.removeEventListener('keydown', onKey);
+    }, [menuOpen]);
+
     // 로그인/회원가입 페이지에서는 네비게이션 숨김
     if (pathname?.startsWith('/auth/')) {
         return null;
     }
+
+    const links = [
+        { href: '/intro', label: '홈', active: pathname === '/' || !!pathname?.startsWith('/intro') },
+        { href: '/dashboard', label: '해커톤 대시보드', active: !!pathname?.startsWith('/dashboard') },
+        { href: '/guide', label: '이용가이드', active: !!pathname?.startsWith('/guide') },
+        { href: '/qna', label: '문의게시판', active: !!pathname?.startsWith('/qna') },
+        { href: '/apps', label: '🏆 결과물 아카이브', active: !!pathname?.startsWith('/apps') },
+        ...(user && ['admin', 'judge'].includes(user.role)
+            ? [{ href: '/admin/judge', label: '📋 심사', active: !!pathname?.startsWith('/admin/judge'), color: '#7c3aed' }]
+            : []),
+        ...(user && user.role === 'admin'
+            ? [{ href: '/admin/scores', label: '📊 심사 집계', active: !!pathname?.startsWith('/admin/scores'), color: '#ef4444' }]
+            : []),
+    ];
 
     return (
         <nav className={styles.nav}>
@@ -81,58 +108,18 @@ export default function Navigation({ initialUser }: NavigationProps) {
                         </a>
                     </div>
 
-                    {/* 메뉴 링크 (중앙/좌측) */}
+                    {/* 메뉴 링크 (넓은 화면) */}
                     <div className={styles.navLinks}>
-                        <Link
-                            href="/intro"
-                            className={pathname === '/' || pathname?.startsWith('/intro') ? styles.navLinkActive : styles.navLink}
-                        >
-                            홈
-                        </Link>
-                        <Link
-                            href="/dashboard"
-                            className={pathname?.startsWith('/dashboard') ? styles.navLinkActive : styles.navLink}
-                        >
-                            해커톤 대시보드
-                        </Link>
-                        <Link
-                            href="/guide"
-                            className={pathname?.startsWith('/guide') ? styles.navLinkActive : styles.navLink}
-                        >
-                            이용가이드
-                        </Link>
-                        <Link
-                            href="/qna"
-                            className={pathname?.startsWith('/qna') ? styles.navLinkActive : styles.navLink}
-                        >
-                            문의게시판
-                        </Link>
-                        <Link
-                            href="/apps"
-                            className={pathname?.startsWith('/apps') ? styles.navLinkActive : styles.navLink}
-                        >
-                            🏆 결과물 아카이브
-                        </Link>
-                        {/* 심사위원/관리자만 보이는 심사 메뉴 */}
-                        {user && ['admin', 'judge'].includes(user.role) && (
+                        {links.map((link) => (
                             <Link
-                                href="/admin/judge"
-                                className={pathname?.startsWith('/admin/judge') ? styles.navLinkActive : styles.navLink}
-                                style={{ color: '#7c3aed', fontWeight: 700 }}
+                                key={link.href}
+                                href={link.href}
+                                className={link.active ? styles.navLinkActive : styles.navLink}
+                                style={link.color ? { color: link.color, fontWeight: 700 } : undefined}
                             >
-                                📋 심사
+                                {link.label}
                             </Link>
-                        )}
-                        {/* 관리자만 보이는 심사 집계 메뉴 */}
-                        {user && user.role === 'admin' && (
-                            <Link
-                                href="/admin/scores"
-                                className={pathname?.startsWith('/admin/scores') ? styles.navLinkActive : styles.navLink}
-                                style={{ color: '#ef4444', fontWeight: 700 }}
-                            >
-                                📊 심사 집계
-                            </Link>
-                        )}
+                        ))}
                     </div>
 
                     {/* 우측 그룹 (테마 + 유저메뉴) */}
@@ -165,7 +152,55 @@ export default function Navigation({ initialUser }: NavigationProps) {
                                 </Link>
                             </div>
                         )}
+
+                        <button
+                            type="button"
+                            className={styles.menuButton}
+                            aria-expanded={menuOpen}
+                            aria-controls="site-menu"
+                            aria-label={menuOpen ? '메뉴 닫기' : '메뉴 열기'}
+                            onClick={() => setMenuOpen((open) => !open)}
+                        >
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                {menuOpen ? <path d="M6 6l12 12M18 6 6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
+                            </svg>
+                        </button>
                     </div>
+                </div>
+            </div>
+
+            {/* 메뉴 펼침 (좁은 화면) */}
+            <div id="site-menu" className={styles.menuPanel} hidden={!menuOpen}>
+                <div className="container">
+                    {links.map((link) => (
+                        <Link
+                            key={link.href}
+                            href={link.href}
+                            className={link.active ? styles.panelLinkActive : styles.panelLink}
+                            style={link.color ? { color: link.color } : undefined}
+                            aria-current={link.active ? 'page' : undefined}
+                        >
+                            {link.label}
+                        </Link>
+                    ))}
+
+                    {!loading && (
+                        <div className={styles.panelAuth}>
+                            {user ? (
+                                <>
+                                    <span className={styles.panelUser}>{user.name || user.email}</span>
+                                    <button onClick={handleSignOut} className={styles.signOutButton}>
+                                        로그아웃
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <Link href="/auth/signin" className={styles.signInLink}>로그인</Link>
+                                    <Link href="/auth/signup" className={styles.signUpButton}>회원가입</Link>
+                                </>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
         </nav>

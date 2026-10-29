@@ -41,7 +41,16 @@
     align-items: center;
     gap: var(--space-md);
     flex-grow: 1;
-    margin-left: 2rem;
+    min-width: 0;
+    margin-left: 1.5rem;
+    padding: 6px 0;
+    /* 관리자 메뉴가 더해져도 페이지 밖으로 넘치지 않고 이 안에서만 스크롤 */
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.navLinks::-webkit-scrollbar {
+    display: none;
 }
 
 .navLink,
@@ -105,6 +114,7 @@
     align-items: center;
     gap: 1.5rem;
     flex-shrink: 0;
+    margin-left: auto;
 }
 
 .userMenu {
@@ -171,67 +181,138 @@
     background: var(--color-primary-dark);
 }
 
-/* 태블릿: 네비게이션 링크 축소 */
-@media (max-width: 1024px) and (min-width: 769px) {
-    .navLinks {
-        margin-left: var(--space-md);
-        gap: var(--space-xs);
-    }
-
-    .navLink,
-    .navLinkActive {
-        font-size: var(--font-size-sm);
-        padding: var(--space-xs) var(--space-sm);
-    }
-
-    .qnaLink {
-        font-size: var(--font-size-sm);
-        padding: var(--space-xs) var(--space-sm);
-    }
-
-    .primaryLogo,
-    .secondaryLogo {
-        height: 32px;
-        /* 태블릿에서는 약간 축소 */
-    }
-
-    .themeToggle {
-        width: 30px;
-        height: 30px;
-        font-size: 0.9rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .navLinks {
-        display: none;
-    }
-
-    .userName {
-        display: none;
-    }
-
-    .navContent {
-        padding: var(--space-sm) 0;
-    }
-
-    .primaryLogo {
-        height: 32px;
-        /* 모바일에서도 충분한 크기 유지 */
-    }
-}
-
 .secondaryLogo {
     height: 32px;
     width: auto;
     object-fit: contain;
 }
 
-@media (max-width: 640px) {
+/* ── 메뉴 버튼 / 펼침 메뉴 (좁은 화면) ── */
+.menuButton {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--color-text-primary);
+    cursor: pointer;
+}
 
+.menuButton:hover {
+    background: var(--color-bg-secondary);
+}
+
+.menuButton svg {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+.menuButton:focus-visible,
+.panelLink:focus-visible,
+.panelLinkActive:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.menuPanel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: var(--shadow-lg);
+    padding: 0.25rem 0 1rem;
+}
+
+.menuPanel[hidden] {
+    display: none;
+}
+
+.panelLink,
+.panelLinkActive {
+    display: block;
+    padding: 0.85rem 0.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--color-text-secondary);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.panelLink:hover {
+    color: var(--color-primary);
+}
+
+.panelLinkActive {
+    color: var(--color-primary);
+    box-shadow: inset 3px 0 0 var(--color-primary);
+    padding-left: 0.85rem;
+}
+
+.panelAuth {
+    display: none;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-md);
+    padding-top: 1rem;
+}
+
+.panelUser {
+    margin-right: auto;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-text-secondary);
+}
+
+@media (min-width: 1241px) {
+    .menuPanel {
+        display: none !important;
+    }
+}
+
+@media (max-width: 1240px) {
+    .navLinks {
+        display: none;
+    }
+
+    .menuButton {
+        display: inline-flex;
+    }
+
+    .rightGroup {
+        gap: 0.75rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .userName {
+        display: none;
+    }
+}
+
+@media (max-width: 640px) {
     .divider,
     .secondaryLogo {
         display: none;
+    }
+
+    .authButtons,
+    .userMenu {
+        display: none;
+    }
+
+    .panelAuth {
+        display: flex;
     }
 }
 
