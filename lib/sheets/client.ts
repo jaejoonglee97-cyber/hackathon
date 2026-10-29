@@ -46,10 +46,27 @@ if (!IS_DEV_MODE) {
 // ─────────────────────────────────────────────
 // 개발용 인메모리 스토어
 // ─────────────────────────────────────────────
+// 결과물 아카이브 화면 확인용 가상 데이터.
+// 첫 항목 ID는 LIVE_APP_IDS에 있는 값이라 '바로 체험 가능' 상태를 미리 볼 수 있다.
+const SAMPLE_ARCHIVE: [string, string, string, string, string, string][] = [
+    // [id, 이름, 기관, 분야, 수상, 링크]
+    ['003e9cfd-9145-4c01-9209-1578da6ec613', '[예시] 복지 업무 통합 허브', '예시종합사회복지관', '현장 업무경감 자동화', '대상', 'https://example.org'],
+    ['sample-2', '[예시] 후원물품 입출고 관리 시스템', '예시노인종합복지관', '현장 업무경감 자동화', '최우수상', 'https://expired.example.org'],
+    ['sample-3', '[예시] 회의록·실적 자동 취합', '예시장애인복지관', '현장 업무경감 자동화', '우수상', ''],
+    ['sample-4', '[예시] 행동지원 기록 도우미', '예시발달장애인지원센터', '이용자 지원 및 접근성 개선', '대상', ''],
+    ['sample-5', '[예시] 반찬 배달 안부확인 기록지', '예시종합사회복지관', '이용자 지원 및 접근성 개선', '최우수상', 'https://expired.example.org'],
+    ['sample-6', '[예시] 예산 관제 대시보드', '예시장애인종합복지관', '협업·지식관리·성과지표', '대상', 'https://expired.example.org'],
+    ['sample-7', '[예시] 강사관리 통합 플랫폼으로 전국 가족센터의 강사 정보와 일정을 한 번에 관리하기', '예시가족센터', '협업·지식관리·성과지표', '최우수상', ''],
+    ['sample-8', '[예시] 차량 운행일지 자동화', '예시노인복지관', '현장 업무경감 자동화', '', ''],
+];
+
 const SAMPLE_DATA: Record<string, Record<string, string>[]> = {
     users_auth: [],
     users_profile: [],
     teams: [
+        ...SAMPLE_ARCHIVE.map(([id, name, org, , award]) => ({
+            id, name, org, award, stage: 'complete', created_at: '2026-04-01T10:00:00Z',
+        })),
         {
             id: '1',
             name: '케어링크',
@@ -62,6 +79,15 @@ const SAMPLE_DATA: Record<string, Record<string, string>[]> = {
     ],
     team_members: [],
     projects: [
+        ...SAMPLE_ARCHIVE.map(([team_id, name, , track, , prototype_link]) => ({
+            team_id,
+            track,
+            prototype_link,
+            problem_statement: `${name.replace('[예시] ', '')} 업무를 수기로 처리하다 보니 매번 같은 내용을 여러 번 옮겨 적고, 담당자가 바뀌면 기록이 끊기는 문제가 있었습니다.`,
+            target_audience: '현장 실무자와 중간관리자',
+            solution: '구글 시트와 간단한 웹 화면을 연결해 한 번 입력한 내용이 자동으로 집계되도록 만들었습니다.',
+            features: '1) 모바일 입력 화면\n2) 자동 집계 대시보드\n3) 월별 보고서 내려받기',
+        })),
         {
             team_id: '1',
             problem_statement: '독거노인 안부 확인에 매일 2시간 소요',

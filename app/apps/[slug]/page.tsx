@@ -1,13 +1,14 @@
-import { getAppBySlug, getAllApps } from '@/lib/sheets';
+import { getAppBySlug } from '@/lib/sheets';
 import { getCurrentUser } from '@/lib/auth';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import type { CSSProperties } from 'react';
 import Link from 'next/link';
 import CommentSection from '@/app/components/CommentSection';
-import { AWARD_STYLES, TRACK_COLORS } from '@/types/archive';
+import { TRACK_COLORS } from '@/types/archive';
 import styles from './page.module.css';
 
-export const revalidate = 60; // ISR 60 seconds
+export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
     const app = await getAppBySlug(params.slug);
@@ -18,163 +19,91 @@ export async function generateMetadata({ params }: { params: { slug: string } })
         openGraph: {
             title: `${app.name} | 결과물 아카이브`,
             description: app.description,
-            images: app.imageUrl ? [{ url: app.imageUrl }] : undefined,
         },
     };
 }
 
 export default async function AppDetailPage({ params }: { params: { slug: string } }) {
     const app = await getAppBySlug(params.slug);
-    
+
     if (!app) {
         notFound();
     }
 
     const user = await getCurrentUser();
+    const accent = { '--accent': TRACK_COLORS[app.track]?.accent ?? 'var(--color-primary)' } as CSSProperties;
+
+    const linkLabel = {
+        live: '바로 체험 가능',
+        expired: '사용기한 만료',
+        none: '미제출',
+    }[app.linkStatus];
+
+    const blocks = [
+        { title: '해결하려는 문제', body: app.problem },
+        { title: '누구를 위한 것인가요', body: app.targetAudience },
+        { title: '해결 아이디어', body: app.solution },
+        { title: '주요 기능', body: app.features },
+    ].filter((block) => block.body.trim());
 
     return (
-        <div className={styles.container}>
-            <Link href="/apps" className={styles.backLink}>
-                ← 목록으로 돌아가기
-            </Link>
+        <article className={styles.page} style={accent}>
+            <div className={styles.inner}>
+                <nav className={styles.topbar} aria-label="이동 경로">
+                    <Link href="/apps" className={styles.back} aria-label="아카이브 목록으로">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+                    </Link>
+                    <ol className={styles.crumbs}>
+                        <li><Link href="/apps">결과물 아카이브</Link></li>
+                        <li>{app.track}</li>
+                    </ol>
+                </nav>
 
-            <div className={styles.hero}>
-                {app.imageUrl ? (
-                    <img src={app.imageUrl} alt={app.name} className={styles.heroImage} />
+                <header className={styles.header}>
+                    <p className={styles.eyebrow}>{app.track}</p>
+                    <h1 className={styles.title}>{app.name}</h1>
+                    <p className={styles.org}>{app.orgName}</p>
+                    {app.award && <span className={styles.award}>🏆 {app.award}</span>}
+                </header>
+
+                <dl className={styles.meta}>
+                    <div><dt>기관</dt><dd>{app.orgName}</dd></div>
+                    <div><dt>분야</dt><dd>{app.track}</dd></div>
+                    <div><dt>수상</dt><dd>{app.award || '—'}</dd></div>
+                    <div>
+                        <dt>웹앱</dt>
+                        <dd className={app.linkStatus === 'live' ? styles.live : undefined}>{linkLabel}</dd>
+                    </div>
+                </dl>
+
+                {app.linkStatus === 'live' && app.appUrl ? (
+                    <a href={app.appUrl} target="_blank" rel="noopener noreferrer" className={styles.cta}>
+                        앱 바로 체험하기
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                    </a>
                 ) : (
-                    <div 
-                        className={styles.placeholderImage} 
-                        style={{ backgroundColor: TRACK_COLORS[app.track]?.accent || '#ccc' }}
-                    >
-                        {app.name.charAt(0)}
+                    <div className={styles.notice}>
+                        <strong>{app.linkStatus === 'expired' ? '웹앱 사용기한 만료' : '웹앱 미제출'}</strong>
+                        <p>
+                            지금은 웹앱으로 직접 체험할 수 없어요. 대신 기관이 제안한 문제 인식과 해결 아이디어를
+                            아래에서 확인하고, 우리 기관에 맞게 활용해 보세요.
+                        </p>
                     </div>
                 )}
 
-                <div className={styles.headerInfo}>
-                    <h1 className={styles.title}>{app.name}</h1>
-                    <p className={styles.orgName}>{app.orgName}</p>
-                    
-                    <div className={styles.badges}>
-                        <span 
-                            className={styles.badge}
-                            style={{
-                                backgroundColor: TRACK_COLORS[app.track]?.bg,
-                                color: TRACK_COLORS[app.track]?.color
-                            }}
-                        >
-                            {app.track}
-                        </span>
-                        
-                        {app.award && (
-                            <span 
-                                className={styles.badge}
-                                style={{
-                                    backgroundColor: AWARD_STYLES[app.award]?.bg,
-                                    color: AWARD_STYLES[app.award]?.color
-                                }}
-                            >
-                                {app.award}
-                            </span>
-                        )}
-                        
-                        {app.tags.map(tag => (
-                            <span key={tag} className={styles.badge} style={{ backgroundColor: 'var(--color-bg-secondary)', color: 'var(--color-text-secondary)' }}>
-                                #{tag}
-                            </span>
-                        ))}
-                    </div>
+                <div className={styles.blocks}>
+                    {blocks.map((block) => (
+                        <details key={block.title} className={styles.block} open>
+                            <summary>{block.title}</summary>
+                            <div className={styles.blockBody}>{block.body}</div>
+                        </details>
+                    ))}
                 </div>
-            </div>
 
-            <div className={styles.layout}>
-                <div className={styles.main}>
-                    {/* PRD Rule: Why(problem) first! */}
-                    <section className={`${styles.section} ${styles.problemSection}`}>
-                        <h2 className={styles.sectionTitle}>🎯 해결하려는 문제</h2>
-                        <div className={styles.sectionContent}>{app.problem}</div>
-                    </section>
-
-                    <section className={`${styles.section} ${styles.solutionSection}`}>
-                        <h2 className={styles.sectionTitle}>🔧 솔루션</h2>
-                        <div className={styles.sectionContent}>{app.solution}</div>
-                    </section>
-
-                    {app.targetAudience && (
-                        <section className={`${styles.section} ${styles.descriptionSection}`}>
-                            <h2 className={styles.sectionTitle}>👥 누구를 위한 것인가요</h2>
-                            <div className={styles.sectionContent}>{app.targetAudience}</div>
-                        </section>
-                    )}
-
-                    {app.features && (
-                        <section className={`${styles.section} ${styles.descriptionSection}`}>
-                            <h2 className={styles.sectionTitle}>🧩 주요 기능</h2>
-                            <div className={styles.sectionContent}>{app.features}</div>
-                        </section>
-                    )}
-
-                    {app.linkStatus !== 'live' && (
-                        <section className={`${styles.section} ${styles.expiredNotice}`}>
-                            <h2 className={styles.sectionTitle}>
-                                {app.linkStatus === 'expired' ? '⏳ 웹앱 사용기한 만료' : '📭 웹앱 미제출'}
-                            </h2>
-                            <div className={styles.sectionContent}>
-                                지금은 웹앱으로 직접 체험할 수 없어요. 대신 기관이 제안한 문제 인식과 해결 아이디어를 위 내용에서 확인하고, 우리 기관에 맞게 활용해 보세요.
-                            </div>
-                        </section>
-                    )}
-
-                    {/* Link Buttons */}
-                    {(app.appUrl || app.videoUrl || app.slideUrl) && (
-                        <section className={styles.section}>
-                            <h2 className={styles.sectionTitle}>📎 관련 링크</h2>
-                            <div className={styles.linkButtons}>
-                                {app.appUrl && (
-                                    <a href={app.appUrl} target="_blank" rel="noopener noreferrer" className={`${styles.linkButton} ${styles.appButton}`}>
-                                        🚀 앱 바로가기
-                                    </a>
-                                )}
-                                {app.videoUrl && (
-                                    <a href={app.videoUrl} target="_blank" rel="noopener noreferrer" className={`${styles.linkButton} ${styles.videoButton}`}>
-                                        🎬 시연 영상 보기
-                                    </a>
-                                )}
-                                {app.slideUrl && (
-                                    <a href={app.slideUrl} target="_blank" rel="noopener noreferrer" className={`${styles.linkButton} ${styles.slideButton}`}>
-                                        📄 발표자료 보기
-                                    </a>
-                                )}
-                            </div>
-                        </section>
-                    )}
-
+                <section className={styles.comments}>
                     <CommentSection appId={app.id} initialUser={user} />
-                </div>
-
-                <aside className={styles.sidebar}>
-                    <div className={styles.sidebarCard}>
-                        <div className={styles.sidebarItem}>
-                            <span className={styles.sidebarLabel}>트랙</span>
-                            <span className={styles.sidebarValue}>{app.track}</span>
-                        </div>
-                        <div className={styles.sidebarItem}>
-                            <span className={styles.sidebarLabel}>기관명</span>
-                            <span className={styles.sidebarValue}>{app.orgName}</span>
-                        </div>
-                        <div className={styles.sidebarItem}>
-                            <span className={styles.sidebarLabel}>수상 내역</span>
-                            <span className={styles.sidebarValue}>{app.award || '해당 없음'}</span>
-                        </div>
-                        <div className={styles.sidebarItem}>
-                            <span className={styles.sidebarLabel}>웹앱</span>
-                            <span className={styles.sidebarValue}>
-                                {app.linkStatus === 'live' ? '🟢 바로 체험 가능' : app.linkStatus === 'expired' ? '사용기한 만료' : '미제출'}
-                            </span>
-                        </div>
-                        {/* PRD Rule: Score hidden. No score displayed here. */}
-                    </div>
-                </aside>
+                </section>
             </div>
-        </div>
+        </article>
     );
 }

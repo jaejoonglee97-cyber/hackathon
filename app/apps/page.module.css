@@ -1,120 +1,326 @@
+/* 흑백 편집 디자인: 강조는 본문색 반전(--ink/--paper), 분야 구분만 --accent 색으로 */
+.page {
+    --ink: var(--color-text-primary);
+    --paper: var(--color-bg);
+    background: var(--paper);
+    color: var(--ink);
+    padding-bottom: 5rem;
+}
+
+.inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+}
+
+/* ── 상단 ───────────────────────── */
 .hero {
-    background: var(--gradient-primary);
-    padding: var(--space-2xl) var(--space-lg);
-    text-align: center;
-    color: white;
+    padding: 4.5rem 0 3rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.eyebrow {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--color-text-secondary);
+    margin-bottom: 0.75rem;
 }
 
 .title {
-    font-size: var(--font-size-3xl);
-    font-weight: 700;
-    margin-bottom: var(--space-md);
-    color: white;
+    font-size: clamp(2.25rem, 6vw, 4rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    margin: 0 0 1rem;
 }
 
 .subtitle {
     font-size: var(--font-size-lg);
-    opacity: 0.9;
-    max-width: 600px;
-    margin: 0 auto;
+    color: var(--color-text-secondary);
+    margin: 0 0 2.5rem;
+    word-break: keep-all;
+}
+
+.searchForm {
+    position: relative;
+    max-width: 760px;
+}
+
+.searchInput {
+    width: 100%;
+    font: inherit;
+    font-size: 1.15rem;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid var(--ink);
+    border-radius: 0;
+    padding: 0.9rem 3rem 0.9rem 0.25rem;
+    outline: none;
+}
+
+.searchInput::placeholder {
+    color: var(--color-text-tertiary);
+}
+
+.searchInput:focus-visible {
+    border-bottom-color: var(--color-primary);
+}
+
+.searchInput::-webkit-search-cancel-button {
+    cursor: pointer;
+}
+
+.searchIcon {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    transform: translateY(-50%);
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    pointer-events: none;
+}
+
+.keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    margin-top: 1rem;
+}
+
+.keyword {
+    font: inherit;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    background: none;
+    border: none;
+    padding: 0.25rem 0;
+    cursor: pointer;
+}
+
+.keyword::before {
+    content: '#';
+    margin-right: 1px;
+    color: var(--color-text-tertiary);
+}
+
+.keyword:hover {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }
 
 .stats {
     display: flex;
-    justify-content: center;
-    gap: var(--space-lg);
-    margin-top: var(--space-2xl);
     flex-wrap: wrap;
+    gap: 2.5rem;
+    margin: 2.75rem 0 0;
 }
 
-.statCard {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: var(--space-md) var(--space-xl);
-    border-radius: var(--radius-lg);
-    min-width: 150px;
+.stats > div {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.25rem;
 }
 
-.statLabel {
+.stats dt {
     font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.stats dd {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ── 섹션 공통 ──────────────────── */
+.section {
+    padding-top: 3.5rem;
+}
+
+.sectionHeader {
+    margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    font-size: 1.75rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin: 0;
+}
+
+.sectionDesc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin: 0.4rem 0 0;
+}
+
+.count {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    letter-spacing: 0;
+}
+
+/* ── 수상작 ─────────────────────── */
+.awardGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+.awardColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.awardTrack {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    margin: 0;
+    padding-bottom: 0.6rem;
+    border-bottom: 3px solid var(--accent);
+}
+
+.awardCard {
+    display: block;
+    border: 1px solid var(--ink);
+    color: inherit;
+    text-decoration: none;
+    transition: transform 0.15s ease;
+}
+
+.awardCard:hover {
+    transform: translateY(-2px);
+}
+
+.awardStrip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    padding: 0.5rem 0.85rem;
+}
+
+.awardLive {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
     opacity: 0.8;
 }
 
-.statValue {
-    font-size: var(--font-size-2xl);
+.awardBody {
+    padding: 0.9rem 0.85rem 1rem;
+}
+
+.awardName {
     font-weight: 700;
-    margin-top: var(--space-xs);
+    line-height: 1.4;
+    margin: 0 0 0.35rem;
+    word-break: keep-all;
 }
 
-.main {
-    padding: var(--space-2xl) 0;
+.awardOrg {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
 }
 
-.filterBar {
+/* ── 필터 ───────────────────────── */
+.toolbar {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-md);
-    margin-bottom: var(--space-2xl);
-}
-
-.filterRow {
-    display: flex;
-    gap: var(--space-sm);
     flex-wrap: wrap;
+    justify-content: space-between;
     align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
 }
 
-.filterLabel {
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tab {
+    font: inherit;
     font-size: var(--font-size-sm);
     font-weight: 600;
-    color: var(--color-text-secondary);
-    min-width: 60px;
-}
-
-.chip {
-    padding: var(--space-xs) var(--space-md);
+    color: var(--ink);
+    background: transparent;
+    border: 1.5px solid var(--ink);
     border-radius: var(--radius-full);
-    font-size: var(--font-size-sm);
-    font-weight: 500;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    color: var(--color-text-primary);
+    padding: 0.45rem 1.1rem;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background 0.15s ease, color 0.15s ease;
 }
 
-.chip:hover {
+.tab:hover {
     background: var(--color-bg-secondary);
 }
 
-.chipActive {
-    background: var(--color-text-primary);
-    color: var(--color-surface);
-    border-color: var(--color-text-primary);
+.tabActive,
+.tabActive:hover {
+    background: var(--ink);
+    color: var(--paper);
 }
 
-/* Track specific chip colors when active */
-.chipActiveTrackA {
-    background: hsl(215, 70%, 50%);
-    color: white;
-    border-color: hsl(215, 70%, 50%);
-}
-.chipActiveTrackB {
-    background: hsl(150, 60%, 45%);
-    color: white;
-    border-color: hsl(150, 60%, 45%);
-}
-.chipActiveTrackC {
-    background: hsl(270, 55%, 55%);
-    color: white;
-    border-color: hsl(270, 55%, 55%);
+.segment {
+    display: inline-flex;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-full);
+    padding: 3px;
 }
 
+.segmentItem {
+    font: inherit;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-full);
+    padding: 0.35rem 0.9rem;
+    cursor: pointer;
+}
+
+.segmentActive {
+    background: var(--color-surface);
+    color: var(--ink);
+    font-weight: 700;
+    box-shadow: var(--shadow-sm);
+}
+
+.tab:focus-visible,
+.segmentItem:focus-visible,
+.keyword:focus-visible,
+.more:focus-visible,
+.card:focus-visible,
+.awardCard:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* ── 카드 ───────────────────────── */
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: var(--space-lg);
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
 }
 
 .card {
@@ -122,118 +328,212 @@
     flex-direction: column;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: var(--shadow-sm);
-    position: relative;
-    height: 100%;
+    border-top: 3px solid var(--accent);
+    padding: 1.25rem 1.25rem 1.1rem;
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 0.15s ease, transform 0.15s ease;
 }
 
 .card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--color-primary-light);
+    border-color: var(--ink);
+    border-top-color: var(--accent);
+    transform: translateY(-2px);
 }
 
-.cardContent {
-    padding: var(--space-md);
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.cardHeader {
+.cardTop {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: var(--space-sm);
-    gap: var(--space-sm);
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
-.appName {
-    font-size: var(--font-size-lg);
-    font-weight: 700;
-    color: var(--color-text-primary);
-    margin: 0;
-}
-
-.orgName {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-secondary);
-    margin-bottom: var(--space-md);
-}
-
-.badge {
+.cardTrack {
     font-size: var(--font-size-xs);
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.cardAward {
+    flex-shrink: 0;
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    background: var(--ink);
+    color: var(--paper);
     padding: 2px 8px;
-    border-radius: var(--radius-full);
-    font-weight: 600;
-    white-space: nowrap;
 }
 
-.statusLive,
-.statusIdea {
-    align-self: flex-start;
-    font-size: 0.72rem;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: var(--radius-full);
-    margin: -0.5rem 0 var(--space-sm);
-}
-
-.statusLive {
-    background: hsl(150, 60%, 93%);
-    color: hsl(150, 60%, 28%);
-}
-
-.statusIdea {
-    background: var(--color-bg-secondary);
-    color: var(--color-text-secondary);
-}
-
-.tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-xs);
-    margin-bottom: var(--space-md);
-}
-
-.tag {
-    font-size: 0.7rem;
-    background: var(--color-bg-secondary);
-    color: var(--color-text-secondary);
-    padding: 2px 6px;
-    border-radius: var(--radius-sm);
-}
-
-.description {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-secondary);
+.cardTitle {
+    font-size: 1.1rem;
+    font-weight: 800;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    margin: 0 0 0.6rem;
+    word-break: keep-all;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    margin-top: auto;
 }
 
-.emptyState {
-    text-align: center;
-    padding: var(--space-2xl);
-    background: var(--color-surface);
-    border-radius: var(--radius-lg);
+.cardExcerpt {
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin: 0 0 1.1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.meta {
+    margin: auto 0 0;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--color-border);
+    display: grid;
+    gap: 0.35rem;
+    font-size: var(--font-size-sm);
+}
+
+.meta > div {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+}
+
+.meta dt {
+    color: var(--color-text-tertiary);
+}
+
+.meta dd {
+    margin: 0;
+    font-weight: 500;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.metaLive {
+    color: var(--color-success);
+}
+
+.metaIdea {
+    color: var(--color-text-secondary);
+}
+
+/* ── 더보기 / 빈 상태 ───────────── */
+.moreWrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 2.5rem;
+}
+
+.more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font: inherit;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--color-bg-secondary);
+    border: none;
+    border-radius: var(--radius-full);
+    padding: 0.7rem 1.5rem;
+    cursor: pointer;
+}
+
+.more:hover {
+    background: var(--color-border);
+}
+
+.moreCount {
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    font-variant-numeric: tabular-nums;
+}
+
+.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 4rem 1rem;
     border: 1px dashed var(--color-border);
     color: var(--color-text-secondary);
-    grid-column: 1 / -1;
+    text-align: center;
+}
+
+.emptyReset {
+    font: inherit;
+    font-size: var(--font-size-sm);
+    color: var(--ink);
+    background: none;
+    border: none;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+
+.stateMessage {
+    padding: 6rem 1rem;
+    text-align: center;
+    color: var(--color-text-secondary);
+}
+
+.stateError {
+    color: var(--color-danger);
+}
+
+@media (max-width: 900px) {
+    .awardGrid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
 }
 
 @media (max-width: 640px) {
-    .stats {
-        flex-direction: column;
-        gap: var(--space-md);
+    .hero {
+        padding: 3rem 0 2.25rem;
     }
-    
+
+    .subtitle {
+        font-size: var(--font-size-base);
+        margin-bottom: 2rem;
+    }
+
+    .stats {
+        gap: 1.75rem;
+    }
+
+    .stats dd {
+        font-size: 1.6rem;
+    }
+
     .grid {
         grid-template-columns: 1fr;
+    }
+
+    .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
+        margin: 0 -1.25rem;
+        padding: 0 1.25rem;
+    }
+
+    .tab {
+        flex-shrink: 0;
+    }
+
+    .segment {
+        align-self: flex-start;
     }
 }
