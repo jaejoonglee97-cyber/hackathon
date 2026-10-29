@@ -13,6 +13,7 @@ export default function AppsPage() {
     
     const [selectedTrack, setSelectedTrack] = useState<Track | '전체'>('전체');
     const [awardOnly, setAwardOnly] = useState(false);
+    const [statusFilter, setStatusFilter] = useState<'all' | 'live' | 'idea'>('all');
 
     useEffect(() => {
         const fetchApps = async () => {
@@ -50,12 +51,17 @@ export default function AppsPage() {
         if (awardOnly) {
             result = result.filter(a => !!a.award);
         }
+        if (statusFilter === 'live') {
+            result = result.filter(a => a.linkStatus === 'live');
+        } else if (statusFilter === 'idea') {
+            result = result.filter(a => a.linkStatus !== 'live');
+        }
         return [...result].sort((a, b) => {
             const orderA = a.award ? AWARD_ORDER[a.award] : 99;
             const orderB = b.award ? AWARD_ORDER[b.award] : 99;
             return orderA - orderB;
         });
-    }, [apps, selectedTrack, awardOnly]);
+    }, [apps, selectedTrack, awardOnly, statusFilter]);
 
     if (loading) {
         return (
@@ -123,6 +129,21 @@ export default function AppsPage() {
                             onClick={() => setAwardOnly(v => !v)}
                         >🏆 수상작만 보기</button>
                     </div>
+
+                    <div className={styles.filterRow}>
+                        <span className={styles.filterLabel}>상태</span>
+                        {([
+                            ['all', '전체'],
+                            ['live', '🟢 바로 체험 가능'],
+                            ['idea', '💡 아이디어'],
+                        ] as const).map(([value, label]) => (
+                            <button
+                                key={value}
+                                className={`${styles.chip} ${statusFilter === value ? styles.chipActive : ''}`}
+                                onClick={() => setStatusFilter(value)}
+                            >{label}</button>
+                        ))}
+                    </div>
                 </div>
 
                 {/* Grid */}
@@ -155,6 +176,9 @@ export default function AppsPage() {
                                         )}
                                     </div>
                                     <p className={styles.orgName}>{app.orgName}</p>
+                                    <span className={app.linkStatus === 'live' ? styles.statusLive : styles.statusIdea}>
+                                        {app.linkStatus === 'live' ? '🟢 바로 체험 가능' : '💡 아이디어'}
+                                    </span>
                                     
                                     <div className={styles.tags}>
                                         {app.tags.map(tag => (

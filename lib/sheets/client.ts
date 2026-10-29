@@ -582,9 +582,12 @@ export async function upsertScore(
 // 결과물 아카이브 헬퍼 (Apps / Comments)
 // ─────────────────────────────────────────────
 import type { AppEntry, Comment } from '@/types/archive';
+import { LIVE_APP_IDS } from '@/lib/archive/liveApps';
 
 /** projects + teams 행을 AppEntry로 변환 */
 function projectAndTeamToAppEntry(project: Record<string, string>, team: Record<string, string>): AppEntry {
+    const rawLink = (project.prototype_link || '').trim();
+    const isLive = !!rawLink && LIVE_APP_IDS.has(team.id);
     return {
         id: team.id,
         name: team.name,
@@ -595,8 +598,11 @@ function projectAndTeamToAppEntry(project: Record<string, string>, team: Record<
         description: project.problem_statement || '',
         problem: project.problem_statement || '',
         solution: project.solution || '',
+        targetAudience: project.target_audience || '',
+        features: project.features || '',
         tags: project.track ? [project.track] : [],
-        appUrl: project.prototype_link || undefined,
+        linkStatus: isLive ? 'live' : rawLink ? 'expired' : 'none',
+        appUrl: isLive ? rawLink : undefined,
         videoUrl: undefined,
         slideUrl: undefined,
         imageUrl: undefined,

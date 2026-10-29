@@ -99,10 +99,30 @@ export default async function AppDetailPage({ params }: { params: { slug: string
                         <div className={styles.sectionContent}>{app.solution}</div>
                     </section>
 
-                    <section className={`${styles.section} ${styles.descriptionSection}`}>
-                        <h2 className={styles.sectionTitle}>💡 한 줄 소개</h2>
-                        <div className={styles.sectionContent}>{app.description}</div>
-                    </section>
+                    {app.targetAudience && (
+                        <section className={`${styles.section} ${styles.descriptionSection}`}>
+                            <h2 className={styles.sectionTitle}>👥 누구를 위한 것인가요</h2>
+                            <div className={styles.sectionContent}>{app.targetAudience}</div>
+                        </section>
+                    )}
+
+                    {app.features && (
+                        <section className={`${styles.section} ${styles.descriptionSection}`}>
+                            <h2 className={styles.sectionTitle}>🧩 주요 기능</h2>
+                            <div className={styles.sectionContent}>{app.features}</div>
+                        </section>
+                    )}
+
+                    {app.linkStatus !== 'live' && (
+                        <section className={`${styles.section} ${styles.expiredNotice}`}>
+                            <h2 className={styles.sectionTitle}>
+                                {app.linkStatus === 'expired' ? '⏳ 웹앱 사용기한 만료' : '📭 웹앱 미제출'}
+                            </h2>
+                            <div className={styles.sectionContent}>
+                                지금은 웹앱으로 직접 체험할 수 없어요. 대신 기관이 제안한 문제 인식과 해결 아이디어를 위 내용에서 확인하고, 우리 기관에 맞게 활용해 보세요.
+                            </div>
+                        </section>
+                    )}
 
                     {/* Link Buttons */}
                     {(app.appUrl || app.videoUrl || app.slideUrl) && (
@@ -144,6 +164,12 @@ export default async function AppDetailPage({ params }: { params: { slug: string
                         <div className={styles.sidebarItem}>
                             <span className={styles.sidebarLabel}>수상 내역</span>
                             <span className={styles.sidebarValue}>{app.award || '해당 없음'}</span>
+                        </div>
+                        <div className={styles.sidebarItem}>
+                            <span className={styles.sidebarLabel}>웹앱</span>
+                            <span className={styles.sidebarValue}>
+                                {app.linkStatus === 'live' ? '🟢 바로 체험 가능' : app.linkStatus === 'expired' ? '사용기한 만료' : '미제출'}
+                            </span>
                         </div>
                         {/* PRD Rule: Score hidden. No score displayed here. */}
                     </div>

@@ -5,6 +5,7 @@
 
 export type Track = '현장 업무경감 자동화' | '이용자 지원 및 접근성 개선' | '협업·지식관리·성과지표';
 export type Award = '대상' | '최우수상' | '우수상' | '장려상' | null;
+export type LinkStatus = 'live' | 'expired' | 'none';
 
 export interface AppEntry {
     id: string;          // URL slug (예: dawith-welfare-hub)
@@ -17,8 +18,11 @@ export interface AppEntry {
     description: string; // 앱 한 줄 소개
     problem: string;     // 해결하려는 문제
     solution: string;    // 솔루션 설명
+    targetAudience: string;
+    features: string;
     tags: string[];      // 태그 목록
-    appUrl?: string;     // 앱 접속 링크
+    linkStatus: LinkStatus;
+    appUrl?: string;     // linkStatus가 'live'일 때만 채워짐
     videoUrl?: string;   // 시연 영상 링크
     slideUrl?: string;   // 발표자료 링크
     imageUrl?: string;   // 썸네일 이미지 URL

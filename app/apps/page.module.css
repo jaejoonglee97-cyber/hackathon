@@ -172,6 +172,26 @@
     white-space: nowrap;
 }
 
+.statusLive,
+.statusIdea {
+    align-self: flex-start;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    margin: -0.5rem 0 var(--space-sm);
+}
+
+.statusLive {
+    background: hsl(150, 60%, 93%);
+    color: hsl(150, 60%, 28%);
+}
+
+.statusIdea {
+    background: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+}
+
 .tags {
     display: flex;
     flex-wrap: wrap;

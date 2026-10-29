@@ -129,6 +129,16 @@
     border-left: 4px solid var(--color-primary);
 }
 
+.expiredNotice {
+    background: var(--color-bg-secondary);
+    border: 1px dashed var(--color-border);
+    box-shadow: none;
+}
+
+.expiredNotice .sectionContent {
+    color: var(--color-text-secondary);
+}
+
 .linkButtons {
     display: flex;
     flex-direction: column;
