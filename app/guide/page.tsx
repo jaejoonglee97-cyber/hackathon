@@ -56,7 +56,7 @@ export default function GuidePage() {
                             <h2 className={styles.sectionTitle}>📋 사업 개요</h2>
                             <div className={styles.card}>
                                 <h3 className={styles.cardTitle}>열매똑똑 해커톤이란?</h3>
-                                <p className={styles.cardText}>
+                                <div className={styles.cardText}>
                                     해커톤(Hackathon)의 핵심은 <strong>&lsquo;집중적으로 문제를 해결하고, 결과물을 만들어내는 것&rsquo;</strong>입니다.<br />
                                     열매똑똑 해커톤은 이 정신을 사회복지 현장에 가져왔습니다.
                                     <br /><br />
@@ -83,7 +83,7 @@ export default function GuidePage() {
                                         현장의 문제를 가장 잘 아는 사람은 사회복지사입니다. 여러분의 경험과 아이디어가 핵심이고,<br />
                                         AI 도구가 기술적인 부분을 도와줍니다. 구글 시트, 앱시트, 노션 등 익숙한 도구도 충분합니다. 🌱
                                     </div>
-                                </p>
+                                </div>
                                 <br />
                                 <h4 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem', color: '#374151' }}>📅 주요 일정</h4>
                                 <ul style={{ listStyle: 'disc', paddingLeft: '1.5rem', color: '#4b5563', lineHeight: '1.6' }}>
@@ -136,7 +136,7 @@ export default function GuidePage() {
 
                             <div className={styles.card}>
                                 <h3 className={styles.cardTitle}>1. 프로젝트 등록 및 관리</h3>
-                                <p className={styles.cardText}>
+                                <div className={styles.cardText}>
                                     대시보드의 <strong style={{ color: '#ec4899' }}>[🚀 프로젝트 등록하기]</strong> 버튼으로 개인 프로젝트를 등록하세요.<br />
                                     <br />
                                     ✅ <strong>분야 선택:</strong> 편집 화면에서 아래 3가지 분야 중 하나를 꼭 선택해주세요.
@@ -146,12 +146,12 @@ export default function GuidePage() {
                                         <li>협업·지식관리·성과지표</li>
                                     </ul>
                                     ✅ <strong>이름 수정:</strong> 프로젝트 이름은 최대 <strong>3회</strong>까지만 수정 가능하니 신중하게 정해주세요!
-                                </p>
+                                </div>
                             </div>
 
                             <div className={styles.card}>
                                 <h3 className={styles.cardTitle}>2. 단계별 프로젝트 발전</h3>
-                                <p className={styles.cardText}>
+                                <div className={styles.cardText}>
                                     프로젝트 편집 페이지에서 <strong>[①프로젝트명 - ②목적 - ③문제의식 - ④내용 - ⑤기대효과 - ⑥활용계획]</strong> 내용을 채워나가세요.<br />
                                     진행 상황에 따라 단계를 직접 변경할 수 있습니다.
                                     <ul style={{ margin: '0.5rem 0', paddingLeft: '1.2rem', fontSize: '0.95rem' }}>
@@ -172,7 +172,7 @@ export default function GuidePage() {
                                         앱·결과물 구동이 잘 된다면 반드시 진행 단계를 <strong>&lsquo;3단계(완성)&rsquo;으로 변경</strong>하고 저장해 주세요.<br />
                                         <span style={{ color: '#92400e' }}>완성으로 바꾸지 않으면 심사 대상에서 제외될 수 있습니다!</span>
                                     </div>
-                                </p>
+                                </div>
                             </div>
 
                             <div className={styles.card}>
@@ -193,7 +193,7 @@ export default function GuidePage() {
                             {/* 시상 개요 설명 */}
                             <div className={styles.card} style={{ marginBottom: '1rem' }}>
                                 <h3 className={styles.cardTitle}>열매똑똑 해커톤 시상</h3>
-                                <p className={styles.cardText} style={{ marginBottom: 0 }}>
+                                <div className={styles.cardText}>
                                     아래 <strong>&lsquo;부문별&rsquo;</strong>은 3가지 <strong>제출 주제</strong>를 기준으로 각각 수상자를 선정한다는 의미입니다.
                                     <ul style={{ marginTop: '0.4rem', paddingLeft: '1.2rem', fontSize: '0.93rem', lineHeight: 1.8 }}>
                                         <li>현장 업무경감 자동화</li>
@@ -201,7 +201,7 @@ export default function GuidePage() {
                                         <li>협업·지식관리·성과지표</li>
                                     </ul>
                                     특별상과 참여상은 주제 구분 없이 별도 선정됩니다.
-                                </p>
+                                </div>
                             </div>
 
                             {/* 탭 UI */}
